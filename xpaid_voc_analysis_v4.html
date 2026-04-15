@@ -1,0 +1,2233 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xpaid — VoC / JTBD Аналіз комунікацій</title>
+<style>
+  :root {
+    --blue: #185FA5; --blue-light: #E6F1FB; --blue-mid: #378ADD;
+    --teal: #0F6E56; --teal-light: #E1F5EE; --teal-mid: #1D9E75;
+    --coral: #993C1D; --coral-light: #FAECE7; --coral-mid: #D85A30;
+    --amber: #854F0B; --amber-light: #FAEEDA; --amber-mid: #BA7517;
+    --red: #A32D2D; --red-light: #FCEBEB; --red-mid: #E24B4A;
+    --green: #3B6D11; --green-light: #EAF3DE; --green-mid: #639922;
+    --purple: #534AB7; --purple-light: #EEEDFE; --purple-mid: #7F77DD;
+    --gray: #444441; --gray-light: #F1EFE8; --gray-mid: #888780;
+    --text: #1a1a1a; --text2: #555; --text3: #888;
+    --border: #e0ddd5; --bg: #fafaf8; --white: #fff;
+    --radius: 10px; --radius-sm: 6px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.07);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; }
+  
+  /* HEADER */
+  .header { background: var(--white); border-bottom: 1px solid var(--border); padding: 2rem 3rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .header-logo { font-size: 1.25rem; font-weight: 600; color: var(--text); letter-spacing: -0.3px; }
+  .header-logo span { color: var(--blue); }
+  .header-meta { font-size: 13px; color: var(--text3); }
+  .header-badge { display: inline-block; background: var(--amber-light); color: var(--amber); font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 20px; margin-left: 12px; }
+
+  /* NAV */
+  .nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 3rem; display: flex; gap: 0; overflow-x: auto; }
+  .nav a { display: inline-block; padding: 12px 18px; font-size: 13px; color: var(--text3); text-decoration: none; border-bottom: 2px solid transparent; white-space: nowrap; transition: all .15s; }
+  .nav a:hover { color: var(--text); }
+  .nav a.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 500; }
+
+  /* LAYOUT */
+  .container { max-width: 1160px; margin: 0 auto; padding: 2.5rem 3rem; }
+  
+  /* SECTIONS */
+  .section { margin-bottom: 3.5rem; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  .section-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .section-title { font-size: 1.3rem; font-weight: 600; color: var(--text); }
+  .section-subtitle { font-size: 13px; color: var(--text3); margin-top: 2px; }
+
+  /* STAGE CARD */
+  .stage-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 2rem; }
+  .stage-header { padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--border); }
+  .stage-num { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; flex-shrink: 0; }
+  .stage-info h2 { font-size: 1.1rem; font-weight: 600; }
+  .stage-info p { font-size: 13px; color: var(--text3); margin-top: 2px; }
+  .stage-score { margin-left: auto; text-align: right; }
+  .score-big { font-size: 2rem; font-weight: 700; line-height: 1; }
+  .score-label { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .stage-body { padding: 1.5rem; }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  @media(max-width: 900px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+  /* METRIC CARD */
+  .metric { background: var(--gray-light); border-radius: var(--radius-sm); padding: 1rem 1.1rem; }
+  .metric-label { font-size: 12px; color: var(--text3); margin-bottom: 4px; }
+  .metric-value { font-size: 1.6rem; font-weight: 600; line-height: 1; }
+  .metric-sub { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+  /* INFO BLOCKS */
+  .info-block { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem 1.1rem; }
+  .info-block h4 { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.4px; }
+  .info-block p, .info-block li { font-size: 14px; color: var(--text); line-height: 1.6; }
+  .info-block ul { padding-left: 1.1rem; }
+  .info-block li { margin-bottom: 4px; }
+
+  /* ACCENT BLOCKS */
+  .block-blue { background: var(--blue-light); border-left: 3px solid var(--blue); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 0.9rem 1.1rem; }
+  .block-green { background: var(--green-light); border-left: 3px solid var(--green-mid); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 0.9rem 1.1rem; }
+  .block-red { background: var(--red-light); border-left: 3px solid var(--red-mid); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 0.9rem 1.1rem; }
+  .block-amber { background: var(--amber-light); border-left: 3px solid var(--amber-mid); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 0.9rem 1.1rem; }
+  .block-teal { background: var(--teal-light); border-left: 3px solid var(--teal-mid); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 0.9rem 1.1rem; }
+  .block-purple { background: var(--purple-light); border-left: 3px solid var(--purple-mid); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 0.9rem 1.1rem; }
+  .block-blue h4, .block-green h4, .block-red h4, .block-amber h4, .block-teal h4, .block-purple h4 { font-size: 13px; font-weight: 600; margin-bottom: 0.5rem; }
+  .block-blue h4 { color: var(--blue); }
+  .block-green h4 { color: var(--green); }
+  .block-red h4 { color: var(--red); }
+  .block-amber h4 { color: var(--amber); }
+  .block-teal h4 { color: var(--teal); }
+  .block-purple h4 { color: var(--purple); }
+  .block-blue p, .block-green p, .block-red p, .block-amber p, .block-teal p, .block-purple p { font-size: 14px; line-height: 1.6; }
+  .block-blue ul, .block-green ul, .block-red ul, .block-amber ul, .block-teal ul, .block-purple ul { padding-left: 1.1rem; font-size: 14px; }
+  .block-blue li, .block-green li, .block-red li, .block-amber li, .block-teal li, .block-purple li { margin-bottom: 3px; }
+
+  /* TAGS */
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; margin: 2px; }
+  .tag-blue { background: var(--blue-light); color: var(--blue); }
+  .tag-red { background: var(--red-light); color: var(--red); }
+  .tag-green { background: var(--green-light); color: var(--green); }
+  .tag-amber { background: var(--amber-light); color: var(--amber); }
+  .tag-gray { background: var(--gray-light); color: var(--gray); }
+  .tag-teal { background: var(--teal-light); color: var(--teal); }
+  .tag-purple { background: var(--purple-light); color: var(--purple); }
+
+  /* BADGE */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .badge-high { background: var(--red-light); color: var(--red); }
+  .badge-med { background: var(--amber-light); color: var(--amber); }
+  .badge-low { background: var(--green-light); color: var(--green); }
+  .badge-info { background: var(--blue-light); color: var(--blue); }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { background: var(--gray-light); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text2); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--gray-light); }
+  .table-wrap { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+
+  /* QUOTE */
+  .quote { background: var(--gray-light); border-left: 3px solid var(--gray-mid); padding: 0.7rem 1rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 13px; font-style: italic; color: var(--text2); margin: 4px 0; }
+  .quote strong { font-style: normal; color: var(--text3); font-size: 11px; display: block; margin-top: 4px; }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+
+  /* PROGRESS BAR */
+  .progress-wrap { background: var(--gray-light); border-radius: 4px; height: 8px; overflow: hidden; margin-top: 6px; }
+  .progress-bar { height: 100%; border-radius: 4px; }
+
+  /* SUMMARY BOX */
+  .summary-box { background: linear-gradient(135deg, #f0f7ff 0%, #e8f5ee 100%); border: 1px solid #c8dff5; border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
+  
+  /* CRITICAL PROBLEM */
+  .critical-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .critical-item:last-child { border-bottom: none; }
+  .critical-num { width: 28px; height: 28px; border-radius: 50%; background: var(--red-light); color: var(--red); font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .critical-num.opp { background: var(--teal-light); color: var(--teal); }
+  .critical-text h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .critical-text p { font-size: 13px; color: var(--text2); }
+
+  /* SCORE RING */
+  .score-ring { display: inline-flex; align-items: center; gap: 10px; }
+  .ring { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; border: 4px solid; }
+  .ring-high { border-color: var(--red-mid); color: var(--red); }
+  .ring-med { border-color: var(--amber-mid); color: var(--amber); }
+  .ring-low { border-color: var(--green-mid); color: var(--green); }
+  
+  /* FUNNEL */
+  .funnel { display: flex; flex-direction: column; gap: 4px; }
+  .funnel-step { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: var(--radius-sm); }
+  .funnel-label { font-size: 14px; font-weight: 500; min-width: 200px; }
+  .funnel-bar-wrap { flex: 1; background: var(--gray-light); border-radius: 4px; height: 10px; overflow: hidden; }
+  .funnel-bar { height: 100%; border-radius: 4px; }
+  .funnel-pct { font-size: 13px; font-weight: 600; min-width: 40px; text-align: right; }
+
+  /* TOC */
+  .toc { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2.5rem; }
+  .toc h3 { font-size: 14px; font-weight: 600; color: var(--text2); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .toc a { font-size: 14px; color: var(--blue); text-decoration: none; padding: 4px 0; display: block; }
+  .toc a:hover { text-decoration: underline; }
+  .toc-num { color: var(--text3); font-size: 12px; margin-right: 6px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-logo"><span>Xpaid</span> — VoC / JTBD Аналіз комунікацій</div>
+    <div class="header-meta">Попередній формат · Дані: Telegram-діалоги · Квітень 2026</div>
+  </div>
+  <div>
+    <span class="header-badge">⚠ Попередній формат</span>
+    <div style="font-size:12px;color:var(--text3);margin-top:6px;text-align:right;">Відсутні: Google Meet дзвінки · 2-й кваліфікатор</div>
+  </div>
+</div>
+
+<div class="nav">
+  <a href="#overview" class="active">Огляд</a>
+  <a href="#stage1">Кваліфікація — Михайло</a>
+  <a href="#stage1b">Кваліфікація — Аліна</a>
+  <a href="#stage2">Продажі</a>
+  <a href="#stage3">Акаунт — Катерина + Олександра</a>
+  <a href="#gmeet">Google Meet</a>
+  <a href="#small-sums">Малі суми</a>
+  <a href="#cross">Cross-Stage</a>
+  <a href="#product">Продукт</a>
+  <a href="#marketing">Маркетинг</a>
+  <a href="#sales-system">Система продажів</a>
+  <a href="#final">Фінальна оцінка</a>
+</div>
+
+<div class="container">
+
+<!-- OVERVIEW -->
+<div id="overview" class="section">
+  <div class="toc">
+    <h3>Зміст звіту</h3>
+    <div class="toc-grid">
+      <a href="#stage1"><span class="toc-num">1а.</span>Кваліфікація — Михайло (SDR)</a>
+      <a href="#stage1b"><span class="toc-num">1б.</span>Кваліфікація — Аліна (SDR)</a>
+      <a href="#stage2"><span class="toc-num">2.</span>Продажі — Нік, Владислав, Олександр</a>
+      <a href="#stage3"><span class="toc-num">3.</span>Акаунт — Катерина + Олександра</a>
+      <a href="#gmeet"><span class="toc-num">4.</span>Google Meet дзвінки</a>
+      <a href="#small-sums"><span class="toc-num">5.</span>Аналіз малих сум (до 10к EUR)</a>
+      <a href="#cross"><span class="toc-num">6.</span>Крос-стейдж аналіз</a>
+      <a href="#product"><span class="toc-num">7.</span>Product insights</a>
+      <a href="#marketing"><span class="toc-num">8.</span>Marketing insights</a>
+      <a href="#sales-system"><span class="toc-num">9.</span>Система продажів</a>
+      <a href="#final"><span class="toc-num">10.</span>Фінальна оцінка</a>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--blue-light)">📊</div>
+    <div>
+      <div class="section-title">Загальний огляд</div>
+      <div class="section-subtitle">7 менеджерів · 2 250+ чатів · ~116 000 повідомлень · 133 дзвінки Google Meet</div>
+    </div>
+  </div>
+
+  <div class="grid-4" style="margin-bottom:1.5rem">
+    <div class="metric">
+      <div class="metric-label">Менеджерів проаналізовано</div>
+      <div class="metric-value" style="color:var(--blue)">7</div>
+      <div class="metric-sub">Михайло · Аліна · Нік · Владислав · Олександр · Катерина · Олександра</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Загальна якість системи</div>
+      <div class="metric-value" style="color:var(--amber)">49/100</div>
+      <div class="metric-sub">Нижче середнього — системні прогалини</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Критичних проблем</div>
+      <div class="metric-value" style="color:var(--red)">7</div>
+      <div class="metric-sub">Потребують негайної уваги</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Потенціал росту</div>
+      <div class="metric-value" style="color:var(--green)">Високий</div>
+      <div class="metric-sub">При усуненні системних проблем</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div class="info-block">
+      <h4>Продукт — Xpaid</h4>
+      <p>Фінансова компанія з VASP ліцензією. Основні послуги: легальний переказ коштів Україна → ЄС через крипто-конвертацію (USDT → EUR), відкриття рахунків у Satchel/ЄС, KYC/верифікація, юрисдикційні послуги (Естонія, Мальта). Мінімальна сума — від 10 000 EUR.</p>
+    </div>
+    <div class="info-block">
+      <h4>Дані та обмеження аналізу</h4>
+      <ul>
+        <li>✅ Telegram-переписки 7 менеджерів (2 250+ чатів)</li>
+        <li>✅ Google Meet дзвінки — Олександр (97) + Микита (36)</li>
+        <li>✅ Акаунт — Катерина + Олександра (540 чатів)</li>
+        <li>✅ Обидва кваліфікатори — Михайло + Аліна</li>
+        <li>⚠ Реальна конверсія невідома</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Менеджер</th><th>Роль / Етап</th><th>Чатів</th><th>Якість обробки</th><th>Конв. потенціал</th><th>Топ-проблема</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Михайло</strong></td>
+          <td><span class="tag tag-blue">Кваліфікація (SDR)</span></td>
+          <td>153</td>
+          <td><span style="color:var(--amber);font-weight:600">48/100</span></td>
+          <td><span class="badge badge-med">Середній</span></td>
+          <td>Шаблонні відповіді, немає кваліфікації</td>
+        </tr>
+        <tr>
+          <td><strong>Аліна</strong></td>
+          <td><span class="tag tag-blue">Кваліфікація (SDR)</span></td>
+          <td>371</td>
+          <td><span style="color:var(--green);font-weight:600">66/100</span></td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td>Кваліфікація лише у 9% чатів, розмита відповідь по тарифу</td>
+        </tr>
+        <tr>
+          <td><strong>Нік + Аліна</strong></td>
+          <td><span class="tag tag-teal">Сейлз</span></td>
+          <td>369</td>
+          <td><span style="color:var(--amber);font-weight:600">52/100</span></td>
+          <td><span class="badge badge-med">Середній</span></td>
+          <td>Неповний follow-up, втрата контексту</td>
+        </tr>
+        <tr>
+          <td><strong>Владислав</strong></td>
+          <td><span class="tag tag-teal">Сейлз</span></td>
+          <td>132</td>
+          <td><span style="color:var(--amber);font-weight:600">55/100</span></td>
+          <td><span class="badge badge-med">Середній</span></td>
+          <td>Пасивна позиція, тариф до кінця не закривається</td>
+        </tr>
+        <tr>
+          <td><strong>Олександр</strong></td>
+          <td><span class="tag tag-teal">Сейлз (senior)</span></td>
+          <td>387</td>
+          <td><span style="color:var(--green);font-weight:600">68/100</span></td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td>Затягнення термінів по складних кейсах</td>
+        </tr>
+        <tr>
+          <td><strong>Катерина</strong></td>
+          <td><span class="tag tag-purple">Account Manager</span></td>
+          <td>293</td>
+          <td><span style="color:var(--green);font-weight:600">63/100</span></td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td>Відсутність проактивного upsell, пасивний акаунтинг</td>
+        </tr>
+        <tr>
+          <td><strong>Олександра</strong></td>
+          <td><span class="tag tag-purple">Account Manager</span></td>
+          <td>540</td>
+          <td><span style="color:var(--amber);font-weight:600">58/100</span></td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td>Перевантаження (акаунт + операції), KYC-баг, шаблонний онбординг</td>
+        </tr>
+        <tr>
+          <td><strong>Олександр (дзвінки)</strong></td>
+          <td><span class="tag tag-teal">Сейлз — Google Meet</span></td>
+          <td>97 дзвінків</td>
+          <td><span style="color:var(--green);font-weight:600">72/100</span></td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td>Широкий скоуп, відсутній стандартний close</td>
+        </tr>
+        <tr>
+          <td><strong>Микита (дзвінки)</strong></td>
+          <td><span class="tag tag-teal">Сейлз — Google Meet</span></td>
+          <td>36 дзвінків</td>
+          <td><span style="color:var(--amber);font-weight:600">61/100</span></td>
+          <td><span class="badge badge-med">Середній</span></td>
+          <td>Презентація перед кваліфікацією, слабкий close</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- STAGE 1 — КВАЛІФІКАЦІЯ -->
+<div id="stage1" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--blue-light)">🎯</div>
+    <div>
+      <div class="section-title">Етап 1 — Кваліфікація</div>
+      <div class="section-subtitle">Михайло (колишній SDR) · 153 чати · ~5 400 повідомлень</div>
+    </div>
+  </div>
+
+  <div class="stage-card">
+    <div class="stage-header">
+      <div class="stage-num" style="background:var(--blue-light);color:var(--blue)">1</div>
+      <div class="stage-info">
+        <h2>Михайло — Communications Manager | Xpaid</h2>
+        <p>SDR / Перший контакт · Кваліфікація ліда · Збір інформації · Передача на сейлза</p>
+      </div>
+      <div class="stage-score">
+        <div class="score-big" style="color:var(--amber)">48</div>
+        <div class="score-label">/ 100 якість обробки</div>
+      </div>
+    </div>
+    <div class="stage-body">
+
+      <div class="grid-3" style="margin-bottom:1.5rem">
+        <div class="block-blue">
+          <h4>1.1 Тип клієнтів</h4>
+          <ul>
+            <li>Фізичні особи, переважно з України</li>
+            <li>Продавці нерухомості (квартира → ЄС)</li>
+            <li>ФОП / бізнес з накопиченнями у гривні</li>
+            <li>Власники крипти (USDT, Binance)</li>
+            <li>Укр. емігранти — переказ до родини</li>
+            <li>Клієнти для інвест. рахунків (IB, ETF)</li>
+          </ul>
+        </div>
+        <div class="block-blue">
+          <h4>1.2 Тригери звернення</h4>
+          <ul>
+            <li>Лід-форма на сайті / реклама</li>
+            <li>Реферал від партнера (Олексій Китович та ін.)</li>
+            <li>Планова операція (купівля нерухомості)</li>
+            <li>Втрачений спосіб переказу (банки заблокували)</li>
+            <li>Ivент/конференція (для Олександра)</li>
+          </ul>
+        </div>
+        <div class="block-blue">
+          <h4>1.3 Стадія рішення</h4>
+          <ul>
+            <li>~30% — «зараз не актуально, але буде»</li>
+            <li>~40% — розглядають варіанти, ще не вирішили</li>
+            <li>~20% — готові діяти, чекають деталей</li>
+            <li>~10% — вже вирішили йти до конкурентів</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">2. Аналіз клієнтів</div>
+
+      <div class="grid-2" style="margin-bottom:1.5rem">
+        <div>
+          <div class="block-teal" style="margin-bottom:0.7rem">
+            <h4>2.1 Явні запити (що просять)</h4>
+            <ul>
+              <li>«Як переказати гроші до ЄС?» (головний запит)</li>
+              <li>«Яка комісія / тарифи?»</li>
+              <li>«Які документи потрібні?»</li>
+              <li>«Що таке VASP ліцензія — це легально?»</li>
+              <li>«Можна без підтвердження джерела коштів?»</li>
+              <li>«Скільки часу займає операція?»</li>
+              <li>«Яка мінімальна / максимальна сума?»</li>
+            </ul>
+          </div>
+          <div class="block-teal">
+            <h4>2.2 Приховані потреби</h4>
+            <ul>
+              <li>Потреба у <strong>спокої та відчутті безпеки</strong> — страх втратити гроші</li>
+              <li>Бажання уникнути податків / звітності (часто не говорять прямо)</li>
+              <li>Потреба у <strong>конкретному плані дій</strong> — не «загальний алгоритм»</li>
+              <li>Бажання <strong>персонального менеджменту</strong>, а не шаблонних відповідей</li>
+              <li>Страх юридичних наслідків (хочуть впевненості в законності)</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="block-red" style="margin-bottom:0.7rem">
+            <h4>2.3 Болі</h4>
+            <ul>
+              <li>Не можуть легально вивести гроші через банки</li>
+              <li>Нема підтвердження походження коштів (готівка, тіньовий бізнес)</li>
+              <li>Не розуміють крипто-механіку (багато «чайників»)</li>
+              <li>Страх шахрайства / «це не скам?»</li>
+              <li>Не хочуть платити велику комісію</li>
+              <li>Невизначеність термінів операції</li>
+            </ul>
+          </div>
+          <div class="block-red">
+            <h4>2.4 Бар'єри та сумніви</h4>
+            <ul>
+              <li>«Поки не актуально» — відкладають рішення</li>
+              <li>«Немає підтвердження коштів» — чорна/сіра зона</li>
+              <li>«Ще не вирішили продавати/переводити»</li>
+              <li>«Знайшов дешевший спосіб»</li>
+              <li>«Вирішили не виводити гроші з України»</li>
+              <li>«Надто маленька сума» (менше 10к EUR)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="block-amber" style="margin-bottom:1.5rem">
+        <h4>2.5 Тригери довіри</h4>
+        <p>VASP ліцензія + легальність операції · Відгуки / кейси реальних клієнтів · Особисте направлення від знайомого (реферал) · Конкретні цифри комісії без «залежить» · Прозорість документів · Покрокова схема роботи · Швидке та уважне реагування на питання</p>
+      </div>
+
+      <div class="divider"></div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">3. Патерни</div>
+
+      <div class="grid-2" style="margin-bottom:1.5rem">
+        <div class="info-block">
+          <h4>Топ-7 питань клієнтів (повторювані)</h4>
+          <ol style="padding-left:1.1rem;font-size:14px">
+            <li style="margin-bottom:6px">«Яка комісія / тариф за переказ?»</li>
+            <li style="margin-bottom:6px">«Які документи потрібні для підтвердження коштів?»</li>
+            <li style="margin-bottom:6px">«Скільки часу займає транзакція?»</li>
+            <li style="margin-bottom:6px">«Чи можна без повного підтвердження / частина готівка?»</li>
+            <li style="margin-bottom:6px">«Це легально і безпечно?»</li>
+            <li style="margin-bottom:6px">«Яка мінімальна сума?»</li>
+            <li style="margin-bottom:6px">«Куди саме можна переказати (країна, банк)?»</li>
+          </ol>
+        </div>
+        <div class="info-block">
+          <h4>Характерні формулювання клієнтів</h4>
+          <div class="quote">«Продажа квартири в Києві, готівка, треба оплатити за кв. в Іспанії. Який шлях? Які комісії?»</div>
+          <div class="quote">«Є у крипті на біржі 1 млн $. Хочу їх перевести на банківський рахунок»</div>
+          <div class="quote">«Поки не актуально, але якщо в майбутньому ще знадобиться — обов'язково відпишу»</div>
+          <div class="quote">«Хочу перевести на Interactive Brokers. Гроші в мене на Binance»</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">4. Hidden Insights</div>
+
+      <div class="grid-3" style="margin-bottom:1.5rem">
+        <div class="block-purple">
+          <h4>Що не говорять прямо</h4>
+          <ul>
+            <li>Значна частина хоче обійти податки/звітність — питають обережно про «підтвердження»</li>
+            <li>Фактично чекають «сірого» рішення, але хочуть легального прикриття</li>
+            <li>Страх довіряти незнайомій компанії великі суми</li>
+          </ul>
+        </div>
+        <div class="block-purple">
+          <h4>Теми що «фонять»</h4>
+          <ul>
+            <li>Купівля нерухомості за кордоном — дуже частий підтекст</li>
+            <li>Переїзд / еміграція (war-related migration)</li>
+            <li>Недовіра до банківської системи України</li>
+            <li>Готівкові кошти, які не підтверджені</li>
+          </ul>
+        </div>
+        <div class="block-purple">
+          <h4>Емоційний стан клієнтів</h4>
+          <ul>
+            <li>Тривожність — бояться зробити помилку</li>
+            <li>Поспіх у частини (угода горить)</li>
+            <li>Скептицизм — «таких контор багато»</li>
+            <li>Відстороненість у «не актуальних» — не виключають повернення</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">5. Аналіз роботи Михайла</div>
+
+      <div class="grid-2" style="margin-bottom:1.5rem">
+        <div class="block-green">
+          <h4>5.1 Що працює добре</h4>
+          <ul>
+            <li>Швидкий перший контакт, ввічливий тон</li>
+            <li>Регулярний follow-up з «не актуальними» лідами</li>
+            <li>Відправляє афіліативну пропозицію на «мертвих» лідах</li>
+            <li>Структурована перша відповідь (алгоритм у нумерованому списку)</li>
+            <li>Пропонує зв'язати з партнерами при нестандартних кейсах</li>
+          </ul>
+        </div>
+        <div class="block-red">
+          <h4>5.2 Що працює погано (критично)</h4>
+          <ul>
+            <li><strong>Шаблонна перша відповідь</strong> — «загальний алгоритм» надсилається всім однаково, незалежно від запиту</li>
+            <li><strong>Немає реальної кваліфікації</strong> — не збирає ключові параметри (сума, тип активів, підтвердження, термін) системно</li>
+            <li><strong>Не веде клієнта до дзвінку</strong> — CTA слабкий, рідко досягає «виходу на звінок»</li>
+            <li><strong>Follow-up механічний</strong> — одні й ті самі повідомлення по колу без персоналізації</li>
+            <li><strong>Не закриває заперечення</strong> — якщо клієнт каже «не актуально», майже не намагається зрозуміти причину</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:1.5rem">
+        <div class="block-amber">
+          <h4>5.3 Де втрачається клієнт</h4>
+          <ul>
+            <li>Після першої шаблонної відповіді — клієнт не отримав конкретики і зникає</li>
+            <li>Після «не актуально» — Михайло не з'ясовує причину і не призначає наступну точку контакту</li>
+            <li>На питанні «чи можна без підтвердження» — відповідь нечітка, клієнт залишається з сумнівом</li>
+            <li>Коли клієнт просить конкретну цифру — Михайло часто перенаправляє, а не дає відповідь</li>
+          </ul>
+        </div>
+        <div class="block-amber">
+          <h4>5.4 Де виникає нерозуміння</h4>
+          <ul>
+            <li>Клієнти не розуміють, навіщо крипто-схема при переказі фіатних грошей</li>
+            <li>Плутанина з документами: які точно потрібні, за який рік</li>
+            <li>Клієнти вважають, що «є декларації» — достатньо, а Михайло це не уточнює</li>
+            <li>Поняття «партнери для альтернативних методів» — для клієнта незрозуміло і насторожує</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-block" style="margin-bottom:1.5rem">
+        <h4>5.5 Якість комунікації</h4>
+        <div class="grid-4" style="margin-top:0.8rem">
+          <div>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:4px">Швидкість відповіді</div>
+            <div style="font-size:18px;font-weight:600;color:var(--green)">7/10</div>
+            <div class="progress-wrap"><div class="progress-bar" style="width:70%;background:var(--green-mid)"></div></div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:4px">Ясність відповідей</div>
+            <div style="font-size:18px;font-weight:600;color:var(--amber)">4/10</div>
+            <div class="progress-wrap"><div class="progress-bar" style="width:40%;background:var(--amber-mid)"></div></div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:4px">Структура діалогу</div>
+            <div style="font-size:18px;font-weight:600;color:var(--amber)">4/10</div>
+            <div class="progress-wrap"><div class="progress-bar" style="width:40%;background:var(--amber-mid)"></div></div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:4px">Релевантність</div>
+            <div style="font-size:18px;font-weight:600;color:var(--red)">3/10</div>
+            <div class="progress-wrap"><div class="progress-bar" style="width:30%;background:var(--red-mid)"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">6–7. Оцінка та висновки</div>
+
+      <div class="grid-2">
+        <div class="block-red">
+          <h4>Ключові проблеми етапу (топ-5)</h4>
+          <ol style="padding-left:1.1rem;font-size:14px">
+            <li style="margin-bottom:5px">Відсутня системна кваліфікація — ліди передаються без зібраних даних</li>
+            <li style="margin-bottom:5px">Шаблонна перша відповідь не відповідає конкретному запиту</li>
+            <li style="margin-bottom:5px">Слабкий CTA — клієнта не ведуть до наступного кроку (дзвінок)</li>
+            <li style="margin-bottom:5px">Follow-up механічний і безликий, викликає втому у клієнта</li>
+            <li>Не пропрацьовуються заперечення та причини «не актуально»</li>
+          </ol>
+        </div>
+        <div class="block-green">
+          <h4>Ключові можливості</h4>
+          <ul>
+            <li style="margin-bottom:5px"><strong>Впровадити кваліфікаційний скрипт</strong> з 5 обов'язковими питаннями (сума, активи, підтвердження, термін, країна)</li>
+            <li style="margin-bottom:5px"><strong>Персоналізувати перший меседж</strong> — відповідати на конкретний запит, не шаблон</li>
+            <li><strong>Призначати конкретний наступний крок</strong> — «давайте у вівторок о 14:00 зідзвонимося» замість «я залишаюсь на зв'язку»</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STAGE 1б — АЛІНА SDR -->
+<div id="stage1b" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--blue-light)">🎯</div>
+    <div>
+      <div class="section-title">Етап 1б — Кваліфікація</div>
+      <div class="section-subtitle">Аліна (SDR) · 371 чат · 4 182 повідомлення</div>
+    </div>
+  </div>
+
+  <div class="stage-card">
+    <div class="stage-header">
+      <div class="stage-num" style="background:var(--blue-light);color:var(--blue)">1б</div>
+      <div class="stage-info">
+        <h2>Аліна — SDR / Кваліфікатор</h2>
+        <p>Перший контакт · Збір параметрів · CTA на дзвінок · Обробка «без документів» · Follow-up</p>
+      </div>
+      <div class="stage-score">
+        <div class="score-big" style="color:var(--green)">66</div>
+        <div class="score-label">/ 100</div>
+      </div>
+    </div>
+    <div class="stage-body">
+
+      <div class="grid-4" style="margin-bottom:1.5rem">
+        <div class="metric">
+          <div class="metric-label">Активних чатів</div>
+          <div class="metric-value" style="color:var(--blue)">240</div>
+          <div class="metric-sub">з 371 загальних</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">CTA на дзвінок</div>
+          <div class="metric-value" style="color:var(--green)">60%</div>
+          <div class="metric-sub">145 з 240 чатів</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Без документів → партнери</div>
+          <div class="metric-value" style="color:var(--amber)">22%</div>
+          <div class="metric-sub">52 чати</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Повна кваліфікація (4-5 пол.)</div>
+          <div class="metric-value" style="color:var(--red)">9%</div>
+          <div class="metric-sub">22 чати — критично мало</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">1–2. Контекст та аналіз клієнтів</div>
+
+      <div class="grid-3" style="margin-bottom:1.5rem">
+        <div class="block-blue">
+          <h4>Типи клієнтів</h4>
+          <ul>
+            <li>Ті ж що й у Михайла — ліди з форми / реклами / рефералів</li>
+            <li>Частина — від агентів (Лісавета, партнерська мережа)</li>
+            <li>Учасники вебінарів Xpaid (окремий канал)</li>
+            <li>Клієнти, передані від Олександра або Ніка</li>
+          </ul>
+        </div>
+        <div class="block-blue">
+          <h4>Явні запити</h4>
+          <ul>
+            <li>«Переказ коштів до ЄС» — основний запит</li>
+            <li>«Яка комісія за весь процес?» (часто питають суму "на руки")</li>
+            <li>«Чи потрібен рахунок у ЄС або ви відкриваєте?»</li>
+            <li>«Скільки часу займає?»</li>
+            <li>«Що підійде як підтвердження?»</li>
+            <li>«Interactive Brokers — чи можна?»</li>
+          </ul>
+        </div>
+        <div class="block-blue">
+          <h4>Приховані потреби та болі</h4>
+          <ul>
+            <li>Клієнти хочуть <strong>одну цифру</strong> — «скільки відсотків з мене»</li>
+            <li>Страх, що підтвердження недостатнє — шукають підтвердження «а підійде?»</li>
+            <li>Частина хоче обійти підтвердження, питаючи «а якщо договір завищений?»</li>
+            <li>Бажання швидкості — є дедлайн (угода, переїзд)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">3. Патерни</div>
+
+      <div class="grid-2" style="margin-bottom:1.5rem">
+        <div class="info-block">
+          <h4>Топ питань клієнтів</h4>
+          <ol style="padding-left:1.1rem;font-size:14px">
+            <li style="margin-bottom:5px">«Яка загальна комісія — від передачі готівки до отримання євро?»</li>
+            <li style="margin-bottom:5px">«Чи підійде договір купівлі-продажу / ФОП-декларація?»</li>
+            <li style="margin-bottom:5px">«А якщо підтвердження немає — є варіанти?»</li>
+            <li style="margin-bottom:5px">«Скільки часу займає весь процес?»</li>
+            <li style="margin-bottom:5px">«Чи потрібен рахунок у ЄС заздалегідь?»</li>
+            <li style="margin-bottom:5px">«Куди можна переказати (Іспанія, Польща, Канада)?»</li>
+            <li>«Чи можна поповнити Interactive Brokers через вас?»</li>
+          </ol>
+        </div>
+        <div class="info-block">
+          <h4>Характерні цитати клієнтів</h4>
+          <div class="quote">«Яка загальна комісія вийде за усі етапи? Я передав 15 000€ готівкою — скільки отримаю на рахунок?»</div>
+          <div class="quote">«У мене є USDT, але підтверджень про походження немає. Торгував, холдив крипту.»</div>
+          <div class="quote">«Договір купівлі-продажу авто є. Якщо суму завищити — це актуально?»</div>
+          <div class="quote">«Кошти від продажу нерухомості, оформлена на маму, є договір дарування. Сума 350к€»</div>
+          <div class="quote">«І так і ні. Хочу виводити крипту без питань. Не хочу щоразу ставати раком.»</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">4. Hidden Insights</div>
+
+      <div class="grid-3" style="margin-bottom:1.5rem">
+        <div class="block-purple">
+          <h4>Що не говорять прямо</h4>
+          <ul>
+            <li>«Договір завищений» — клієнти намагаються напівпрямо запитати про легалізацію сірих коштів через документальний «трюк»</li>
+            <li>Частина клієнтів вже знає конкурентів — порівнює умови мовчки</li>
+            <li>Крипто-трейдери не хочуть розкривати структуру своїх активів — дають мінімум інформації</li>
+          </ul>
+        </div>
+        <div class="block-purple">
+          <h4>Нові канали залучення (у Аліни)</h4>
+          <ul>
+            <li><strong>Вебінар</strong> — помітна кількість лідів звідти. Якісніший контакт, бо клієнт вже «прогрітий»</li>
+            <li><strong>Агентська мережа</strong> (Лісавета) — передає лідів з деталями («200к, вже в крипті»)</li>
+            <li>Відео з Олексієм — клієнти приходять посилаючись на нього</li>
+          </ul>
+        </div>
+        <div class="block-purple">
+          <h4>Емоційний стан</h4>
+          <ul>
+            <li>Теплий контакт — клієнти більш відкриті з Аліною, ніж з Михайлом</li>
+            <li>Частина клієнтів нервує щодо легальності — шукають «дозволу» від менеджера</li>
+            <li>Вебінарні ліди — спокійніші, більш поінформовані, менше заперечень</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">5. Аналіз роботи Аліни</div>
+
+      <div class="grid-2" style="margin-bottom:1.5rem">
+        <div class="block-green">
+          <h4>5.1 Що добре</h4>
+          <ul>
+            <li><strong>Теплий, природній тон</strong> — не офіційний, дружній, з емодзі без перебору. Клієнти охоче відповідають</li>
+            <li><strong>CTA на дзвінок у 60% чатів</strong> — значно краще, ніж у Михайла</li>
+            <li><strong>Вміє пояснити схему просто</strong> — «ваша готівка → USDC → ми конвертуємо → євро на ваш рахунок»</li>
+            <li><strong>Обробляє «без документів» системно</strong> — пропонує альтернативи, потім партнерів</li>
+            <li><strong>Вебінар-стратегія</strong> — використовує запис як follow-up інструмент, це нестандартний і ефективний підхід</li>
+            <li>Value-add follow-up — відгуки, знижки, нові послуги (129 чатів, 53%)</li>
+            <li>Запитує ім'я клієнта на початку — персоналізує спілкування</li>
+          </ul>
+        </div>
+        <div class="block-red">
+          <h4>5.2 Що працює погано</h4>
+          <ul>
+            <li><strong>Кваліфікація — критично слабка</strong>: повна (4-5 параметрів) лише у 9% чатів. 54% — майже без кваліфікації</li>
+            <li><strong>Комісія — розмита відповідь</strong>: «3.5% від суми + супутні витрати на банківські послуги». Клієнт хоче одну цифру «скільки я отримаю»</li>
+            <li><strong>На складні питання «уточню і повернусь»</strong> — без дедлайну, часто не повертається або повертається пізно</li>
+            <li><strong>Персоналізований follow-up — лише 11 чатів (4%)</strong> — решта check-in або value-add, але без зв'язку з конкретною ситуацією клієнта</li>
+            <li>Не закриває заперечення по документах — частина клієнтів відвалюється після «а якщо завищити» без чіткої відповіді</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:1.5rem">
+        <div class="block-amber">
+          <h4>5.3 Де втрачається клієнт</h4>
+          <ul>
+            <li>Після «уточню і повернусь» — якщо відповідь затримується, клієнт зникає</li>
+            <li>Після «немає підтвердження» → «є партнери» — клієнт не розуміє, що це означає, і не реагує</li>
+            <li>Після CTA на дзвінок без конкретного часу — «зручно завтра?» без слота губиться</li>
+            <li>На питанні «скільки я отримаю на руки?» — розмита відповідь = відхід до конкурента</li>
+          </ul>
+        </div>
+        <div class="block-teal">
+          <h4>Якість кваліфікації (деталі)</h4>
+          <div class="funnel" style="margin-top:0.5rem">
+            <div class="funnel-step">
+              <div class="funnel-label" style="min-width:170px;font-size:13px">Повна (4-5 параметрів)</div>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:9%;background:var(--green-mid)"></div></div>
+              <div class="funnel-pct" style="color:var(--green);font-size:13px">9%</div>
+            </div>
+            <div class="funnel-step">
+              <div class="funnel-label" style="min-width:170px;font-size:13px">Часткова (2-3 параметри)</div>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:37%;background:var(--amber-mid)"></div></div>
+              <div class="funnel-pct" style="color:var(--amber);font-size:13px">37%</div>
+            </div>
+            <div class="funnel-step">
+              <div class="funnel-label" style="min-width:170px;font-size:13px">Слабка (0-1 параметр)</div>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:54%;background:var(--red-mid)"></div></div>
+              <div class="funnel-pct" style="color:var(--red);font-size:13px">54%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-block" style="margin-bottom:1.5rem">
+        <h4>5.5 Якість комунікації</h4>
+        <div class="grid-4" style="margin-top:0.8rem">
+          <div>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:4px">Тон та теплота</div>
+            <div style="font-size:18px;font-weight:600;color:var(--green)">9/10</div>
+            <div class="progress-wrap"><div class="progress-bar" style="width:90%;background:var(--green-mid)"></div></div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:4px">CTA / Конверсія</div>
+            <div style="font-size:18px;font-weight:600;color:var(--green)">7/10</div>
+            <div class="progress-wrap"><div class="progress-bar" style="width:70%;background:var(--green-mid)"></div></div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:4px">Глибина кваліфікації</div>
+            <div style="font-size:18px;font-weight:600;color:var(--red)">3/10</div>
+            <div class="progress-wrap"><div class="progress-bar" style="width:30%;background:var(--red-mid)"></div></div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:4px">Ясність відповідей</div>
+            <div style="font-size:18px;font-weight:600;color:var(--amber)">5/10</div>
+            <div class="progress-wrap"><div class="progress-bar" style="width:50%;background:var(--amber-mid)"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">Порівняння Аліна vs Михайло</div>
+
+      <div class="table-wrap" style="margin-bottom:1.5rem">
+        <table>
+          <thead><tr><th>Параметр</th><th>Аліна</th><th>Михайло</th><th>Переможець</th></tr></thead>
+          <tbody>
+            <tr><td>Тон / теплота</td><td>Дружній, живий</td><td>Офіційний, шаблонний</td><td><span class="badge badge-info">Аліна</span></td></tr>
+            <tr><td>CTA на дзвінок</td><td>60% чатів</td><td>~20% чатів</td><td><span class="badge badge-info">Аліна</span></td></tr>
+            <tr><td>Глибина кваліфікації</td><td>Повна — 9%</td><td>Майже відсутня</td><td>Обидва слабко</td></tr>
+            <tr><td>Відповідь на «без документів»</td><td>Шукає альтернативи, потім партнери</td><td>Відразу до партнерів</td><td><span class="badge badge-info">Аліна</span></td></tr>
+            <tr><td>Follow-up якість</td><td>Value-add (вебінар, знижки) — 53%</td><td>Шаблонний check-in — 90%</td><td><span class="badge badge-info">Аліна</span></td></tr>
+            <tr><td>Ясність по тарифах</td><td>«3.5% + витрати» — розмито</td><td>«Від 10 000 EUR» — чітко</td><td>Нічия</td></tr>
+            <tr><td>Персоналізація follow-up</td><td>4% чатів</td><td>~5% чатів</td><td>Обидва слабко</td></tr>
+            <tr><td>Канали залучення</td><td>Вебінар + агенти + реклама</td><td>Тільки реклама + реферали</td><td><span class="badge badge-info">Аліна</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid-2">
+        <div class="block-red">
+          <h4>Ключові проблеми (топ-5)</h4>
+          <ol style="padding-left:1.1rem;font-size:14px">
+            <li style="margin-bottom:5px">Кваліфікація неповна у 91% чатів — сейлз отримує ліда без ключових даних</li>
+            <li style="margin-bottom:5px">Відповідь на «скільки відсотків» — «3.5% + банківські витрати» не дає клієнту конкретної цифри</li>
+            <li style="margin-bottom:5px">«Уточню і повернусь» без дедлайну — клієнт зникає в очікуванні</li>
+            <li style="margin-bottom:5px">CTA на дзвінок без конкретного слоту — «зручно завтра?» без часу</li>
+            <li>Відсутній чіткий handover-підсумок при передачі до сейлза</li>
+          </ol>
+        </div>
+        <div class="block-green">
+          <h4>Ключові можливості</h4>
+          <ul>
+            <li style="margin-bottom:6px"><strong>Додати 3 обов'язкових питання</strong> в кожен чат: сума → підтвердження → країна. Це піднімає кваліфікацію з 9% до 70%+</li>
+            <li style="margin-bottom:6px"><strong>Готова відповідь на «скільки на руки»</strong> — «з 15 000€ ви отримаєте приблизно 14 200€» (конкретний приклад)</li>
+            <li style="margin-bottom:6px"><strong>CTA з конкретним часом</strong> — «вільний слот завтра о 14:00 або 16:00 — який зручний?»</li>
+            <li><strong>Масштабувати вебінар-канал</strong> — найякісніший ліід за рівнем прогрітості</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STAGE 2 — ПРОДАЖІ -->
+<div id="stage2" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--teal-light)">💼</div>
+    <div>
+      <div class="section-title">Етап 2 — Продажі</div>
+      <div class="section-subtitle">Нік · Владислав · Олександр · Telegram-комунікація після дзвінків</div>
+    </div>
+  </div>
+
+  <!-- НІК -->
+  <div class="stage-card" style="margin-bottom:1.5rem">
+    <div class="stage-header">
+      <div class="stage-num" style="background:var(--teal-light);color:var(--teal)">2а</div>
+      <div class="stage-info">
+        <h2>Нік (Sales Manager) + Аліна (Qualifier)</h2>
+        <p>Файл містить: первинна кваліфікація Аліни + передача та ведення Ніком · 369 чатів</p>
+      </div>
+      <div class="stage-score">
+        <div class="score-big" style="color:var(--amber)">52</div>
+        <div class="score-label">/ 100</div>
+      </div>
+    </div>
+    <div class="stage-body">
+
+      <div class="grid-2" style="margin-bottom:1.2rem">
+        <div class="block-teal">
+          <h4>Що добре у Аліни (кваліфікатора)</h4>
+          <ul>
+            <li>Структурований onboarding-запит — одразу питає 6 параметрів (сума, форма, підтвердження, паспорт, країна, канал залучення)</li>
+            <li>Теплий дружній тон, легкий до контакту</li>
+            <li>Чіткий перехід до партнерів при нестандартних кейсах (без підтвердження)</li>
+            <li>Слідкує за статусом після направлення до партнерів</li>
+          </ul>
+        </div>
+        <div class="block-red">
+          <h4>Проблеми Аліни</h4>
+          <ul>
+            <li>Коли клієнт не відповідає на питання — не перефразовує, просто чекає</li>
+            <li>Follow-up після тривалої паузи — поздоровлення з Новим роком як CTA виглядає непрофесійно</li>
+            <li>Нема зрозумілого хендовера до Ніка — клієнт не розуміє, хто далі відповідальний</li>
+            <li>Нема підсумку кваліфікаційних даних при передачі</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:1.2rem">
+        <div class="block-amber">
+          <h4>Проблеми Ніка</h4>
+          <ul>
+            <li>У наявних даних Нік майже не з'являється в клієнтських чатах — переважна більшість комунікації залишається за Аліною</li>
+            <li>[ГІПОТЕЗА] Нік веде клієнтів переважно через дзвінки (Google Meet), тому в текстових даних його присутність мінімальна</li>
+            <li>Текстовий follow-up після дзвінків відсутній або дуже слабкий — немає підтверджень, підсумків, наступних кроків</li>
+            <li>Відсутній шаблон «після дзвінку» — що клієнт має зробити наступним</li>
+          </ul>
+        </div>
+        <div class="block-green">
+          <h4>Hidden insights по Нік+Аліна</h4>
+          <ul>
+            <li>Клієнти з «без підтвердження» — окрема велика група, яку активно направляють до партнерів. Це <strong>незакрита потреба самого Xpaid</strong></li>
+            <li>Частина клієнтів приходить з вже сформованим рішенням і просто потребує «підтвердження» безпеки — не консультації</li>
+            <li>Interactive Brokers / інвест. рахунки — окремий сегмент, який потребує спеціального скрипту</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ВЛАДИСЛАВ -->
+  <div class="stage-card" style="margin-bottom:1.5rem">
+    <div class="stage-header">
+      <div class="stage-num" style="background:var(--teal-light);color:var(--teal)">2б</div>
+      <div class="stage-info">
+        <h2>Владислав (Sales Manager)</h2>
+        <p>Ведення клієнтів після першого контакту · 132 чати</p>
+      </div>
+      <div class="stage-score">
+        <div class="score-big" style="color:var(--amber)">55</div>
+        <div class="score-label">/ 100</div>
+      </div>
+    </div>
+    <div class="stage-body">
+
+      <div class="grid-2" style="margin-bottom:1.2rem">
+        <div class="block-green">
+          <h4>Що добре</h4>
+          <ul>
+            <li>Ввічливий, ненав'язливий тон, не тисне</li>
+            <li>Намагається зрозуміти причину відмови («що саме змінилось?»)</li>
+            <li>При Чорній п'ятниці — використовує знижку як CTA, хороша реакція на ситуацію</li>
+            <li>Пропонує партнерів при нестандартних документах</li>
+            <li>Регулярно нагадує про афіліативну програму</li>
+            <li>Після дзвінків — відправляє підсумок домовленостей у чат</li>
+          </ul>
+        </div>
+        <div class="block-red">
+          <h4>Критичні проблеми</h4>
+          <ul>
+            <li><strong>Тарифи не закриваються до кінця</strong> — при питанні про комісію відповідає «залежить від суми», але рідко дає конкретику або навіть діапазон</li>
+            <li><strong>Пасивна позиція</strong> — чекає, коли клієнт сам буде готовий, не веде до конкретного кроку</li>
+            <li><strong>Follow-up монотонний</strong> — «чи актуально ваше питання?» знову і знову без нових аргументів</li>
+            <li>При складних документальних питаннях — одразу відправляє до партнерів без спроби розібратись самому</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="block-amber" style="margin-bottom:1.2rem">
+        <h4>Де клієнт «ламається» у Владислава</h4>
+        <p>Найчастіша точка втрати — коли клієнт є зацікавленим, але запитує конкретні тарифи або особливий кейс з документами. Владислав або дає розмиту відповідь («залежить»), або одразу відправляє до партнерів. Клієнт залишається без чіткої відповіді і зникає.</p>
+      </div>
+
+      <div class="quote">«Які у вас тарифи?» → «Тарифи залежать від суми та умов...» → клієнт зникає</div>
+      <div class="quote">«Є декларації ФОП і дивіденди з ТОВ, але нема кешових надходжень» → «Можемо завтра зідзвонитися» — без відповіді на питання</div>
+    </div>
+  </div>
+
+  <!-- ОЛЕКСАНДР -->
+  <div class="stage-card">
+    <div class="stage-header">
+      <div class="stage-num" style="background:var(--teal-light);color:var(--teal)">2в</div>
+      <div class="stage-info">
+        <h2>Олександр Садовенко (Senior Sales / BD)</h2>
+        <p>Складні кейси, B2B, партнерства, юрисдикційні послуги · 387 чатів</p>
+      </div>
+      <div class="stage-score">
+        <div class="score-big" style="color:var(--green)">68</div>
+        <div class="score-label">/ 100</div>
+      </div>
+    </div>
+    <div class="stage-body">
+
+      <div class="grid-2" style="margin-bottom:1.2rem">
+        <div class="block-green">
+          <h4>Що добре</h4>
+          <ul>
+            <li>Виразна персоналізація — пам'ятає деталі попередніх розмов</li>
+            <li>Працює з партнерами та B2B — розширює воронку через реферальні мережі</li>
+            <li>Після дзвінків фіксує підсумки в чаті — «Фіксуємо: розглядається ТОВ в Естонії...»</li>
+            <li>Активно пропонує різні юрисдикції (Естонія, Мальта, Польща)</li>
+            <li>Чесний тон — не обіцяє того, чого немає («інформація в процесі»)</li>
+            <li>Веде multi-thread: кілька паралельних напрямків з одним клієнтом</li>
+          </ul>
+        </div>
+        <div class="block-red">
+          <h4>Проблеми</h4>
+          <ul>
+            <li><strong>Затягування</strong> — «буде у вас незабаром» часом розтягується на тижні/місяці без результату</li>
+            <li>Надто широкий скоуп — береться за все (від B2C до B2B, від крипто до реєстрації компаній), що розпорошує увагу</li>
+            <li>Деякі кейси зависають без чіткого наступного кроку</li>
+            <li>[ГІПОТЕЗА] Складні кейси (Мальта, нестандартні юрисдикції) губляться через брак внутрішньої експертизи</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="block-teal">
+        <h4>Hidden insights — Олександр</h4>
+        <ul>
+          <li>B2B сегмент — значна частина чатів це <strong>реферальні партнери та ревшер-мережі</strong>, а не прямі клієнти. Це важливий канал, але погано структурований</li>
+          <li>Є запит на реєстрацію компаній (Естонія, Мальта) як окремий продукт — клієнти приходять з чіткою потребою, але Xpaid не має готового рішення</li>
+          <li>Ivент-канал (зустрічі, конференції) генерує якісних лідів — але немає систематизованого onboarding процесу для них</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STAGE 3 — ACCOUNT -->
+<div id="stage3" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--purple-light)">🤝</div>
+    <div>
+      <div class="section-title">Етап 3а — Account Management</div>
+      <div class="section-subtitle">Катерина · 293 чати · ~53 670 повідомлень + Олександра · 540 чатів · ~26 500 повідомлень</div>
+    </div>
+  </div>
+
+  <div class="stage-card">
+    <div class="stage-header">
+      <div class="stage-num" style="background:var(--purple-light);color:var(--purple)">3а</div>
+      <div class="stage-info">
+        <h2>Катерина — Key Account Manager</h2>
+        <p>Онбординг клієнта · KYC/верифікація · Супровід транзакцій · Утримання · Нові потреби</p>
+      </div>
+      <div class="stage-score">
+        <div class="score-big" style="color:var(--green)">63</div>
+        <div class="score-label">/ 100</div>
+      </div>
+    </div>
+    <div class="stage-body">
+
+      <div class="grid-3" style="margin-bottom:1.5rem">
+        <div class="block-blue">
+          <h4>Контекст клієнтів</h4>
+          <ul>
+            <li>Вже «продані» клієнти — проходять онбординг</li>
+            <li>Більшість — фізособи, частина — B2B</li>
+            <li>Кейси від простих (5-20к EUR) до складних (1М+)</li>
+            <li>Мови: українська, російська, англійська — клієнти з різних країн ЄС</li>
+            <li>Тригер входу — Sale закрив угоду, передав до акаунту</li>
+          </ul>
+        </div>
+        <div class="block-blue">
+          <h4>Топ явні запити</h4>
+          <ul>
+            <li>«Порахуйте комісію для моєї суми»</li>
+            <li>«Що робити з верифікацією (KYC)?»</li>
+            <li>«Чому посилання KYC не працює?»</li>
+            <li>«Коли буде готово? Термін?»</li>
+            <li>«Можна тримати на крипто-гаманці і частинами виводити?»</li>
+            <li>«Яка мінімальна сума для обміну?»</li>
+          </ul>
+        </div>
+        <div class="block-blue">
+          <h4>Приховані потреби</h4>
+          <ul>
+            <li>Впевненість, що гроші не загубляться в процесі</li>
+            <li>Розуміння кожного кроку — клієнти часто не знають, що далі</li>
+            <li>Бажання мінімізувати документальний тягар</li>
+            <li>Потреба у швидкості — у багатьох є deadline (угода, переїзд)</li>
+            <li>Для B2B — потреба в постійному партнері, не разовому обміні</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:1.5rem">
+        <div class="block-green">
+          <h4>Що добре у Катерини</h4>
+          <ul>
+            <li>Терпеливість з клієнтами, які не розуміють процес — пояснює кілька разів</li>
+            <li>Гнучкість з документами — шукає альтернативні варіанти</li>
+            <li>Швидко реагує на технічні проблеми KYC (нове посилання)</li>
+            <li>Дбайливий тон, не бюрократичний</li>
+            <li>Координує роботу між клієнтом, AML офіцером та сейлзом</li>
+            <li>Слідкує за незавершеними онбордингами</li>
+          </ul>
+        </div>
+        <div class="block-red">
+          <h4>Критичні проблеми</h4>
+          <ul>
+            <li><strong>Відсутній проактивний upsell</strong> — клієнт зробив обмін, але нові послуги (компанія в Естонії, повторний обмін, картки) не пропонуються органічно</li>
+            <li><strong>Пасивний акаунтинг</strong> — реагує на питання, не ініціює ціннісні точки контакту</li>
+            <li><strong>Прогрес по KYC непрозорий</strong> — клієнти часто питають «коли буде готово?» без чіткої відповіді</li>
+            <li><strong>Термін операції — регулярна больова точка</strong> — немає стандартних дедлайнів, які можна повідомляти</li>
+            <li>При зміні обставин клієнта (відклав → вже готовий) — не завжди вчасно активується</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:1.5rem">
+        <div class="block-amber">
+          <h4>Де втрачається клієнт</h4>
+          <ul>
+            <li>Клієнт пройшов KYC, але зникає без завершення транзакції</li>
+            <li>Після зміни планів («відкладаю на осінь») — немає тригера повернення</li>
+            <li>Клієнт знайшов альтернативний спосіб (банк, SEPA) і не повідомив</li>
+          </ul>
+        </div>
+        <div class="block-amber">
+          <h4>Де виникає нерозуміння</h4>
+          <ul>
+            <li>KYC процес — клієнти не знають, скільки кроків ще попереду</li>
+            <li>Різниця між «обміном» і «переказом» — плутають поняття</li>
+            <li>«Мінімальна сума 10к USDC» — деякі клієнти не розуміють, чому не менше</li>
+          </ul>
+        </div>
+        <div class="block-purple">
+          <h4>Hidden insights</h4>
+          <ul>
+            <li>Частина клієнтів <strong>повторні звернення ігнорує</strong> — потенціал retention недовикористаний</li>
+            <li>Мультимовна база — потреба в мовній стандартизації (якою мовою писати?)</li>
+            <li>Клієнти, які відмовились — часто через <strong>технічну причину</strong> (не SEPA, мінімальна сума), а не відсутність бажання</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="block-red">
+          <h4>Ключові проблеми етапу</h4>
+          <ol style="padding-left:1.1rem;font-size:14px">
+            <li style="margin-bottom:5px">Відсутній upsell сценарій після завершеної транзакції</li>
+            <li style="margin-bottom:5px">Клієнти йдуть в «паузу» без чіткого тригера повернення</li>
+            <li style="margin-bottom:5px">KYC прогрес непрозорий — клієнт не розуміє де він знаходиться</li>
+            <li style="margin-bottom:5px">Немає стандартного SLA на терміни операцій</li>
+            <li>Акаунтинг реактивний, а не проактивний</li>
+          </ol>
+        </div>
+        <div class="block-green">
+          <h4>Ключові можливості</h4>
+          <ul>
+            <li style="margin-bottom:5px">Запустити <strong>post-transaction nurture</strong> — після обміну пропонувати наступний крок (відкриття рахунку, нова угода)</li>
+            <li style="margin-bottom:5px">Ввести <strong>KYC статус-оновлення</strong> — клієнт розуміє кожен крок і не питає «коли?»</li>
+            <li>Скласти <strong>SLA документ</strong> — типові терміни по стандартних операціях</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ОЛЕКСАНДРА В ТОМУ Ж РОЗДІЛІ 3а -->
+  <div class="stage-card" style="margin-top:1.5rem">
+    <div class="stage-header">
+      <div class="stage-num" style="background:var(--purple-light);color:var(--purple)">3а²</div>
+      <div class="stage-info">
+        <h2>Олександра — Account Manager</h2>
+        <p>Онбординг · Документальна верифікація · Операційні обміни · Ведення клієнтів · 540 чатів</p>
+      </div>
+      <div class="stage-score">
+        <div class="score-big" style="color:var(--amber)">58</div>
+        <div class="score-label">/ 100</div>
+      </div>
+    </div>
+    <div class="stage-body">
+
+      <div class="grid-3" style="margin-bottom:1.5rem">
+        <div class="block-blue">
+          <h4>Контекст та профіль клієнтів</h4>
+          <ul>
+            <li>223 клієнтські/агентські чати, 150 з них — активні (20+ повідомлень)</li>
+            <li>Клієнти вже пройшли сейлз-дзвінок, передані для онбордингу</li>
+            <li>Тримовна комунікація: укр / рос / англ</li>
+            <li>Великі кейси: 200к–1.2М EUR (декларації ФОП, нерухомість)</li>
+            <li>Операційна база: Satchel, USDC/USDT, SWIFT, готівкові обміни</li>
+          </ul>
+        </div>
+        <div class="block-blue">
+          <h4>Топ явні запити</h4>
+          <ul>
+            <li>«Коли можемо очікувати від вас документи?»</li>
+            <li>«Яка комісія / тариф зараз?»</li>
+            <li>«Посилання на KYC не працює»</li>
+            <li>«Відкриття рахунку Satchel — ціна і порядок»</li>
+            <li>«Яка банківська виписка підійде для адреси?»</li>
+            <li>«Готівка — який обмінник, яка адреса?»</li>
+          </ul>
+        </div>
+        <div class="block-blue">
+          <h4>Топ теми (частота по чатах)</h4>
+          <ul>
+            <li>Документи — 238 чатів</li>
+            <li>Обмін — 177 чатів</li>
+            <li>Тарифи — 150 чатів</li>
+            <li>Satchel — 139 чатів</li>
+            <li>Верифікація — 138 чатів</li>
+            <li>USDC — 129 чатів</li>
+            <li>Договір — 118 чатів</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:1.5rem">
+        <div class="block-green">
+          <h4>Що добре</h4>
+          <ul>
+            <li>Структурований 5-кроковий алгоритм онбордингу — надсилається одразу</li>
+            <li>Чіткий список документів з поштою mlro@xpaid.org — без двозначності</li>
+            <li>Тримовність — адаптується до мови клієнта</li>
+            <li>Регулярні нагадування по документах — не забуває про клієнта</li>
+            <li>Активна операційна координація — веде обміни в реальному часі</li>
+            <li>Гнучка робота з документами — пропонує альтернативи (виписка Монобанк/ПриватБанк)</li>
+            <li>Готівкові кейси — чітко дає адресу, час, тариф в моменті</li>
+          </ul>
+        </div>
+        <div class="block-red">
+          <h4>Критичні проблеми</h4>
+          <ul>
+            <li><strong>Перевантаження</strong> — Олександра одночасно: акаунт-менеджер + оператор обмінів + готує договори. Чат ❗️Обміни (~600 повідомлень) це операційна координація в реальному часі, не акаунтинг</li>
+            <li><strong>Шаблонний онбординг</strong> — той самий текст усім, незалежно від розміру кейсу і специфіки</li>
+            <li><strong>KYC посилання регулярно не працює</strong> — «@Olexandr_Xpaid надішли нове посилання» — системний баг без вирішення</li>
+            <li><strong>Тариф дізнається ситуативно</strong> — «дізнаюсь тариф для вас» замість готової таблиці</li>
+            <li><strong>SLA відсутній</strong> — «ознайомлюємось і повернусь» без дедлайну</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:1.5rem">
+        <div class="block-amber">
+          <h4>Де втрачається клієнт</h4>
+          <ul>
+            <li>Після «ознайомлюємось» — якщо відповідь затримується, клієнт перестає відповідати</li>
+            <li>На кроці KYC — технічна проблема з посиланням зупиняє процес</li>
+            <li>Після погодження документів — якщо наступний крок не призначений чітко</li>
+          </ul>
+        </div>
+        <div class="block-purple">
+          <h4>Hidden insights</h4>
+          <ul>
+            <li>Чат ❗️Обміни (~600 повідомлень) і «Договори» (~484) — Олександра є операційним центром. Це не акаунтинг, а <strong>operations</strong>. Розподіл ролей — пріоритет №1</li>
+            <li>52 чати з ознаками проблем/затримок — 23% від активних</li>
+            <li>Satchel у 139 чатах — відкриття рахунку є окремим болем і джерелом затримок</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">Порівняння Катерина vs Олександра</div>
+
+      <div class="table-wrap" style="margin-bottom:1.5rem">
+        <table>
+          <thead><tr><th>Параметр</th><th>Катерина</th><th>Олександра</th></tr></thead>
+          <tbody>
+            <tr><td>Оцінка</td><td><strong style="color:var(--green)">63/100</strong></td><td><strong style="color:var(--amber)">58/100</strong></td></tr>
+            <tr><td>Тон</td><td>Дбайливий, особистий</td><td>Структурований, операційний</td></tr>
+            <tr><td>Онбординг</td><td>Менш шаблонний</td><td>Більш шаблонний</td></tr>
+            <tr><td>Операційне навантаження</td><td>Середнє — тільки акаунтинг</td><td>Дуже високе — акаунт + операції + договори</td></tr>
+            <tr><td>KYC проблеми</td><td>Є, але рідше</td><td>Системний баг, часто</td></tr>
+            <tr><td>Upsell / retention</td><td>Відсутній</td><td>Відсутній</td></tr>
+            <tr><td>SLA на документи</td><td>Немає</td><td>Немає</td></tr>
+            <tr><td>Готівкові кейси</td><td>Не веде</td><td>Веде самостійно (адреса, час, тариф)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid-2">
+        <div class="block-red">
+          <h4>Спільні проблеми обох акаунт-менеджерів</h4>
+          <ol style="padding-left:1.1rem;font-size:14px">
+            <li style="margin-bottom:5px">Відсутній upsell після завершеної транзакції — клієнт зробив обмін і зникає</li>
+            <li style="margin-bottom:5px">KYC прогрес непрозорий — клієнт не знає де він у процесі</li>
+            <li style="margin-bottom:5px">Немає SLA — «скільки чекати?» залишається без чіткої відповіді</li>
+            <li style="margin-bottom:5px">Пасивна комунікація — реагують на запити, не ініціюють ціннісні точки контакту</li>
+            <li>Тариф не стандартизований — кожен дізнається ситуативно</li>
+          </ol>
+        </div>
+        <div class="block-green">
+          <h4>Пріоритетні дії для обох</h4>
+          <ul>
+            <li style="margin-bottom:6px"><strong>Розділити ролі Олександри</strong> — operations окремо від account management</li>
+            <li style="margin-bottom:6px"><strong>Виправити KYC-баг</strong> — посилання повинні генеруватися надійно</li>
+            <li style="margin-bottom:6px"><strong>SLA-картка</strong> — «перевірка документів до X годин, відкриття рахунку Y днів»</li>
+            <li><strong>Post-transaction sequence</strong> — автоматичне нагадування через 2 тижні після обміну з пропозицією наступного кроку</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="cross" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--coral-light)">🔗</div>
+    <div>
+      <div class="section-title">Cross-Stage Аналіз</div>
+      <div class="section-subtitle">Що відбувається між етапами — де система дає збої</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div class="block-red">
+      <h4>1. Критичні розриви між етапами</h4>
+      <ul>
+        <li style="margin-bottom:6px"><strong>SDR → Сейлз:</strong> Кваліфікаційні дані не передаються. Сейлз починає з нуля, клієнт повторно відповідає на ті самі питання → втрата довіри та часу</li>
+        <li style="margin-bottom:6px"><strong>Сейлз → Акаунт:</strong> Контекст угоди частково губиться. Катерина не завжди знає, що обіцяв сейлз, які умови обговорювались</li>
+        <li><strong>Акаунт → Повторний продаж:</strong> Після завершеної операції немає системного переходу до nurture — клієнт просто «зникає»</li>
+      </ul>
+    </div>
+    <div class="block-amber">
+      <h4>2. Неузгодженість комунікації</h4>
+      <ul>
+        <li style="margin-bottom:6px"><strong>Tone of voice різниться суттєво:</strong> Михайло — офіційно-шаблонний, Аліна — дружній, Владислав — нейтральний, Олександр — ділово-партнерський, Катерина — дбайливий</li>
+        <li style="margin-bottom:6px"><strong>Мова комунікації непослідовна:</strong> одні пишуть українською, інші — залежно від клієнта. Немає єдиного правила</li>
+        <li><strong>Опис продукту різниться:</strong> Михайло каже «алгоритм», Владислав — «умови», Олександр — «сервіс». Клієнт не отримує єдиний образ компанії</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem">Болі, що проходять через усі етапи:</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <span class="tag tag-red">Комісія / тарифи</span>
+        <span class="tag tag-red">Підтвердження коштів</span>
+        <span class="tag tag-red">Терміни операції</span>
+        <span class="tag tag-red">Легальність та безпека</span>
+        <span class="tag tag-amber">Документи — які саме</span>
+        <span class="tag tag-amber">KYC складність</span>
+        <span class="tag tag-amber">Мінімальна сума</span>
+        <span class="tag tag-amber">Готівкові кошти</span>
+        <span class="tag tag-gray">Нерухомість за кордоном</span>
+        <span class="tag tag-gray">Interactive Brokers / інвестиції</span>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem">Де клієнт «ламається» найчастіше:</div>
+      <div class="funnel">
+        <div class="funnel-step">
+          <div class="funnel-label">Перший контакт → Кваліфікація</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:85%;background:var(--blue-mid)"></div></div>
+          <div class="funnel-pct" style="color:var(--blue)">85%</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-label">Кваліфікація → Дзвінок/Консультація</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:45%;background:var(--amber-mid)"></div></div>
+          <div class="funnel-pct" style="color:var(--amber)">~45%</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-label">Дзвінок → Онбординг/KYC</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:55%;background:var(--amber-mid)"></div></div>
+          <div class="funnel-pct" style="color:var(--amber)">~55%</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-label">KYC → Завершена транзакція</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:65%;background:var(--green-mid)"></div></div>
+          <div class="funnel-pct" style="color:var(--green)">~65%</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-label">1-а транзакція → Повторний клієнт</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:20%;background:var(--red-mid)"></div></div>
+          <div class="funnel-pct" style="color:var(--red)">~20%</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin-top:6px">* Оцінка на основі якості комунікації, не реальних даних конверсії</div>
+    </div>
+  </div>
+
+  <div class="block-red" style="margin-bottom:1rem">
+    <h4>Системна проблема №1 — відсутній CRM / передача контексту</h4>
+    <p>Найбільший системний збій — кожен менеджер починає спілкування з клієнтом «з нуля». Немає єдиної картки клієнта, яка б містила: звідки прийшов, що обговорювали, яка сума, який статус, що обіцяли. Клієнт змушений повторювати ту саму інформацію 3-4 рази різним людям.</p>
+  </div>
+  <div class="block-red">
+    <h4>Системна проблема №2 — сегмент «без підтвердження» не опрацьований</h4>
+    <p>Значна частина лідів (оціночно 25-35%) приходить з коштами без повного підтвердження походження. Поточне рішення — «партнери». Але цей сегмент системно не нурчується, не отримує окремого скрипту, і є джерелом великих втрат.</p>
+  </div>
+</div>
+
+<!-- PRODUCT INSIGHTS -->
+<div id="product" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--green-light)">🚀</div>
+    <div>
+      <div class="section-title">Product Insights</div>
+      <div class="section-subtitle">Що продукт не закриває — нові послуги та масштабування</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div class="block-red">
+      <h4>Незакриті потреби (gap analysis)</h4>
+      <ul>
+        <li style="margin-bottom:6px"><strong>Сегмент «сірих» коштів</strong> — клієнти без повного підтвердження хочуть рішення, але Xpaid не має продукту для них. Це 25-35% від усіх звернень</li>
+        <li style="margin-bottom:6px"><strong>Малі суми (до 10к EUR)</strong> — є попит, але немає рішення. Можливий окремий продукт або партнерство</li>
+        <li style="margin-bottom:6px"><strong>Інвест. рахунки</strong> — Interactive Brokers, ETF, брокерські рахунки в ЄС. Часто запитуваний напрям, але немає чіткого flow</li>
+        <li style="margin-bottom:6px"><strong>SEPA-перекази</strong> — клієнти хочуть EUR→EUR без крипто, але Xpaid не пропонує цього прямо</li>
+        <li><strong>Повторні / регулярні перекази</strong> — бізнес-клієнти хочуть систематичний продукт, не разовий</li>
+      </ul>
+    </div>
+    <div class="block-green">
+      <h4>Послуги для додавання / масштабування</h4>
+      <ul>
+        <li style="margin-bottom:6px"><strong>Реєстрація компаній в ЄС</strong> (Естонія, Мальта, Польща) — прямий запит від клієнтів Олександра. Є попит, немає готового продукту</li>
+        <li style="margin-bottom:6px"><strong>Корпоративні рахунки в Satchel / EU-банках</strong> — B2B сегмент недостатньо обслуговується</li>
+        <li style="margin-bottom:6px"><strong>Реферальна програма (affilate)</strong> — вже існує, але комунікація про неї непослідовна</li>
+        <li style="margin-bottom:6px"><strong>Юридичний супровід</strong> — клієнти часто питають про податкові наслідки, AML compliance — це окрема цінність</li>
+        <li><strong>Освітній контент</strong> — «Як підтвердити джерело коштів», «Що таке VASP» — знизить навантаження на менеджерів</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Запит клієнтів</th><th>Поточне рішення Xpaid</th><th>Gap</th><th>Пріоритет</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Переказ без підтвердження коштів</td>
+          <td>«Партнери»</td>
+          <td>Немає власного продукту, немає скрипту</td>
+          <td><span class="badge badge-high">Критично</span></td>
+        </tr>
+        <tr>
+          <td>Малі суми (до 10к EUR)</td>
+          <td>Відмова</td>
+          <td>~106 відмов/рік · загальний обсяг ~<strong>€627к</strong> відмовлених транзакцій<br><span style="font-size:12px;color:var(--text3)">Втрачена комісія: €19к (при 3%) · <strong style="color:var(--red)">€25к (при 4%)</strong> · €31к (при 5%) · 93% разові · 7% регулярні. Пріоритет: 7–10к EUR + регулярні IB-клієнти</span></td>
+          <td><span class="badge badge-high">Високий</span></td>
+        </tr>
+        <tr>
+          <td>Реєстрація компанії в ЄС</td>
+          <td>В процесі / партнери</td>
+          <td>Немає стандартного продукту</td>
+          <td><span class="badge badge-high">Високий</span></td>
+        </tr>
+        <tr>
+          <td>Interactive Brokers / інвест.</td>
+          <td>Загальний переказ</td>
+          <td>Немає спеціалізованого flow</td>
+          <td><span class="badge badge-med">Середній</span></td>
+        </tr>
+        <tr>
+          <td>Регулярні корпоративні перекази</td>
+          <td>Разові угоди</td>
+          <td>Немає B2B subscription-продукту</td>
+          <td><span class="badge badge-med">Середній</span></td>
+        </tr>
+        <tr>
+          <td>KYC статус у реальному часі</td>
+          <td>Питання до Катерини</td>
+          <td>Немає клієнтського порталу / статусу</td>
+          <td><span class="badge badge-med">Середній</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- MARKETING INSIGHTS -->
+<div id="marketing" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--amber-light)">📣</div>
+    <div>
+      <div class="section-title">Marketing Insights</div>
+      <div class="section-subtitle">Як клієнти формулюють проблему · Страхи · Тригери</div>
+    </div>
+  </div>
+
+  <div class="grid-3" style="margin-bottom:1.5rem">
+    <div class="info-block">
+      <h4>Як клієнт формулює проблему (реальна мова)</h4>
+      <div class="quote">«Треба перевести гроші з України до Іспанії, є готівка»</div>
+      <div class="quote">«Продаю квартиру, хочу отримати в Польщі»</div>
+      <div class="quote">«Є USDT на Binance, хочу перевести в EUR на рахунок»</div>
+      <div class="quote">«Потрібний легальний спосіб переказу, банки не дають»</div>
+      <div class="quote">«Хочу відкрити рахунок в ЄС і перевести туди бізнес»</div>
+    </div>
+    <div class="info-block">
+      <h4>Ключові страхи (що стримує)</h4>
+      <ul>
+        <li>«Це шахрайство / скам?»</li>
+        <li>«Гроші загубляться в процесі»</li>
+        <li>«Мене притягнуть до відповідальності»</li>
+        <li>«Велика комісія — невигідно»</li>
+        <li>«Процес займе занадто довго»</li>
+        <li>«Не знаю, чи зможу підтвердити кошти»</li>
+        <li>«Банк заблокує рахунок після транзакції»</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>Сильні тригери (що переконує)</h4>
+      <ul>
+        <li>✅ VASP ліцензія — легальність</li>
+        <li>✅ Реальні кейси / відгуки (Instagram)</li>
+        <li>✅ Реферал від знайомого</li>
+        <li>✅ Конкретна цифра комісії (не «залежить»)</li>
+        <li>✅ Покроковий план — що і коли відбудеться</li>
+        <li>✅ Гарантія — «легально» + «безпечно»</li>
+        <li>✅ Швидкість — «протягом 2-3 днів»</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="block-blue">
+      <h4>Сегментація за потребою (JTBD)</h4>
+      <ul>
+        <li style="margin-bottom:6px"><strong>«Продав нерухомість»</strong> — хоче перемістити капітал у безпечне місце. Job: «допоможи мені легально отримати гроші в ЄС після продажу»</li>
+        <li style="margin-bottom:6px"><strong>«Власник крипти»</strong> — хоче конвертувати в фіат. Job: «конвертуй USDT у EUR і переведи на мій рахунок»</li>
+        <li style="margin-bottom:6px"><strong>«Підприємець/ФОП»</strong> — хоче перемістити бізнес або капітал за кордон. Job: «відкрий мені компанію в ЄС і рахунок»</li>
+        <li><strong>«Інвестор»</strong> — хоче вкласти у закордонні активи. Job: «допоможи поповнити брокерський рахунок в ЄС»</li>
+      </ul>
+    </div>
+    <div class="block-teal">
+      <h4>Маркетингові рекомендації</h4>
+      <ul>
+        <li style="margin-bottom:6px">Створити <strong>контент під кожен JTBD сегмент</strong> — «Як переказати гроші від продажу квартири», «Як вивести USDT в EUR»</li>
+        <li style="margin-bottom:6px">Використовувати <strong>реальну мову клієнтів</strong> в рекламі — не «переказ за VASP ліцензією», а «легально переведи гроші з України до ЄС»</li>
+        <li style="margin-bottom:6px">Розробити <strong>FAQ / контент про безпеку</strong> — «Як працює VASP», «Чи безпечно», «Які документи»</li>
+        <li>Посилити <strong>social proof</strong> — більше кейсів, відгуків, конкретних цифр</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SALES SYSTEM -->
+<div id="sales-system" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--red-light)">⚙️</div>
+    <div>
+      <div class="section-title">Система продажів — Діагностика</div>
+      <div class="section-subtitle">Де втрачається виручка · Найслабші ланки · Потенціал росту</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div class="block-red">
+      <h4>Де втрачається виручка (топ-5)</h4>
+      <ol style="padding-left:1.1rem;font-size:14px">
+        <li style="margin-bottom:7px"><strong>Відсутня передача контексту між ролями</strong> — клієнт відповідає на одні й ті самі питання тричі і зникає</li>
+        <li style="margin-bottom:7px"><strong>Слабкий перехід кваліфікація → дзвінок</strong> — Михайло рідко досягає «виходу на звінок», більшість клієнтів відповідають на шаблонні меседжі і зникають</li>
+        <li style="margin-bottom:7px"><strong>Тарифи — «залежить від суми»</strong> без конкретики вбиває конверсію. Клієнт іде шукати конкурента, де є калькулятор</li>
+        <li style="margin-bottom:7px"><strong>Відсутній retention після першої транзакції</strong> — клієнт зробив обмін, але другий раз ніхто не залучає</li>
+        <li><strong>«Без підтвердження» — втрачений сегмент</strong> без власного продукту</li>
+      </ol>
+    </div>
+    <div class="block-amber">
+      <h4>Найслабші ланки системи</h4>
+      <div class="table-wrap" style="margin-top:0.5rem">
+        <table>
+          <thead><tr><th>Ланка</th><th>Рівень слабкості</th></tr></thead>
+          <tbody>
+            <tr><td>Передача між ролями (handover)</td><td><span class="badge badge-high">Критично</span></td></tr>
+            <tr><td>Кваліфікаційний скрипт (SDR)</td><td><span class="badge badge-high">Критично</span></td></tr>
+            <tr><td>Комунікація тарифів</td><td><span class="badge badge-high">Критично</span></td></tr>
+            <tr><td>Post-transaction retention</td><td><span class="badge badge-high">Критично</span></td></tr>
+            <tr><td>KYC прозорість</td><td><span class="badge badge-med">Середня</span></td></tr>
+            <tr><td>Follow-up якість</td><td><span class="badge badge-med">Середня</span></td></tr>
+            <tr><td>Tone of voice єдність</td><td><span class="badge badge-med">Середня</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="block-green">
+      <h4>Найбільший потенціал росту</h4>
+      <ul>
+        <li style="margin-bottom:6px"><strong>Retention existing clients</strong> — база клієнтів Катерини (293+ чати) — величезний потенціал для upsell нових послуг</li>
+        <li style="margin-bottom:6px"><strong>CRM + handover</strong> — впровадження картки клієнта збільшить конверсію на ~20-30%</li>
+        <li style="margin-bottom:6px"><strong>B2B / партнерська мережа</strong> — Олександр вже будує, але без системи</li>
+        <li><strong>Тарифний калькулятор</strong> — одна сторінка з конкретними цифрами закриє топ-1 заперечення</li>
+      </ul>
+    </div>
+    <div class="block-blue">
+      <h4>Що потрібно зробити негайно</h4>
+      <ul>
+        <li style="margin-bottom:6px">Розробити <strong>кваліфікаційний скрипт</strong> для SDR (5 обов'язкових питань)</li>
+        <li style="margin-bottom:6px">Ввести <strong>handover-документ</strong> при передачі між ролями</li>
+        <li style="margin-bottom:6px">Підготувати <strong>тарифний лист / діапазони</strong> для типових сум</li>
+        <li style="margin-bottom:6px">Запустити <strong>retention sequence</strong> після першого обміну</li>
+        <li>Стандартизувати <strong>tone of voice</strong> — один голос компанії</li>
+      </ul>
+    </div>
+    <div class="block-teal">
+      <h4>Середньострокові дії</h4>
+      <ul>
+        <li style="margin-bottom:6px">Впровадити CRM з карткою клієнта</li>
+        <li style="margin-bottom:6px">Розробити скрипт для сегменту «без підтвердження»</li>
+        <li style="margin-bottom:6px">Створити продукт реєстрації компаній ЄС</li>
+        <li style="margin-bottom:6px">Розробити KYC-трекер для клієнтів</li>
+        <li>Уніфікувати FAQ / відповіді на типові питання</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARISON TABLE -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--gray-light)">📋</div>
+    <div>
+      <div class="section-title">Порівняльна таблиця етапів</div>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Етап</th>
+          <th>Менеджер</th>
+          <th>Якість</th>
+          <th>Конв. потенціал</th>
+          <th>Основні проблеми</th>
+          <th>Потенціал росту</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-blue">Кваліфікація</span></td>
+          <td>Михайло (SDR)</td>
+          <td><strong style="color:var(--amber)">48/100</strong></td>
+          <td><span class="badge badge-med">Середній</span></td>
+          <td>Шаблонність, відсутність кваліф. скрипту, слабкий CTA</td>
+          <td>Скрипт + персоналізація = +30-40% до переходу на дзвінок</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue">Кваліфікація</span></td>
+          <td>Аліна (SDR)</td>
+          <td><strong style="color:var(--green)">66/100</strong></td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td>Кваліфікація у 9% чатів, розмитий тариф, «уточню і повернусь»</td>
+          <td>3 обов'язкових питання + конкретний тарифний приклад = різкий ріст</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-teal">Продажі</span></td>
+          <td>Аліна (qualifier)</td>
+          <td><strong style="color:var(--green)">62/100</strong></td>
+          <td><span class="badge badge-med">Середній</span></td>
+          <td>Нема handover до Ніка, follow-up непрофесійний</td>
+          <td>Стандартизований handover + post-call sequence</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-teal">Продажі</span></td>
+          <td>Нік (sales)</td>
+          <td><strong style="color:var(--amber)">52/100</strong></td>
+          <td><span class="badge badge-med">Середній</span></td>
+          <td>Мало текстових даних — ведення в основному через дзвінки без post-call follow-up</td>
+          <td>Структурований post-call → +20% до конверсії після дзвінку</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-teal">Продажі</span></td>
+          <td>Владислав (sales)</td>
+          <td><strong style="color:var(--amber)">55/100</strong></td>
+          <td><span class="badge badge-med">Середній</span></td>
+          <td>Пасивна позиція, тарифи без конкретики, монотонний follow-up</td>
+          <td>Тарифний лист + активний CTA = +25% до конверсії</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-teal">Продажі (senior)</span></td>
+          <td>Олександр (BD/Sales)</td>
+          <td><strong style="color:var(--green)">68/100</strong></td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td>Затягування по складних кейсах, розпорошеність</td>
+          <td>Фокус на B2B/партнерській мережі = системний канал</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-purple">Account</span></td>
+          <td>Катерина (KAM)</td>
+          <td><strong style="color:var(--green)">63/100</strong></td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td>Відсутній upsell, пасивний акаунтинг, KYC непрозорий</td>
+          <td>Retention + upsell = найбільший потенціал у всій системі</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-purple">Account</span></td>
+          <td>Олександра (AM)</td>
+          <td><strong style="color:var(--amber)">58/100</strong></td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td>Перевантаження, KYC-баг, шаблонний онбординг</td>
+          <td>Розподіл ролей (акаунт vs операції) + SLA на документи</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-teal">Дзвінки</span></td>
+          <td>Олександр (Google Meet)</td>
+          <td><strong style="color:var(--green)">72/100</strong></td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td>Широкий скоуп, відсутній стандартний close</td>
+          <td>Close-скрипт + фокус на конкретних продуктах = +15% конверсії</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-teal">Дзвінки</span></td>
+          <td>Микита (Google Meet)</td>
+          <td><strong style="color:var(--amber)">61/100</strong></td>
+          <td><span class="badge badge-med">Середній</span></td>
+          <td>Презентація перед кваліфікацією, слабкий close</td>
+          <td>Змінити послідовність: кваліф. → презентація = +20% якості дзвінку</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- FINAL -->
+<div id="final" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--red-light)">🏁</div>
+    <div>
+      <div class="section-title">Фінальна оцінка системи</div>
+    </div>
+  </div>
+
+  <div class="summary-box" style="margin-bottom:2rem">
+    <div style="display:flex;align-items:center;gap:2rem;flex-wrap:wrap">
+      <div style="text-align:center">
+        <div style="font-size:4rem;font-weight:700;color:var(--amber);line-height:1">49</div>
+        <div style="font-size:14px;color:var(--text2);margin-top:4px">Загальна якість / 100</div>
+      </div>
+      <div style="flex:1;min-width:200px">
+        <p style="font-size:15px;color:var(--text)">Система продажів Xpaid має <strong>хорошу базу, досвідчених людей і реальний попит</strong>. Аліна — найкращий SDR (66/100): теплий тон, 60% CTA на дзвінок, вебінарний канал. Олександр на дзвінках — найсильніша ланка (72/100). Головний системний збій — <strong>кваліфікація неповна у 91% чатів і відсутня передача контексту між ролями</strong>. Найбільший нереалізований потенціал — стандартизація кваліфікації, retention бази клієнтів і масштабування вебінарного каналу.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div>
+      <div style="font-size:15px;font-weight:600;margin-bottom:1rem">Топ-5 критичних проблем</div>
+      <div class="info-block">
+        <div class="critical-item">
+          <div class="critical-num">1</div>
+          <div class="critical-text"><h4>Відсутній handover між ролями</h4><p>Клієнт повторює ту саму інформацію 3+ разів. Найбільша причина відтоку.</p></div>
+        </div>
+        <div class="critical-item">
+          <div class="critical-num">2</div>
+          <div class="critical-text"><h4>Немає кваліфікаційного скрипту</h4><p>SDR не збирає ключові дані, передає непідготовленого ліда.</p></div>
+        </div>
+        <div class="critical-item">
+          <div class="critical-num">3</div>
+          <div class="critical-text"><h4>Тарифи без конкретики</h4><p>«Залежить від суми» — топ-1 причина, чому клієнт іде до конкурента.</p></div>
+        </div>
+        <div class="critical-item">
+          <div class="critical-num">4</div>
+          <div class="critical-text"><h4>Відсутній retention після транзакції</h4><p>Клієнт зробив обмін і зникає. Повторна покупка майже не генерується.</p></div>
+        </div>
+        <div class="critical-item">
+          <div class="critical-num">5</div>
+          <div class="critical-text"><h4>Сегмент «без підтвердження» не опрацьований</h4><p>25-35% лідів направляються до партнерів без системи нурчування.</p></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:15px;font-weight:600;margin-bottom:1rem">Топ-5 можливостей росту</div>
+      <div class="info-block">
+        <div class="critical-item">
+          <div class="critical-num opp">1</div>
+          <div class="critical-text"><h4>Retention existing clients (Катерина)</h4><p>293+ активних клієнтів. Upsell нових послуг без витрат на залучення.</p></div>
+        </div>
+        <div class="critical-item">
+          <div class="critical-num opp">2</div>
+          <div class="critical-text"><h4>Тарифний калькулятор / лист</h4><p>Одна сторінка з конкретними цифрами закриє топ-1 заперечення на всіх етапах.</p></div>
+        </div>
+        <div class="critical-item">
+          <div class="critical-num opp">3</div>
+          <div class="critical-text"><h4>B2B / партнерська мережа</h4><p>Олександр вже будує. Системний підхід = масштабований канал.</p></div>
+        </div>
+        <div class="critical-item">
+          <div class="critical-num opp">4</div>
+          <div class="critical-text"><h4>Реєстрація компаній ЄС</h4><p>Прямий запит від клієнтів. Готовий продукт = новий revenue stream.</p></div>
+        </div>
+        <div class="critical-item">
+          <div class="critical-num opp">5</div>
+          <div class="critical-text"><h4>CRM + стандарт комунікації</h4><p>Єдина картка клієнта + tone of voice = підняття загальної якості на 20-30%.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRIORITY ROADMAP -->
+  <div style="font-size:15px;font-weight:600;margin-bottom:1rem">Пріоритетна дорожня карта змін</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Дія</th><th>Хто відповідає</th><th>Термін</th><th>Вплив</th><th>Складність</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Кваліфікаційний скрипт для SDR</strong> — 5 обов'язкових питань</td>
+          <td>Тімлід продажів</td>
+          <td>1 тиждень</td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td><span class="badge badge-low">Низька</span></td>
+        </tr>
+        <tr>
+          <td><strong>Close-скрипт для дзвінків</strong> — стандартний фінал: підсумок + наступний крок + дедлайн</td>
+          <td>Олександр + Микита</td>
+          <td>1 тиждень</td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td><span class="badge badge-low">Низька</span></td>
+        </tr>
+        <tr>
+          <td><strong>Переставити структуру дзвінка Микити</strong> — кваліфікація ПЕРЕД презентацією</td>
+          <td>Микита + тімлід</td>
+          <td>1 тиждень</td>
+          <td><span class="badge badge-med">Середній</span></td>
+          <td><span class="badge badge-low">Низька</span></td>
+        </tr>
+        <tr>
+          <td><strong>Виправити KYC-посилання</strong> — технічний баг, що блокує онбординг</td>
+          <td>IT / Operations</td>
+          <td>1 тиждень</td>
+          <td><span class="badge badge-high">Критично</span></td>
+          <td><span class="badge badge-low">Низька</span></td>
+        </tr>
+        <tr>
+          <td><strong>Розділити ролі Олександри</strong> — акаунтинг окремо від операцій</td>
+          <td>Operations lead</td>
+          <td>2 тижні</td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td><span class="badge badge-med">Середня</span></td>
+        </tr>
+        <tr>
+          <td><strong>SLA на перевірку документів</strong> — «відповідь протягом X годин»</td>
+          <td>Катерина + Олександра</td>
+          <td>1 тиждень</td>
+          <td><span class="badge badge-med">Середній</span></td>
+          <td><span class="badge badge-low">Низька</span></td>
+        </tr>
+          <td>Operations</td>
+          <td>2 тижні</td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td><span class="badge badge-med">Середня</span></td>
+        </tr>
+        <tr>
+          <td><strong>Тарифний лист / діапазони</strong> для 5 типових сценаріїв</td>
+          <td>Комерційний директор</td>
+          <td>1 тиждень</td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td><span class="badge badge-low">Низька</span></td>
+        </tr>
+        <tr>
+          <td><strong>Retention sequence</strong> — 3 меседжі після першого обміну</td>
+          <td>Катерина + маркетинг</td>
+          <td>2 тижні</td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td><span class="badge badge-low">Низька</span></td>
+        </tr>
+        <tr>
+          <td><strong>Tone of voice гайд</strong> — один голос компанії</td>
+          <td>Маркетинг</td>
+          <td>2-3 тижні</td>
+          <td><span class="badge badge-med">Середній</span></td>
+          <td><span class="badge badge-low">Низька</span></td>
+        </tr>
+        <tr>
+          <td><strong>Скрипт для «без підтвердження»</strong> — окрема воронка</td>
+          <td>Тімлід + юрист</td>
+          <td>3-4 тижні</td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td><span class="badge badge-med">Середня</span></td>
+        </tr>
+        <tr>
+          <td><strong>Продукт реєстрації компаній ЄС</strong></td>
+          <td>Product + Олександр</td>
+          <td>1-2 місяці</td>
+          <td><span class="badge badge-high">Високий</span></td>
+          <td><span class="badge badge-high">Висока</span></td>
+        </tr>
+        <tr>
+          <td><strong>CRM-система</strong> з карткою клієнта</td>
+          <td>Operations + IT</td>
+          <td>1-3 місяці</td>
+          <td><span class="badge badge-high">Системний</span></td>
+          <td><span class="badge badge-high">Висока</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div style="margin-top:2rem;padding:1rem 1.25rem;background:var(--gray-light);border-radius:var(--radius-sm);font-size:13px;color:var(--text3)">
+    <strong style="color:var(--text2)">Обмеження аналізу:</strong> Звіт базується на Telegram-переписках 6 менеджерів та 133 записах Google Meet дзвінків (Олександр + Микита). Відсутні: переписки Аліни SDR. Оцінки конверсії — розрахункові на основі якості комунікації, не реальних воронкових даних.
+  </div>
+</div>
+
+<!-- GOOGLE MEET АНАЛІЗ -->
+<div id="gmeet" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--teal-light)">🎥</div>
+    <div>
+      <div class="section-title">Аналіз Google Meet дзвінків</div>
+      <div class="section-subtitle">Олександр Садовенко (97 дзвінків · ~55 год) + Микита Черн. (36 дзвінків · ~18 год)</div>
+    </div>
+  </div>
+
+  <!-- ОЛЕКСАНДР ДЗВІНКИ -->
+  <div class="stage-card" style="margin-bottom:1.5rem">
+    <div class="stage-header">
+      <div class="stage-num" style="background:var(--teal-light);color:var(--teal)">A</div>
+      <div class="stage-info">
+        <h2>Олександр Садовенко — Sales Calls</h2>
+        <p>97 дзвінків · ~55 годин · Складні кейси, B2B, великі суми, нестандартні юрисдикції</p>
+      </div>
+      <div class="stage-score">
+        <div class="score-big" style="color:var(--green)">72</div>
+        <div class="score-label">/ 100</div>
+      </div>
+    </div>
+    <div class="stage-body">
+
+      <div class="grid-2" style="margin-bottom:1.5rem">
+        <div class="block-green">
+          <h4>Що добре на дзвінках</h4>
+          <ul>
+            <li><strong>Розрив криги</strong> — Олександр завжди починає з легкого, особистого коментаря («Книжки для розпалки чи для читання?»). Знижує напруження, будує довіру</li>
+            <li><strong>Структура консультації</strong> — чітко збирає дані про ситуацію клієнта перед тим, як пропонувати рішення</li>
+            <li><strong>Після дзвінка фіксує у чаті</strong> — «Фіксуємо: розглядається ТОВ в Естонії...» — добра практика</li>
+            <li><strong>Гнучкість на складних кейсах</strong> — готовий розглядати нестандартні юрисдикції (Кіпр, Гонконг, Мальта)</li>
+            <li><strong>Партнерська мережа</strong> — активно будує B2B канал через зустрічі та івенти</li>
+            <li>Чесний з клієнтом — не обіцяє того, чого немає</li>
+          </ul>
+        </div>
+        <div class="block-red">
+          <h4>Проблеми на дзвінках</h4>
+          <ul>
+            <li><strong>Широкий скоуп → втрата фокусу</strong> — від однієї зустрічі береться за crипто, нерухомість, реєстрацію компанії, брокерські рахунки. Клієнт часом не розуміє, що саме йому пропонують</li>
+            <li><strong>«Буде незабаром» = тижні</strong> — при складних кейсах (Мальта, нестандартні схеми) затягування без проміжних апдейтів</li>
+            <li><strong>Відсутній стандартний close</strong> — дзвінок часто закінчується без чіткого «наступного кроку» + дедлайну</li>
+            <li><strong>Мікс мов на дзвінку</strong> — укр/рос/англ в одній розмові без структури</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="block-teal" style="margin-bottom:1.5rem">
+        <h4>Типові кейси на дзвінках Олександра</h4>
+        <div class="grid-3" style="margin-top:0.5rem">
+          <div style="font-size:13px">
+            <strong style="color:var(--teal)">Нерухомість</strong><br>
+            «Продаю квартиру в Україні, хочу купити в Іспанії» — найчастіший кейс. Готівка або крипта → EUR на рахунок в ЄС.
+          </div>
+          <div style="font-size:13px">
+            <strong style="color:var(--teal)">Бізнес-релокація</strong><br>
+            «Хочу відкрити компанію в ЄС, перемістити капітал» — Естонія, Польща, Кіпр. Часто + реєстрація компанії як окремий запит.
+          </div>
+          <div style="font-size:13px">
+            <strong style="color:var(--teal)">Брокерські рахунки</strong><br>
+            «Хочу поповнити Interactive Brokers» — регулярний запит. Олександр зазначає, що це вже ~100-й клієнт з таким запитом за весь час.
+          </div>
+        </div>
+      </div>
+
+      <div class="block-amber">
+        <h4>Hidden insights — дзвінки Олександра</h4>
+        <ul>
+          <li>Клієнти часто питають про <strong>фінансовий моніторинг</strong> — чи будуть питання від банку. Олександр закриває це добре, але чіткого скрипту немає</li>
+          <li>Значна частина клієнтів <strong>вже має рахунки в ЄС</strong> (Revolut, Wise, австрійський банк) — запит не «відкрити рахунок», а «перевести туди гроші з України»</li>
+          <li>B2B лід — Костянтин Немченко — привів клієнта. <strong>Реферальний канал активний, але не системний</strong></li>
+          <li>Складні кейси (без документів, судові обмеження) — Олександр береться, але вони затягуються і заважають основному флоу</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- МИКИТА ДЗВІНКИ -->
+  <div class="stage-card">
+    <div class="stage-header">
+      <div class="stage-num" style="background:var(--teal-light);color:var(--teal)">M</div>
+      <div class="stage-info">
+        <h2>Микита Черненко — Sales Calls (Intro)</h2>
+        <p>36 дзвінків · ~18 годин · Intro-консультації нових лідів · Презентаційний формат</p>
+      </div>
+      <div class="stage-score">
+        <div class="score-big" style="color:var(--amber)">61</div>
+        <div class="score-label">/ 100</div>
+      </div>
+    </div>
+    <div class="stage-body">
+
+      <div class="grid-2" style="margin-bottom:1.5rem">
+        <div class="block-green">
+          <h4>Що добре у Микити</h4>
+          <ul>
+            <li><strong>Презентаційний формат</strong> — завжди пропонує показати слайди, структурована розповідь про Xpaid</li>
+            <li><strong>Питає про канал залучення</strong> — «як дізналися про Xpaid?» на початку кожного дзвінка. Важливо для маркетингу</li>
+            <li>Ввічливий, ентузіастичний тон — «класно, що знайшли нас»</li>
+            <li>Добре пояснює фінмоніторинг та ризики — не лякає, але чесно</li>
+            <li>Може вести дзвінки трьома мовами (укр/рос/англ)</li>
+          </ul>
+        </div>
+        <div class="block-red">
+          <h4>Проблеми Микити</h4>
+          <ul>
+            <li><strong>Презентація — занадто лінійна</strong> — Микита веде клієнта за слайдами, навіть якщо клієнт вже ставить конкретні питання. Клієнт «обганяє» презентацію</li>
+            <li><strong>Qualifying після presentation</strong> — спочатку показує презентацію, потім питає про ситуацію клієнта. Правильна послідовність — навпаки</li>
+            <li><strong>«Три фішки про Xpaid»</strong> — скрипт відчувається як заготовлений, знижує довіру</li>
+            <li>Складні кейси (немає документів) — швидко переходить до «партнерів» без спроби знайти альтернативу</li>
+            <li>Close слабкий — не завжди призначається конкретний наступний крок</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:1.5rem">
+        <div class="block-amber">
+          <h4>Де клієнт «зависає» на дзвінку Микити</h4>
+          <ul>
+            <li>Коли клієнт має складний документальний кейс — Микита відправляє до «партнерів», але клієнт не розуміє, що це означає і навіщо</li>
+            <li>Коли клієнт вже має рахунок в ЄС та USDT — Микита все одно веде через повну презентацію замість того, щоб одразу перейти до конкретного кроку</li>
+            <li>Питання про Satchel та вартість відкриття рахунку (575 EUR) — часом відповідь нечітка</li>
+          </ul>
+        </div>
+        <div class="block-purple">
+          <h4>Порівняння Олександр vs Микита на дзвінках</h4>
+          <div class="table-wrap" style="margin-top:0.3rem">
+            <table>
+              <thead><tr><th>Параметр</th><th>Олександр</th><th>Микита</th></tr></thead>
+              <tbody>
+                <tr><td>Структура дзвінка</td><td>Ситуація → Рішення</td><td>Презентація → Ситуація</td></tr>
+                <tr><td>Qualification</td><td>На початку</td><td>В кінці</td></tr>
+                <tr><td>Складні кейси</td><td>Береться, затягує</td><td>Відразу до партнерів</td></tr>
+                <tr><td>Close</td><td>Є (непостійно)</td><td>Слабкий</td></tr>
+                <tr><td>Tone</td><td>Партнерський</td><td>Менеджерський</td></tr>
+                <tr><td>Після дзвінка</td><td>Фіксує у чаті</td><td>Рідко</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="block-blue">
+        <h4>Hidden insights — дзвінки Микити</h4>
+        <ul>
+          <li>Реклама в Instagram — клієнт Богдан: «передам привіт маркетологам». Канал залучення працює, але клієнти часто приходять з очікуваннями, що розходяться з реальним продуктом</li>
+          <li>Клієнт Юлія (Іспанія) — хоче перевести гроші, у мами немає документів. Микита чесно каже «не вийде» — але це симптом ширшої проблеми: <strong>клієнти приходять з наміром, але без документів</strong>. Це треба вирішувати на рівні маркетингу, а не відмовляти на дзвінку</li>
+          <li>Interactive Brokers — Микита: «за цей рік ви, мабуть, будете 18-й» — <strong>серійний запит без серійного рішення</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- АНАЛІЗ МАЛИХ СУМ -->
+<div id="small-sums" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--amber-light)">💰</div>
+    <div>
+      <div class="section-title">Аналіз сегменту «малі суми» (до 10 000 EUR)</div>
+      <div class="section-subtitle">Кількість відмов · Разові vs регулярні запити · Потенційний revenue</div>
+    </div>
+  </div>
+
+  <div class="grid-4" style="margin-bottom:1.5rem">
+    <div class="metric">
+      <div class="metric-label">Відмов через мінімум (переписки)</div>
+      <div class="metric-value" style="color:var(--red)">50</div>
+      <div class="metric-sub">Підтверджені кейси з явною відмовою «від 10к»</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">+ Відмов на дзвінках</div>
+      <div class="metric-value" style="color:var(--red)">26</div>
+      <div class="metric-sub">Google Meet — явна відмова через мінімальну суму</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Оціночно за рік (×1.4)</div>
+      <div class="metric-value" style="color:var(--amber)">~106</div>
+      <div class="metric-sub">Враховуючи неповне покриття каналів</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Середня сума запиту</div>
+      <div class="metric-value" style="color:var(--blue)">3 800 €</div>
+      <div class="metric-sub">Діапазон: 500 — 9 500 EUR</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div class="info-block">
+      <h4>Розподіл за діапазонами сум</h4>
+      <div class="funnel" style="margin-top:0.7rem">
+        <div class="funnel-step">
+          <div class="funnel-label" style="min-width:120px;font-size:13px">5 000 – 9 999 €</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:26%;background:var(--amber-mid)"></div></div>
+          <div class="funnel-pct" style="color:var(--amber);font-size:13px">26%</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-label" style="min-width:120px;font-size:13px">3 000 – 4 999 €</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:48%;background:var(--coral-mid)"></div></div>
+          <div class="funnel-pct" style="color:var(--coral);font-size:13px">48%</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-label" style="min-width:120px;font-size:13px">1 000 – 2 999 €</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:18%;background:var(--blue-mid)"></div></div>
+          <div class="funnel-pct" style="color:var(--blue);font-size:13px">18%</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-label" style="min-width:120px;font-size:13px">500 – 999 €</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:8%;background:var(--gray-mid)"></div></div>
+          <div class="funnel-pct" style="color:var(--gray);font-size:13px">8%</div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--text3);margin-top:8px">74% запитів — суми від 3 000 до 10 000 EUR (найближчі до мінімального порогу)</p>
+    </div>
+
+    <div class="info-block">
+      <h4>Разові vs регулярні запити</h4>
+      <div style="display:flex;gap:1rem;margin-top:0.7rem;margin-bottom:1rem">
+        <div style="flex:1;background:var(--blue-light);border-radius:var(--radius-sm);padding:1rem;text-align:center">
+          <div style="font-size:1.8rem;font-weight:700;color:var(--blue)">~99</div>
+          <div style="font-size:12px;color:var(--blue);margin-top:4px">Разові запити</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">93% від загального</div>
+        </div>
+        <div style="flex:1;background:var(--teal-light);border-radius:var(--radius-sm);padding:1rem;text-align:center">
+          <div style="font-size:1.8rem;font-weight:700;color:var(--teal)">~7</div>
+          <div style="font-size:12px;color:var(--teal);margin-top:4px">Регулярні</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">7% — щомісячні перекази</div>
+        </div>
+      </div>
+      <div class="block-teal" style="margin-top:0.5rem">
+        <h4>Хто такі «регулярні»</h4>
+        <p style="font-size:13px">Клієнти, які хочуть щомісячно поповнювати Interactive Brokers / інвест. рахунок (~2 500 EUR/міс), або ФОП з регулярними виплатами (~3 000 EUR/міс). Для них відмова є втратою довгострокового клієнта.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-size:15px;font-weight:600;margin-bottom:1rem">Потенційний revenue якщо взяти в роботу</div>
+  <div class="table-wrap" style="margin-bottom:1.5rem">
+    <table>
+      <thead>
+        <tr><th>Сценарій</th><th>Регулярні (7 кл × 2 916€ × 12міс)</th><th>Разові (99 кл × 3 855€)</th><th>РАЗОМ / рік</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Консервативний (3% комісія)</strong></td>
+          <td>€7 348</td>
+          <td>€11 449</td>
+          <td><strong style="color:var(--amber)">€18 798</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Базовий (4% комісія)</strong></td>
+          <td>€9 798</td>
+          <td>€15 266</td>
+          <td><strong style="color:var(--amber)">€25 064</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Оптимістичний (5% комісія)</strong></td>
+          <td>€12 247</td>
+          <td>€19 082</td>
+          <td><strong style="color:var(--amber)">€31 329</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid-2">
+    <div class="block-red">
+      <h4>Важливі застереження</h4>
+      <ul>
+        <li>Підрахунок базується на виявлених кейсах у переписках (~70% від реальних відмов)</li>
+        <li>Частина клієнтів з малими сумами — разові та низькомаржинальні</li>
+        <li>Операційна собівартість малих операцій <strong>вища пропорційно</strong> — фіксована комісія Satchel (65 EUR) з 1 000 EUR кейсу = 6.5% тільки на банк</li>
+        <li>Юридичні та AML витрати на клієнта майже ті самі, що і для великих сум</li>
+      </ul>
+    </div>
+    <div class="block-green">
+      <h4>Рекомендація</h4>
+      <ul>
+        <li style="margin-bottom:6px"><strong>Пріоритет №1 — регулярні клієнти</strong> (~7 кейсів з можливих багатьох незафіксованих). Для них варто зробити окремий продукт «малий регулярний переказ» з комісією 4-5% і спрощеним KYC</li>
+        <li style="margin-bottom:6px"><strong>Пріоритет №2 — діапазон 7 000–9 999 EUR</strong> — вже майже на порозі, але відмовляємо. Ці клієнти найближче до конверсії при мінімальній зміні умов</li>
+        <li><strong>Не рекомендується</strong> — брати в роботу суми до 2 000 EUR без зміни операційної моделі (занадто висока собівартість)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="block-amber" style="margin-top:1.5rem">
+    <h4>Реальна річна оцінка (найбільш ймовірний сценарій)</h4>
+    <p>При комісії 4–5% і <strong>фокусі тільки на регулярних клієнтах та діапазоні 7–10к EUR</strong> — реалістичний додатковий revenue: <strong>€15 000 – €20 000/рік</strong>. Для порівняння: одна стандартна угода на 100к+ EUR дає ~€3 000–4 000 комісії. Тобто сегмент малих сум еквівалентний приблизно <strong>4–6 стандартним угодам</strong> — але з набагато більшим операційним навантаженням.</p>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+document.querySelectorAll('.nav a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    document.querySelectorAll('.nav a').forEach(l => l.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+window.addEventListener('scroll', () => {
+  const sections = document.querySelectorAll('.section[id]');
+  const navLinks = document.querySelectorAll('.nav a');
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navLinks.forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('href') === '#' + current) l.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XPaid · Визнання досягнень · Q1 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:    #0f0f0f;
+    --ink2:   #3a3a3a;
+    --muted:  #8a8a8a;
+    --line:   #e8e4de;
+    --bg:     #faf8f5;
+    --card:   #ffffff;
+    --accent: #d4622a;
+    --gold:   #c9a84c;
+    --warm:   #f5f0e8;
+    --r: DM Serif Display, Georgia, serif;
+    --s: DM Sans, system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--s);
+    font-weight: 300;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── COVER ─────────────────────────────── */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px;
+    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,98,42,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 360px; height: 360px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cover-label {
+    font-family: var(--s);
+    font-size: 11px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+  }
+  .cover h1 {
+    font-family: var(--r);
+    font-size: clamp(44px, 6.5vw, 80px);
+    color: #faf8f5;
+    line-height: 1.07;
+    max-width: 820px;
+    margin-bottom: 40px;
+  }
+  .cover h1 em { font-style: italic; color: var(--gold); }
+  .cover-sub {
+    font-size: 16px;
+    color: #9a9a8a;
+    max-width: 560px;
+    line-height: 1.65;
+    margin-bottom: 56px;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 40px;
+    font-size: 12px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #5a5a5a;
+  }
+
+  /* ── INTRO ─────────────────────────────── */
+  .intro {
+    background: var(--warm);
+    padding: 80px 60px;
+    border-bottom: 1px solid var(--line);
+  }
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    max-width: 1100px;
+    margin-bottom: 48px;
+  }
+  .intro-block h2 {
+    font-family: var(--r);
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .intro-block p {
+    font-size: 15px;
+    color: var(--ink2);
+    line-height: 1.75;
+  }
+  .intro-note {
+    padding: 24px 28px;
+    border-left: 3px solid var(--accent);
+    background: white;
+    max-width: 800px;
+    font-size: 14.5px;
+    color: var(--ink2);
+    line-height: 1.7;
+  }
+
+  /* Nav links */
+  .nav-section {
+    background: white;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 40px 60px;
+  }
+  .nav-section h3 {
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .nav-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--ink2);
+    text-decoration: none;
+    padding: 8px 16px;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    transition: border-color .2s, color .2s;
+  }
+  .nav-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .nav-link .dept-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── DEPT DIVIDER ──────────────────────── */
+  .dept {
+    padding: 70px 60px 32px;
+    border-top: 1px solid var(--line);
+  }
+  .dept-label {
+    font-size: 11px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .dept h2 {
+    font-family: var(--r);
+    font-size: clamp(32px, 4vw, 50px);
+    color: var(--ink);
+    line-height: 1.1;
+  }
+
+  /* ── PERSON CARD ───────────────────────── */
+  .person {
+    padding: 48px 60px 64px;
+  }
+  .person + .person {
+    border-top: 1px solid var(--line);
+  }
+  .person-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .person-name {
+    font-family: var(--r);
+    font-size: clamp(28px, 3.2vw, 42px);
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .person-role {
+    font-size: 13px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .skill-quarter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    border: 1.5px solid var(--accent);
+    border-radius: 100px;
+    color: var(--accent);
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+
+  .person-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-top: 36px;
+  }
+
+  .col-title {
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .col-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .strength-item {
+    margin-bottom: 28px;
+  }
+  .strength-item h4 {
+    font-family: var(--s);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 7px;
+  }
+  .strength-item p {
+    font-size: 14px;
+    color: var(--ink2);
+    line-height: 1.72;
+  }
+  .strength-tag {
+    display: inline-block;
+    background: var(--warm);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 11.5px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 8px;
+    letter-spacing: .04em;
+  }
+
+  .wins-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+  .win-pill {
+    font-size: 12px;
+    padding: 5px 13px;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    color: var(--ink2);
+  }
+  .win-pill.hl {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  /* Right col */
+  .quote-block {
+    background: var(--ink);
+    color: #faf8f5;
+    padding: 28px 32px;
+    border-radius: 4px;
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .quote-block::before {
+    content: '"';
+    font-family: var(--r);
+    font-size: 72px;
+    color: var(--accent);
+    line-height: 1;
+    position: absolute;
+    top: 10px; left: 26px;
+    opacity: .35;
+  }
+  .quote-text {
+    font-family: var(--r);
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.6;
+    padding-top: 28px;
+    color: #e8e4de;
+  }
+  .quote-source {
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #6a6a6a;
+    margin-top: 14px;
+  }
+
+  .growth-block {
+    background: var(--warm);
+    border-radius: 4px;
+    padding: 26px 30px;
+    border-left: 3px solid var(--gold);
+  }
+  .growth-title {
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .growth-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(201,168,76,.3);
+  }
+  .growth-text {
+    font-size: 14px;
+    color: var(--ink2);
+    line-height: 1.75;
+  }
+  .growth-text strong {
+    color: var(--ink);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* Support note (Oleksandra) */
+  .support-block {
+    background: #f0f4ff;
+    border-radius: 4px;
+    padding: 26px 30px;
+    border-left: 3px solid #7a9fd4;
+    margin-bottom: 28px;
+  }
+  .support-block p {
+    font-size: 14.5px;
+    color: #3a4a6a;
+    line-height: 1.75;
+  }
+
+  /* ── CLOSING ───────────────────────────── */
+  .closing {
+    background: var(--ink);
+    padding: 100px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .closing::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(212,98,42,.12) 0%, transparent 60%);
+  }
+  .closing h2 {
+    font-family: var(--r);
+    font-size: clamp(34px, 5vw, 60px);
+    color: #faf8f5;
+    line-height: 1.15;
+    max-width: 640px;
+    margin: 0 auto 28px;
+    position: relative;
+  }
+  .closing h2 em { color: var(--gold); font-style: italic; }
+  .closing p {
+    font-size: 15px;
+    color: #7a7a7a;
+    max-width: 480px;
+    margin: 0 auto 12px;
+    line-height: 1.7;
+    position: relative;
+  }
+  .closing-mark {
+    font-size: 11px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: #4a4a4a;
+    margin-top: 56px;
+    position: relative;
+  }
+
+  /* ── RESPONSIVE ────────────────────────── */
+  @media (max-width: 800px) {
+    .cover, .intro, .nav-section, .dept, .person, .closing { padding-left: 24px; padding-right: 24px; }
+    .person-body, .intro-grid { grid-template-columns: 1fr; gap: 28px; }
+    .person-header { flex-direction: column; }
+  }
+
+  /* ── SCROLL REVEAL ─────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ══ COVER ══ -->
+<section class="cover">
+  <p class="cover-label">XPaid · Quarterly Recognition</p>
+  <h1>Квартал, у якому виріс<br><em>кожен</em> із нас</h1>
+  <p class="cover-sub">
+    Цей документ — це погляд на те, як ви працювали,
+    що у вас виходить і куди варто спрямувати фокус уваги
+    в наступному періоді.
+  </p>
+  <div class="cover-meta">
+    <span>Q1 2026</span>
+    <span>XPaid Team</span>
+    <span>10 людей</span>
+  </div>
+</section>
+
+<!-- ══ INTRO ══ -->
+<section class="intro">
+  <div class="intro-grid">
+    <div class="intro-block reveal">
+      <h2>Що тут написано про тебе</h2>
+      <p>
+        Знайди свій розділ. Тут — результат аналізу трьох місяців роботи,
+        зворотного зв'язку від твоїх колег і спостережень керівників
+        за тим, як ти проявляєшся в роботі.<br><br>
+        Тут написано про твої сильні сторони і перемоги —
+        з конкретними ситуаціями і кейсами.
+        А також про напрямки, на які є сенс звернути увагу в найближчому періоді.
+      </p>
+    </div>
+    <div class="intro-block reveal">
+      <h2>Про колег — і про наступний цикл</h2>
+      <p>
+        Читаючи про інших, ти краще розумієш, чим кожна людина живе на роботі,
+        що в неї добре виходить, де їй щось дається складніше.<br><br>
+        Тому в наступному місячному звіті і заповненні анкети 360 —
+        постарайся надати максимально відверту, щиру і розгорнуту інформацію:
+        про колег, з якими ти перетинаєшся, про власні досягнення у всіх подробицях,
+        і про те, де тобі потрібна допомога.
+        Якщо щось резонує — поговоримо на our 1-to-1.
+      </p>
+    </div>
+  </div>
+  <div class="intro-note reveal">
+    <strong>Важливо:</strong> зворотний зв'язок від колег у 360-опитуванні — повністю анонімний.
+    Ми взяли звідти патерни, які повторювались у кількох відповідях: це не одиничні думки.
+    Якщо щось здається несправедливим або незрозумілим — проговоримо на 1-to-1.
+  </div>
+</section>
+
+<!-- ══ NAV ══ -->
+<nav class="nav-section reveal">
+  <h3>Перейти до людини</h3>
+  <div class="nav-grid">
+    <a href="#valeriia"  class="nav-link"><span class="dept-dot" style="background:#d4622a"></span>Валерія — CMO</a>
+    <a href="#oleksandr" class="nav-link"><span class="dept-dot" style="background:#d4622a"></span>Олександр — CBDO</a>
+    <a href="#lizaveta"  class="nav-link"><span class="dept-dot" style="background:#d4622a"></span>Лізавета — Partnership</a>
+    <a href="#alina-h"   class="nav-link"><span class="dept-dot" style="background:#d4622a"></span>Аліна Худицька — SDR</a>
+    <a href="#alina-b"   class="nav-link"><span class="dept-dot" style="background:#d4622a"></span>Аліна Бобрик — SDR Partner</a>
+    <a href="#katia"     class="nav-link"><span class="dept-dot" style="background:#c9a84c"></span>Катерина — Account</a>
+    <a href="#oleksandra" class="nav-link"><span class="dept-dot" style="background:#c9a84c"></span>Олександра — Account</a>
+    <a href="#alina-c"   class="nav-link"><span class="dept-dot" style="background:#5a7d6b"></span>Аліна — Compliance</a>
+    <a href="#viktoria"  class="nav-link"><span class="dept-dot" style="background:#5a7d6b"></span>Вікторія — Legal</a>
+    <a href="#halyna"    class="nav-link"><span class="dept-dot" style="background:#7a6fa8"></span>Галина — Finance</a>
+    <a href="#evhen-coo" class="nav-link"><span class="dept-dot" style="background:#4a5568"></span>Євген — COO</a>
+    <a href="#oleksii"   class="nav-link"><span class="dept-dot" style="background:#4a5568"></span>Олексій — CEO</a>
+  </div>
+</nav>
+
+
+<!-- ══════════════ МАРКЕТИНГ ══════════════ -->
+<div class="dept reveal">
+  <p class="dept-label">Відділ</p>
+  <h2>Маркетинг</h2>
+</div>
+
+<!-- ВАЛЕРІЯ -->
+<section class="person reveal" id="valeriia">
+  <div class="person-header">
+    <div>
+      <h3 class="person-name">Валерія</h3>
+      <p class="person-role">CMO · Маркетинг</p>
+    </div>
+    <span class="skill-quarter">✦ Скіл кварталу: гіпервідповідальність</span>
+  </div>
+
+  <div class="person-body">
+    <div>
+      <p class="col-title">Сильні сторони</p>
+
+      <div class="strength-item">
+        <span class="strength-tag">Залученість №1</span>
+        <h4>Людина, яка живе бізнесом</h4>
+        <p>
+          Валерія залучена у всі сфери компанії — фінанси, продажі, legal, продукт, маркетинг.
+          Це та людина, яка є керівником відділу, котрий є основою генерації лідів бізнесу.
+          Передбачувана, прогнозована, глибока, уважна, детальна —
+          і при цьому завжди в курсі того, що відбувається навколо.
+        </p>
+      </div>
+
+      <div class="strength-item">
+        <span class="strength-tag">Результат при мінімальному бюджеті</span>
+        <h4>За бюджет мінімум — результат максимум</h4>
+        <p>
+          За перший квартал план по MQL перевиконаний: 64 у січні (ціль 59), 129 у березні (ціль 95).
+          Вебінари, прямі ефіри, системне ведення соцмереж, покращення конверсій у воронках —
+          і при цьому вартість ліда $12 при цілі $25.
+          Це скрупульозний підхід до процесів, де вижимається максимум із кожного вкладеного долара.
+        </p>
+      </div>
+
+      <div class="strength-item">
+        <span class="strength-tag">Гіпотезний підхід</span>
+        <h4>Вебінар як керований експеримент</h4>
+        <p>
+          Гіпотеза — ціль — результат. Вебінар: 125 реєстрацій, 10 активних MQL, жива база в боті.
+          Перший CRO-апдейт лендінгу у лютому, масштаб трафіку у березні — правильна послідовність.
+          Такий підхід дозволяє вчитися і покращуватися без хаосу.
+        </p>
+      </div>
+
+      <div class="wins-row">
+        <span class="win-pill hl">MQL березень: 129 (+47%)</span>
+        <span class="win-pill">CPL $12 vs goal $25</span>
+        <span class="win-pill">Вебінар: 125 реєстрацій</span>
+        <span class="win-pill">PR + SEO запущені</span>
+        <span class="win-pill">Контент-стратег найнятий</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="quote-block">
+        <p class="quote-text">
+          "Активна, залучена, сильно зацікавлена в результаті. Дуже глибокі та
+          експертні знання в нашому домені, стратегічне мислення, швидкість
+          у виконанні задач."
+        </p>
+        <p class="quote-source">— з 360-фідбеку колег (кілька відповідей)</p>
+      </div>
+
+      <div class="growth-block">
+        <p class="growth-title">Точка росту</p>
+        <p class="growth-text">
+          <strong>Дисципліна робочих інструментів.</strong>
+          Кілька колег незалежно відзначили: задачі від Валерії часто приходять
+          через Telegram замість Slack і Asana. Через це вони губляться і не відслідковуються.
+          Своєчасне заповнення RNP, постановка задач через Asana, слідкування за ними —
+          це та дрібна дисципліна, якої не вистачає на тлі великого результату.
+          І ще один момент: на дзвінках і мітингах — більш конкретно і по суті,
+          без занурення в зайві деталі. Час обмежений у всіх.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════ ФІНАНСОВІ КОНСУЛЬТАНТИ ══════════════ -->
+<div class="dept reveal">
+  <p class="dept-label">Відділ</p>
+  <h2>Фінансові консультанти</h2>
+</div>
+
+<!-- ОЛЕКСАНДР -->
+<section class="person reveal" id="oleksandr">
+  <div class="person-header">
+    <div>
+      <h3 class="person-name">Олександр</h3>
+      <p class="person-role">CBDO / Head of Sales · Фінансові консультанти</p>
+    </div>
+    <span class="skill-quarter">✦ Скіл кварталу: самовіддача і мужність</span>
+  </div>
+
+  <div class="person-body">
+    <div>
+      <p class="col-title">Сильні сторони</p>
+
+      <div class="strength-item">
+        <span class="strength-tag">Відданість процесу</span>
+        <h4>Тримав відділ на собі — і не зупинився</h4>
+        <p>
+          Кілька місяців поспіль Олександр будував відділ і одночасно закривав угоди.
+          Приходив хворим на івенти, працював без відпустки, без пауз — і не скаржився.
+          Це неймовірна мужність і сила. Він взяв відповідальність за результат тоді,
+          коли не було кому передати, і тримав цю відповідальність до появи нового сейлза.
+          Таке не забувається.
+        </p>
+      </div>
+
+      <div class="strength-item">
+        <span class="strength-tag">Менторство і системність</span>
+        <h4>Коуч і наставник для всієї команди</h4>
+        <p>
+          Олександр постійно ділиться знаннями, пояснює, підказує, страхує колег.
+          Скрупульозна робота з CRM, пінгування, стандарти відділу, плейбук — все це
+          він вибудовував паралельно з прямими продажами. Він той, хто не просто робить сам,
+          а намагається підняти рівень команди навколо.
+        </p>
+      </div>
+
+      <div class="strength-item">
+        <span class="strength-tag">Чесність до системи</span>
+        <h4>Сказав незручну правду — і підкріпив даними</h4>
+        <p>
+          Олександр публічно зафіксував: 87.5% відмов — це питання до продукту, не до сейлзів.
+          Озвучити це з цифрами і аргументами — потрібна сміливість.
+          Саме так виглядає управлінська зрілість.
+        </p>
+      </div>
+
+      <div class="wins-row">
+        <span class="win-pill hl">Конв. SQL→Closed лютий: 55%</span>
+        <span class="win-pill">Pipedrive запущено</span>
+        <span class="win-pill">Новий сейлз найнятий і онбордиться</span>
+        <span class="win-pill">YBC Warsaw + СУП — домовленості</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="quote-block">
+        <p class="quote-text">
+          "Відповідальний, командний. Ділиться інформацією, підказує, страхує.
+          Знає своє діло, добре веде переговори. Є хороші навички продажів,
+          навички управління, стратегічне мислення. Відчувається позиція лідера."
+        </p>
+        <p class="quote-source">— з 360-фідбеку колег (кілька відповідей)</p>
+      </div>
+
+      <div class="growth-block">
+        <p class="growth-title">Точка росту</p>
+        <p class="growth-text">
+          <strong>Давати команді простір для самостійності.</strong>
+          Олександр настільки залучений і проактивний, що іноді береться за все сам
+          і не залишає колегам простору для самопрояву.
+          Наступний крок — поступово вирощувати автономність кожного члена команди,
+          щоб вони не залежали від нього, а ставали самостійними.
+          Справжній лідер — той, хто робить себе непотрібним у щоденних операціях.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ЛІЗАВЕТА -->
+<section class="person reveal" id="lizaveta">
+  <div class="person-header">
+    <div>
+      <h3 class="person-name">Лізавета</h3>
+      <p class="person-role">Partnership Manager B2C UA · Фінансові консультанти</p>
+    </div>
+    <span class="skill-quarter">✦ Скіл кварталу: відданість і щирість</span>
+  </div>
+
+  <div class="person-body">
+    <div>
+      <p class="col-title">Сильні сторони</p>
+
+      <div class="strength-item">
+        <span class="strength-tag">Системна відданість</span>
+        <h4>Продовжує якісно — навіть у складний момент</h4>
+        <p>
+          Ліза системно виходить на дзвінки, фолоуапить, розсилає, домовляється,
+          занурюється в підрахунки і виплати — і тримає партнерський напрямок
+          на тому рівні, на якому це можливо. Це відповідальне і гідне ставлення до роботи.
+        </p>
+      </div>
+
+      <div class="strength-item">
+        <span class="strength-tag">Людяність</span>
+        <h4>Щирість, привітливість, відкритість</h4>
+        <p>
+          Ці якості — ключові для партнерського менеджменту.
+          Партнери довіряють людям, а не умовам.
+          Ліза саме та людина, з якою хочеться мати справу — і це цінно.
+        </p>
+      </div>
+
+      <div class="wins-row">
+        <span class="win-pill hl">22 активних партнери (ціль 17)</span>
+        <span class="win-pill">RAAA +91% MoM</span>
+        <span class="win-pill">SuperHub запущено</span>
+        <span class="win-pill">Конв. лідів 67% (ціль 60%)</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="growth-block">
+        <p class="growth-title">Точка росту</p>
+        <p class="growth-text">
+          <strong>Фокус на ключових показниках — без захисту.</strong>
+          Важливо вміти тримати увагу на тому, що є справді пріоритетним,
+          навіть якщо ці показники даються важко. Коли виникає зворотний зв'язок
+          від керівництва — відкритість до нього і готовність почути
+          набагато цінніші, ніж пошук аргументів на свій захист.
+          Саме ця навичка відкриє наступний рівень.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- АЛІНА ХУДИЦЬКА -->
+<section class="person reveal" id="alina-h">
+  <div class="person-header">
+    <div>
+      <h3 class="person-name">Аліна Худицька</h3>
+      <p class="person-role">SDR B2C · Фінансові консультанти</p>
+    </div>
+    <span class="skill-quarter">✦ Скіл кварталу: якість і залученість</span>
+  </div>
+
+  <div class="person-body">
+    <div>
+      <p class="col-title">Сильні сторони</p>
+
+      <div class="strength-item">
+        <span class="strength-tag">Старт без досвіду → рекорди</span>
+        <h4>Прийшла без досвіду — і вже робить результат</h4>
+        <p>
+          За кілька місяців Аліна повністю влилась у команду і вийшла на рекордні показники:
+          100% конверсія MQL→зустріч у лютому, 78 зустрічей за місяць.
+          Це результат не природного таланту, а зосередженості, відповідальності
+          і бажання вчитися. Замовила книжку, слухає з захопленням, запитує — і росте.
+        </p>
+      </div>
+
+      <div class="strength-item">
+        <span class="strength-tag">CRM-дисципліна</span>
+        <h4>Нульові зависаючі ліди — весь квартал</h4>
+        <p>
+          Жоден лід не залишався без наступного кроку. Персоналізований аутріч в Instagram —
+          аналіз профілю, релевантний коментар, потім DM — показав вищу якість діалогу
+          ніж класичний холодний підхід. Це новий стандарт для команди.
+        </p>
+      </div>
+
+      <div class="wins-row">
+        <span class="win-pill hl">100% конв. MQL→зустріч лютий</span>
+        <span class="win-pill">78 зустрічей лютий (+50%)</span>
+        <span class="win-pill">Лідген 20/20 — ціль виконана</span>
+        <span class="win-pill">290 персоналізованих дотиків М1</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="quote-block">
+        <p class="quote-text">
+          "Дуже відповідальна, зосереджена. Висока якість передачі лідів.
+          Уважно слухає, з захопленням сприймає нове."
+        </p>
+        <p class="quote-source">— з 360-фідбеку колег</p>
+      </div>
+
+      <div class="growth-block">
+        <p class="growth-title">Точка росту</p>
+        <p class="growth-text">
+          <strong>Саморефлексія і самоаналіз.</strong>
+          Аліна вже показує класні результати — і важливо навчитися бачити їх
+          самостійно, без підтвердження ззовні.
+          Поступовий, без надмірного тиску на себе, але постійний рух до самовдосконалення —
+          без знецінення того, що вже є. Це той внутрішній компас, який робить людину
+          по-справжньому автономним спеціалістом.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- АЛІНА БОБРИК -->
+<section class="person reveal" id="alina-b">
+  <div class="person-header">
+    <div>
+      <h3 class="person-name">Аліна Бобрик</h3>
+      <p class="person-role">SDR B2C Partner · Фінансові консультанти</p>
+    </div>
+    <span class="skill-quarter">✦ Скіл кварталу: результатоорієнтованість</span>
+  </div>
+
+  <div class="person-body">
+    <div>
+      <p class="col-title">Сильні сторони</p>
+
+      <div class="strength-item">
+        <span class="strength-tag">Залученість і відданість</span>
+        <h4>Комітна, сконцентрована, цінна для команди</h4>
+        <p>
+          Аліна — залучена і відданий гравець у команді. Вона генерує нових партнерів
+          і підстраховує в акаунт-відділі коли потрібно — підключилась замість Олександри
+          під час її відсутності, і вже зараз знову виходить на підхват.
+          Це та людина, на яку можна покластися в непростий момент.
+        </p>
+      </div>
+
+      <div class="strength-item">
+        <span class="strength-tag">Нові ринки</span>
+        <h4>Знайшла і активувала партнера в Італії</h4>
+        <p>
+          Методичний пошук через Threads і Instagram дав результат:
+          партнер в Італії вже генерує клієнтів. Це новий канал для компанії, якого раніше не було.
+          33 дзвінки у березні (+120% MoM) — органічне зростання через навчання і наполегливість.
+        </p>
+      </div>
+
+      <div class="wins-row">
+        <span class="win-pill hl">33 дзвінки березень (+120%)</span>
+        <span class="win-pill">Партнер Італія — активований</span>
+        <span class="win-pill">ICE: ~10 зустрічей для команди</span>
+        <span class="win-pill">Підтримка акаунт-відділу</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="growth-block">
+        <p class="growth-title">Точка росту</p>
+        <p class="growth-text">
+          <strong>Проактивність і амбіція на наступний рівень.</strong>
+          Аліна вже робить гарний результат — і наступний крок, якого хочеться від неї почути:
+          "хочу більше відповідальності, хочу рости, хочу масштабуватися".
+          Ця внутрішня заявка на зростання — сигнал для команди, що людина готова до більшого.
+          Чекаємо на цю ініціативу від тебе.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════ ACCOUNT ══════════════ -->
+<div class="dept reveal">
+  <p class="dept-label">Відділ</p>
+  <h2>Account</h2>
+</div>
+
+<!-- КАТЕРИНА -->
+<section class="person reveal" id="katia">
+  <div class="person-header">
+    <div>
+      <h3 class="person-name">Катерина</h3>
+      <p class="person-role">Account Manager · Account</p>
+    </div>
+    <span class="skill-quarter">✦ Скіл кварталу: витривалість і ріст</span>
+  </div>
+
+  <div class="person-body">
+    <div>
+      <p class="col-title">Сильні сторони</p>
+
+      <div class="strength-item">
+        <span class="strength-tag">Опора команди</span>
+        <h4>Тримала все, коли потрібна була опора</h4>
+        <p>
+          Коли Олександра потрапила в лікарню — Катерина взяла на себе всіх клієнтів,
+          вела леджери, закривала звіти, обробляла запити. Величезне навантаження,
+          майже без помилок. Команда відчула: Катя — це наша опора і сила.
+          Молода дівчина, яка просто взяла і впоралась. Це не просто робота — це характер.
+        </p>
+      </div>
+
+      <div class="strength-item">
+        <span class="strength-tag">Проактивність</span>
+        <h4>121 лист — сама, без вказівок</h4>
+        <p>
+          Взяла базу завершених клієнтів і написала кожному з пропозицією по Естонії.
+          Не тому що хтось попросив — тому що бачила можливість.
+          Перший клієнт онбордований на OTC платформу. Перший B2B-досвід.
+          Катя перестає бути виконавцем — вона стає власником результату.
+        </p>
+      </div>
+
+      <div class="strength-item">
+        <span class="strength-tag">Ріст і усвідомленість</span>
+        <h4>Катя 2.0 — вже в процесі</h4>
+        <p>
+          Катерина звернулась за допомогою і з бажанням розвиватись.
+          За два тижні персональної роботи вже видно зміни, вже є інсайти і нова модель поведінки.
+          Вона вже знає свої точки росту, вже сама їх усвідомила і вже над ними працює.
+          Ми дуже скоро побачимо іншу Катю — і це буде щось нове для всіх нас.
+        </p>
+      </div>
+
+      <div class="wins-row">
+        <span class="win-pill hl">Тримала відділ під час відсутності колеги</span>
+        <span class="win-pill">121 аутріч по Естонії</span>
+        <span class="win-pill">Перший клієнт OTC Xpaid</span>
+        <span class="win-pill">14 нових онбордингів лютий</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="quote-block">
+        <p class="quote-text">
+          "Відповідально відноситься до задач колег. Командний гравець, не боїться роботи,
+          уважність, відповідальність, стабільність."
+        </p>
+        <p class="quote-source">— з 360-фідбеку колег (кілька відповідей)</p>
+      </div>
+
+      <div class="growth-block">
+        <p class="growth-title">Точка росту</p>
+        <p class="growth-text">
+          <strong>Катя вже знає свою точку росту — і вже над нею працює.</strong>
+          Тому тут ми просто відзначаємо: напрямок обраний правильний.
+          Продовжуй у тому ж темпі — зміни вже відчутні.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ОЛЕКСАНДРА -->
+<section class="person reveal" id="oleksandra">
+  <div class="person-header">
+    <div>
+      <h3 class="person-name">Олександра</h3>
+      <p class="person-role">Account Manager · Account</p>
+    </div>
+    <span class="skill-quarter">✦ Скіл кварталу: турбота про клієнта</span>
+  </div>
+
+  <div class="person-body">
+    <div>
+      <p class="col-title">Сильні сторони</p>
+
+      <div class="strength-item">
+        <span class="strength-tag">Клієнтська довіра</span>
+        <h4>Клієнти завжди відгукуються про Сашу позитивно</h4>
+        <p>
+          Олександра завжди отримує високу оцінку від клієнтів.
+          Вона все розкаже, пояснить, дуже ввічливо і уважно працює з кожним.
+          Це та людина, яка будує довгострокові відносини, а не просто закриває транзакцію.
+        </p>
+      </div>
+
+      <div class="strength-item">
+        <span class="strength-tag">Підтримка команди</span>
+        <h4>Щирість і відкритість до людей</h4>
+        <p>
+          Саша — людина, яку в команді поважають і до якої тягнуться.
+          Ми бажаємо їй якнайшвидшого одужання і повернення в повну силу.
+          Команда поруч і підтримує.
+        </p>
+      </div>
+    </div>
+
+    <div>
+      <div class="support-block">
+        <p>
+          <strong>Саша, цей квартал дався непросто.</strong><br><br>
+          Ти потрапила в лікарню, і ми розуміємо, що зараз багато переживань —
+          і з приводу стану здоров'я, і з приводу ситуації в цілому.
+          Ми поруч. Все, що потрібно — просто скажи.<br><br>
+          Коли будеш у ресурсі — поговоримо на 1-to-1 про наступні кроки.
+        </p>
+      </div>
+
+      <div class="growth-block">
+        <p class="growth-title">Точка росту</p>
+        <p class="growth-text">
+          <strong>Від реактивного — до проактивного.</strong>
+          Саша вже знає про цей напрямок, ми про це говорили.
+          Уважність, своєчасність, не затягувати там, де вже є розуміння.
+          Знання треба переносити в дії — і вже час починати цей перехід.
+          Ми будемо поруч на цьому шляху.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════ LEGAL / COMPLIANCE ══════════════ -->
+<div class="dept reveal">
+  <p class="dept-label">Відділ</p>
+  <h2>Legal · Compliance</h2>
+</div>
+
+<!-- АЛІНА COMPLIANCE -->
+<section class="person reveal" id="alina-c">
+  <div class="person-header">
+    <div>
+      <h3 class="person-name">Аліна</h3>
+      <p class="person-role">Compliance Manager · Legal / Compliance</p>
+    </div>
+    <span class="skill-quarter">✦ Скіл кварталу: глибока експертиза</span>
+  </div>
+
+  <div class="person-body">
+    <div>
+      <p class="col-title">Сильні сторони</p>
+
+      <div class="strength-item">
+        <span class="strength-tag">Залученість і якість</span>
+        <h4>Коли включається — робить круто</h4>
+        <p>
+          Аліна — людина, яка, коли береться за задачу, виконує її на хорошому рівні.
+          DAC8: не просто виконала регуляторну вимогу, а побудувала флоу роботи,
+          розподілила ролі, підготувала ключові політики.
+          32 KYC-верифікації за березень, квартальний звіт регулятору подано,
+          action plan по Канаді готовий. Це серйозний обсяг і серйозна відповідальність.
+        </p>
+      </div>
+
+      <div class="strength-item">
+        <span class="strength-tag">Чіткість і допомога</span>
+        <h4>Колеги знають: до Аліни можна звернутися</h4>
+        <p>
+          Кілька людей у 360 незалежно написали: Аліна чітко пояснює задачі,
+          швидко включається в термінові ситуації і завжди готова допомогти.
+          Це цінний актив для всієї команди.
+        </p>
+      </div>
+
+      <div class="wins-row">
+        <span class="win-pill hl">DAC8 флоу побудовано</span>
+        <span class="win-pill">32 KYC-верифікації М3</span>
+        <span class="win-pill">Квартальний звіт регулятору</span>
+        <span class="win-pill">Канада: action plan готовий</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="quote-block">
+        <p class="quote-text">
+          "Чітко пояснює задачі, завжди готова прийти на допомогу.
+          Швидко включається при термінових задачах."
+        </p>
+        <p class="quote-source">— з 360-фідбеку колег</p>
+      </div>
+
+      <div class="growth-block">
+        <p class="growth-title">Точка росту</p>
+        <p class="growth-text">
+          <strong>Стабільність і самостійність — це наступний рівень.</strong>
+          Головна точка росту для Аліни — це перехід від нестабільності до передбачуваності.
+          Дедлайни, чіткий план дій, автономне виконання без нагадувань.
+          Амбіції на лідерство і керівну роль — це те, що відкриє наступні можливості.
+          Сил і ресурсів для цього є — залишається збудувати стабільний внутрішній ритм роботи.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ВІКТОРІЯ -->
+<section class="person reveal" id="viktoria">
+  <div class="person-header">
+    <div>
+      <h3 class="person-name">Вікторія</h3>
+      <p class="person-role">Legal · Legal</p>
+    </div>
+    <span class="skill-quarter">✦ Скіл кварталу: надійність і точність</span>
+  </div>
+
+  <div class="person-body">
+    <div>
+      <p class="col-title">Сильні сторони</p>
+
+      <div class="strength-item">
+        <span class="strength-tag">Бездоганна надійність</span>
+        <h4>Три місяці — жодного критичного блокера</h4>
+        <p>
+          Квартал за кварталом Вікторія дає одну відповідь: критичних відставань немає, все рухається.
+          10+ договорів опрацьовані якісно, онбординг SMM і PR, Канада запущена.
+          Це реальна дисципліна, яка вимагає постійної уваги — і команда відчуває цю опору.
+        </p>
+      </div>
+
+      <div class="strength-item">
+        <span class="strength-tag">Якість при великому обсязі</span>
+        <h4>Тримає стандарт — навіть коли задач багато</h4>
+        <p>
+          Compliance Agreement, DaaS Agreement, Privacy Policy, NDA, довіреності —
+          кожен з коментарями, правками і переговорами до фіналу.
+          Плюс оперативна реакція на запити з усіх відділів. Вікторія тримає якість
+          навіть коли обсяг великий — і це цінно.
+        </p>
+      </div>
+
+      <div class="wins-row">
+        <span class="win-pill hl">10+ договорів без блокерів</span>
+        <span class="win-pill">Нові шаблони: Privacy Policy, T&C, NDA</span>
+        <span class="win-pill">Канада: нотаріуси та процес запущено</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="growth-block">
+        <p class="growth-title">Точка росту</p>
+        <p class="growth-text">
+          <strong>Від реактивності — до ініціативи і результату.</strong>
+          Вікторія відмінно справляється з тим, що приходить ззовні.
+          Наступний рівень — це більша залученість не просто в процес, а в результат:
+          ініціатива, проактивність, ставлення до роботи як до свого.
+          Хочеться бачити від Вікторії більше "злості до прогресу" —
+          коли людина сама шукає, де можна покращити, оптимізувати, зробити краще.
+          Цей перехід від реактивного до проактивного формату — твій головний виклик на Q2.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════ ФІНАНСИ ══════════════ -->
+<div class="dept reveal">
+  <p class="dept-label">Відділ</p>
+  <h2>Фінанси</h2>
+</div>
+
+<!-- ГАЛИНА -->
+<section class="person reveal" id="halyna">
+  <div class="person-header">
+    <div>
+      <h3 class="person-name">Галина</h3>
+      <p class="person-role">CFO · Фінанси</p>
+    </div>
+    <span class="skill-quarter">✦ Скіл кварталу: фінансова глибина</span>
+  </div>
+
+  <div class="person-body">
+    <div>
+      <p class="col-title">Сильні сторони</p>
+
+      <div class="strength-item">
+        <span class="strength-tag">Професіоналізм</span>
+        <h4>Віддана, уважна, знає, як працювати з цифрами</h4>
+        <p>
+          Галина — людина, яка знає своє діло. За березень: 49 операційних задач,
+          леджери Литви 2024 закриті, польська звітність підготовлена,
+          Finmap запущений з бюджетом і план/факт-аналізом.
+          Це серйозний обсяг роботи, і він виконується з фаховістю.
+        </p>
+      </div>
+
+      <div class="strength-item">
+        <span class="strength-tag">Відновлення обороту</span>
+        <h4>Березень — повернення до зростання</h4>
+        <p>
+          Після просадки у лютому березень показав оборот $3.26M (+51% MoM).
+          Фінансова база і прозорість, яку Галина вибудовує, — це те, на що спирається
+          вся компанія при прийнятті рішень.
+        </p>
+      </div>
+
+      <div class="wins-row">
+        <span class="win-pill hl">Оборот березень: $3.26M (+51%)</span>
+        <span class="win-pill">Finmap запущено</span>
+        <span class="win-pill">Леджери Литва 2024 — закриті</span>
+        <span class="win-pill">49 операційних задач М3</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="quote-block">
+        <p class="quote-text">
+          "Чіткість. Організованість. Відповідальність."
+        </p>
+        <p class="quote-source">— з 360-фідбеку колег</p>
+      </div>
+
+      <div class="growth-block">
+        <p class="growth-title">Точка росту</p>
+        <p class="growth-text">
+          <strong>Автономність і менеджерські навички.</strong>
+          Часто виникає потреба пінгувати, нагадувати, уточнювати.
+          Наступний рівень для Галини — самостійно досягати результатів,
+          випереджати запити, бути проактивною: рекомендувати, організовувати команду,
+          бути вибагливою до процесів навколо.
+          Це менеджерський скіл — і він розвивається через книги, практику і усвідомлений вибір
+          бути лідером, а не виконавцем.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════ КЕРІВНИЦТВО ══════════════ -->
+<div class="dept reveal">
+  <p class="dept-label">Керівництво</p>
+  <h2>COO · CEO</h2>
+</div>
+
+<!-- ЄВГЕН COO -->
+<section class="person reveal" id="evhen-coo">
+  <div class="person-header">
+    <div>
+      <h3 class="person-name">Євген</h3>
+      <p class="person-role">COO · Операційний директор</p>
+    </div>
+    <span class="skill-quarter">✦ Скіл кварталу: організація і координація</span>
+  </div>
+
+  <div class="person-body">
+    <div>
+      <p class="col-title">Що кажуть колеги</p>
+
+      <div class="strength-item">
+        <span class="strength-tag">Організованість</span>
+        <h4>Тримає процеси і команду разом</h4>
+        <p>
+          Колеги відзначають організованість, стресостійкість і вміння координувати.
+          Євген — людина, яка гарно працює з людьми, прекрасно координує
+          і добре розуміє, як виокремити болі клієнта та бачить проблеми мікроклімату.
+        </p>
+      </div>
+
+      <div class="strength-item">
+        <span class="strength-tag">Відкритість і мотивація</span>
+        <h4>Готовність до щирої розмови</h4>
+        <p>
+          "Поважаю за відкритість, вміння мотивувати і направити.
+          Підтримати або навпаки дати 'пенька', коли це необхідно.
+          Постійна робота над собою як приклад для інших" — так описують Євгена колеги.
+        </p>
+      </div>
+    </div>
+
+    <div>
+      <div class="quote-block">
+        <p class="quote-text">
+          "Організованість, стресостійкість. Гарно працює із людьми, прекрасно координує.
+          Стремление к развитию себя как личности и профессионала."
+        </p>
+        <p class="quote-source">— з 360-фідбеку колег (кілька відповідей)</p>
+      </div>
+
+      <div class="growth-block">
+        <p class="growth-title">Точка росту</p>
+        <p class="growth-text">
+          <strong>Операційний фокус і чіткість комунікації.</strong>
+          Колеги рекомендують перекласти фокус із стратегічних задач більше на операційні
+          та організаційні моменти — це покращить координацію в команді.
+          Також є побажання: іноді більш чітко і коротко висловлювати свою думку,
+          і більше вміти приймати чужу точку зору навіть коли вона відрізняється від своєї.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ОЛЕКСІЙ CEO -->
+<section class="person reveal" id="oleksii">
+  <div class="person-header">
+    <div>
+      <h3 class="person-name">Олексій</h3>
+      <p class="person-role">CEO / Co-founder · Керівництво</p>
+    </div>
+    <span class="skill-quarter">✦ Скіл кварталу: швидкість змін і зростання</span>
+  </div>
+
+  <div class="person-body">
+    <div>
+      <p class="col-title">Сильні сторони</p>
+
+      <div class="strength-item">
+        <span class="strength-tag">Особистий приклад зростання</span>
+        <h4>Людина, яка змінюється швидше за всіх</h4>
+        <p>
+          Олексій — це приклад того, як виглядає справжній прогрес.
+          Ще рік тому ми бачили одну людину — зараз це інша людина.
+          Неймовірна швидкість професійних змін, постійне навчання, постійне покращення.
+          Якщо хочеш зрозуміти, що таке жага до досягнень через максимально швидку реакцію
+          і зміни на краще — просто дивись на Олексія.
+        </p>
+      </div>
+
+      <div class="strength-item">
+        <span class="strength-tag">Лідерство і нетворк</span>
+        <h4>Проактивність, драйв, широкий майндсет</h4>
+        <p>
+          Колеги відзначають: лідерство, продажі, підтримка.
+          Проактивність, швидкість, комунікативність, велике бажання.
+          Стратегія і нетворкінг — як природній скіл, який відкриває двері.
+        </p>
+      </div>
+    </div>
+
+    <div>
+      <div class="quote-block">
+        <p class="quote-text">
+          "Багато сильних сторін. Часто беру приклад з нього.
+          Драйв, комунікативні навики, широкий та стратегічний майндсет,
+          відкритість, мотивація."
+        </p>
+        <p class="quote-source">— з 360-фідбеку колег (кілька відповідей)</p>
+      </div>
+
+      <div class="growth-block">
+        <p class="growth-title">Точка росту</p>
+        <p class="growth-text">
+          <strong>Простір для команди і структурність делегування.</strong>
+          Колеги звертають увагу: більше давати простір для реалізації інших членів команди,
+          більш чітко ставити задачі при делегуванні — щоб люди розуміли контекст і очікування.
+          І більше занурення в рішення, які стратегічно впливають на продукт і бізнес-модель,
+          поряд з нетворком і маркетингом.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ CLOSING ══ -->
+<section class="closing">
+  <h2>Дякуємо кожному<br>за цей <em>квартал</em></h2>
+  <p>Те, що побудовано за ці три місяці — не зникне. Воно стане підґрунтям для Q2.</p>
+  <p>Якщо щось із прочитаного хочеться обговорити — підходьте на 1-to-1. Це і є сенс цього документу.</p>
+  <p class="closing-mark">XPaid · Q1 2026</p>
+</section>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

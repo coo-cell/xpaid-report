@@ -3,340 +3,624 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Xpaid — Org Chart 2026</title>
+<title>Xpaid — Team</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #0f0e0c;
+  --ink2: #5a5750;
+  --ink3: #9e9b96;
+  --paper: #f6f4ef;
+  --paper2: #edeae3;
+  --paper3: #e2ded5;
+  --accent: #1a1814;
+  --gold: #c9a84c;
+  --gold-light: #f5ead4;
+  --rule: rgba(15,14,12,0.1);
+}
 
-  :root {
-    --bg: #fafaf8;
-    --bg2: #f2f1ed;
-    --text: #1a1917;
-    --text2: #5a5955;
-    --text3: #9a9895;
-    --border: rgba(0,0,0,0.12);
-    --border2: rgba(0,0,0,0.2);
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #181816;
-      --bg2: #222220;
-      --text: #f0efe9;
-      --text2: #a8a7a2;
-      --text3: #686763;
-      --border: rgba(255,255,255,0.1);
-      --border2: rgba(255,255,255,0.18);
-    }
-    .c-purple { background: #3C3489 !important; border-color: #AFA9EC !important; }
-    .c-purple .nm { color: #EEEDFE !important; } .c-purple .rl { color: #CECBF6 !important; } .c-purple .fn { color: #CECBF6 !important; }
-    .c-gray { background: #3a3a38 !important; border-color: #B4B2A9 !important; }
-    .c-gray .nm { color: #F1EFE8 !important; } .c-gray .rl { color: #D3D1C7 !important; } .c-gray .fn { color: #D3D1C7 !important; }
-    .c-green { background: #27500A !important; border-color: #97C459 !important; }
-    .c-green .nm { color: #EAF3DE !important; } .c-green .rl { color: #C0DD97 !important; } .c-green .fn { color: #C0DD97 !important; }
-    .c-blue { background: #0C447C !important; border-color: #85B7EB !important; }
-    .c-blue .nm { color: #E6F1FB !important; } .c-blue .rl { color: #B5D4F4 !important; } .c-blue .fn { color: #B5D4F4 !important; }
-    .c-amber { background: #633806 !important; border-color: #EF9F27 !important; }
-    .c-amber .nm { color: #FAEEDA !important; } .c-amber .rl { color: #FAC775 !important; } .c-amber .fn { color: #FAC775 !important; }
-    .c-coral { background: #712B13 !important; border-color: #F0997B !important; }
-    .c-coral .nm { color: #FAECE7 !important; } .c-coral .rl { color: #F5C4B3 !important; } .c-coral .fn { color: #F5C4B3 !important; }
-    .c-ghost { background: #222220 !important; }
-    .c-ghost .nm { color: #a8a7a2 !important; } .c-ghost .rl { color: #686763 !important; } .c-ghost .fn { color: #686763 !important; }
-  }
+html { background: var(--paper); scroll-behavior: smooth; }
 
-  html { background: var(--bg); color: var(--text); font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.5; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  min-height: 100vh;
+}
 
-  body { min-height: 100vh; padding: 48px 24px 64px; }
+/* ─── HERO ─── */
+.hero {
+  padding: 80px 60px 64px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+}
 
-  .page { max-width: 1200px; margin: 0 auto; overflow-x: auto; }
+.hero-left { max-width: 520px; }
 
-  .header { margin-bottom: 48px; }
-  .header h1 { font-size: 28px; font-weight: 500; letter-spacing: -0.5px; color: var(--text); }
-  .header p { font-size: 13px; color: var(--text3); margin-top: 4px; }
+.hero-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 20px;
+}
 
-  .tree { display: flex; flex-direction: column; align-items: center; min-width: 900px; }
+.hero-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(52px, 7vw, 88px);
+  line-height: .92;
+  letter-spacing: -.02em;
+  color: var(--ink);
+}
 
-  .v-line { width: 1px; background: var(--border2); }
-  .v-dash { width: 1px; background: repeating-linear-gradient(to bottom, var(--border2) 0, var(--border2) 3px, transparent 3px, transparent 7px); }
+.hero-title em {
+  font-style: italic;
+  color: var(--gold);
+}
 
-  .card {
-    border-radius: 10px;
-    padding: 12px 16px;
-    text-align: center;
-    border: 0.5px solid;
-    cursor: default;
-    transition: transform .12s, opacity .12s;
-  }
-  .card:hover { transform: translateY(-1px); opacity: .9; }
+.hero-desc {
+  margin-top: 28px;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--ink2);
+  max-width: 380px;
+}
 
-  .card .nm { font-size: 13px; font-weight: 500; line-height: 1.3; }
-  .card .rl { font-size: 11px; margin-top: 3px; line-height: 1.4; }
-  .card .fn { font-size: 10px; margin-top: 5px; line-height: 1.4; opacity: .8; }
+.hero-meta {
+  text-align: right;
+  font-size: 12px;
+  color: var(--ink3);
+  line-height: 1.8;
+}
 
-  .av {
-    width: 34px; height: 34px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 500; margin: 0 auto 8px;
-  }
+.hero-meta strong { color: var(--ink2); font-weight: 500; display: block; font-size: 28px; font-family: 'DM Serif Display', serif; }
 
-  .c-purple { background: #EEEDFE; border-color: #534AB7; }
-  .c-purple .nm { color: #3C3489; } .c-purple .rl { color: #534AB7; } .c-purple .fn { color: #534AB7; }
+/* ─── LEADERSHIP STRIP ─── */
+.leadership {
+  padding: 56px 60px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--accent);
+}
 
-  .c-gray { background: #F1EFE8; border-color: #5F5E5A; }
-  .c-gray .nm { color: #444441; } .c-gray .rl { color: #5F5E5A; } .c-gray .fn { color: #5F5E5A; }
+.section-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+  margin-bottom: 32px;
+}
 
-  .c-green { background: #EAF3DE; border-color: #3B6D11; }
-  .c-green .nm { color: #27500A; } .c-green .rl { color: #3B6D11; } .c-green .fn { color: #3B6D11; }
+.leaders-row {
+  display: flex;
+  gap: 2px;
+}
 
-  .c-blue { background: #E6F1FB; border-color: #185FA5; }
-  .c-blue .nm { color: #0C447C; } .c-blue .rl { color: #185FA5; } .c-blue .fn { color: #185FA5; }
+.leader-card {
+  flex: 1;
+  padding: 32px 28px;
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 4px;
+  position: relative;
+  transition: background .2s;
+  cursor: default;
+}
+.leader-card:hover { background: rgba(255,255,255,.04); }
 
-  .c-amber { background: #FAEEDA; border-color: #854F0B; }
-  .c-amber .nm { color: #633806; } .c-amber .rl { color: #854F0B; } .c-amber .fn { color: #854F0B; }
+.leader-card .badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
 
-  .c-coral { background: #FAECE7; border-color: #993C1D; }
-  .c-coral .nm { color: #712B13; } .c-coral .rl { color: #993C1D; } .c-coral .fn { color: #993C1D; }
+.badge-ceo { background: var(--gold-light); color: #7a5c1a; }
+.badge-coo { background: rgba(255,255,255,.1); color: rgba(255,255,255,.7); }
 
-  .c-ghost { background: var(--bg2); border: 0.5px dashed var(--border2); }
-  .c-ghost .nm { color: var(--text2); } .c-ghost .rl { color: var(--text3); } .c-ghost .fn { color: var(--text3); }
+.leader-card .name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  color: #fff;
+  letter-spacing: -.01em;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
 
-  .tier { display: flex; gap: 14px; justify-content: center; align-items: flex-start; position: relative; }
-  .branch { display: flex; flex-direction: column; align-items: center; }
+.leader-card .role {
+  font-size: 13px;
+  color: rgba(255,255,255,.45);
+  font-weight: 300;
+  line-height: 1.5;
+}
 
-  .h-bar { height: 1px; background: var(--border2); }
+.leader-note {
+  position: absolute;
+  bottom: 28px;
+  right: 28px;
+  font-size: 11px;
+  color: rgba(255,255,255,.25);
+  font-style: italic;
+}
 
-  .section-divider {
-    display: flex; align-items: center; gap: 12px;
-    width: 100%; margin: 32px 0 0;
-  }
-  .section-divider span {
-    font-size: 10px; font-weight: 500; letter-spacing: .07em;
-    text-transform: uppercase; color: var(--text3); white-space: nowrap;
-  }
-  .section-divider::before, .section-divider::after {
-    content: ''; flex: 1; height: 1px;
-    background: repeating-linear-gradient(to right, var(--border) 0, var(--border) 4px, transparent 4px, transparent 10px);
-  }
+/* ─── DEPARTMENTS ─── */
+.departments {
+  padding: 56px 60px;
+  border-bottom: 1px solid var(--rule);
+}
 
-  .bottom-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+.dept-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
 
-  .legend {
-    display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
-    margin-top: 40px; padding-top: 24px;
-    border-top: 0.5px solid var(--border);
-    font-size: 11px; color: var(--text3);
-  }
-  .leg { display: flex; align-items: center; gap: 6px; }
-  .leg-line { width: 18px; height: 1px; background: var(--border2); }
-  .leg-dash { width: 18px; height: 1px; background: repeating-linear-gradient(to right, var(--border2) 0, var(--border2) 3px, transparent 3px, transparent 7px); }
-  .dot { width: 9px; height: 9px; border-radius: 50%; border: 0.5px solid; }
+.dept-col {
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+}
 
-  .note { font-size: 10px; color: var(--text3); text-align: center; margin-top: 4px; }
+.dept-header {
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.dept-tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+.tag-finance { background: #e8f4e0; color: #2d5a1a; }
+.tag-marketing { background: #e0ecf8; color: #1a3d6e; }
+.tag-sales { background: #fdf0dc; color: #7a4a0a; }
+.tag-account { background: #fce8e0; color: #6e2010; }
+.tag-legal { background: var(--paper2); color: var(--ink2); }
+
+.dept-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  letter-spacing: -.01em;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.dept-desc {
+  font-size: 12px;
+  color: var(--ink3);
+  font-weight: 300;
+}
+
+.dept-people { padding: 4px 0; }
+
+.person-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--rule);
+  transition: background .15s;
+  cursor: default;
+}
+.person-row:last-child { border-bottom: none; }
+.person-row:hover { background: var(--paper2); }
+
+.person-av {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 500;
+  flex-shrink: 0;
+}
+
+.av-finance { background: #d0e8c0; color: #2d5a1a; }
+.av-marketing { background: #c8e0f4; color: #1a3d6e; }
+.av-sales { background: #faded8; color: #7a4a0a; }
+.av-account { background: #f8d0c4; color: #6e2010; }
+.av-legal { background: var(--paper3); color: var(--ink2); }
+
+.person-info { flex: 1; min-width: 0; }
+
+.person-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.person-role {
+  font-size: 11px;
+  color: var(--ink3);
+  margin-top: 1px;
+  font-weight: 300;
+}
+
+.sub-label {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--paper2);
+  color: var(--ink3);
+  white-space: nowrap;
+}
+
+/* sub-contractors block */
+.contractors {
+  padding: 12px 22px;
+  background: var(--paper2);
+}
+.contractors-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 8px;
+}
+.contractors-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.pill {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  color: var(--ink2);
+}
+
+/* ─── TECH ROW ─── */
+.tech-row {
+  padding: 48px 60px;
+  border-bottom: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+
+.tech-card {
+  padding: 32px 32px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: background .15s;
+  cursor: default;
+}
+.tech-card:hover { background: var(--paper2); }
+
+.tech-av {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 500;
+  flex-shrink: 0;
+}
+
+.tech-info .name { font-size: 16px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+.tech-info .role { font-size: 13px; color: var(--ink2); font-weight: 300; margin-bottom: 8px; }
+.tech-info .desc { font-size: 11px; color: var(--ink3); }
+
+.ghost-card { opacity: .65; }
+.ghost-av { background: var(--paper2); color: var(--ink3); border: 1px dashed var(--paper3); }
+
+/* ─── FOUNDERS STRIP ─── */
+.founders {
+  padding: 40px 60px;
+  background: var(--paper2);
+}
+
+.founders-inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.founders-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.founders-rule { flex: 1; height: 1px; background: var(--rule); }
+
+.founders-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.f-chip {
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 24px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  color: var(--ink2);
+  font-weight: 400;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 28px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--rule);
+}
+
+.footer-brand { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--ink); }
+.footer-note { font-size: 11px; color: var(--ink3); }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-left, .leadership, .dept-col, .tech-card {
+  animation: fadeUp .5s ease both;
+}
+.dept-col:nth-child(1) { animation-delay: .05s; }
+.dept-col:nth-child(2) { animation-delay: .10s; }
+.dept-col:nth-child(3) { animation-delay: .15s; }
+.dept-col:nth-child(4) { animation-delay: .20s; }
+.dept-col:nth-child(5) { animation-delay: .25s; }
+.dept-col:nth-child(6) { animation-delay: .30s; }
 </style>
 </head>
 <body>
-<div class="page">
 
-  <div class="header">
-    <h1>Xpaid</h1>
-    <p>Організаційна структура · 2026</p>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Xpaid · Команда · 2026</p>
+    <h1 class="hero-title">Our<br><em>team</em></h1>
+    <p class="hero-desc">Структура компанії, зони відповідальності та люди, які будують Xpaid.</p>
   </div>
+  <div class="hero-meta">
+    <strong>14</strong> людей в команді
+    <br>5 відділів
+    <br>3 юрисдикції
+  </div>
+</section>
 
-  <div class="tree">
+<!-- LEADERSHIP -->
+<section class="leadership">
+  <p class="section-label">Керівництво</p>
+  <div class="leaders-row">
+    <div class="leader-card">
+      <span class="badge badge-ceo">CEO</span>
+      <div class="name">Олексій Рудь</div>
+      <div class="role">Співзасновник · стратегія<br>юридичний напрям</div>
+      <span class="leader-note">co-founder</span>
+    </div>
+    <div class="leader-card">
+      <span class="badge badge-coo">COO</span>
+      <div class="name">Євген Єврейський</div>
+      <div class="role">Операційне керівництво<br>вся команда підпорядкована</div>
+    </div>
+  </div>
+</section>
 
-    <!-- CEO -->
-    <div class="tier">
-      <div class="branch">
-        <div class="card c-gray" style="min-width:190px">
-          <div class="av" style="background:#D3D1C7;color:#444441">ОР</div>
-          <div class="nm">Олексій Рудь</div>
-          <div class="rl">CEO · співзасновник</div>
-          <div class="fn">стратегія · юридичний напрям</div>
+<!-- DEPARTMENTS -->
+<section class="departments">
+  <p class="section-label" style="margin-bottom:32px">Відділи</p>
+  <div class="dept-grid">
+
+    <!-- Finance -->
+    <div class="dept-col">
+      <div class="dept-header">
+        <span class="dept-tag tag-finance">Finance</span>
+        <div class="dept-name">Фінанси</div>
+        <div class="dept-desc">Облік · звітність · бюджет</div>
+      </div>
+      <div class="dept-people">
+        <div class="person-row">
+          <div class="person-av av-finance">Г</div>
+          <div class="person-info">
+            <div class="person-name">Галина</div>
+            <div class="person-role">Finance Manager</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="v-line" style="height:28px"></div>
-
-    <!-- COO -->
-    <div class="tier">
-      <div class="branch">
-        <div class="card c-purple" style="min-width:210px">
-          <div class="av" style="background:#CECBF6;color:#3C3489">ЄЄ</div>
-          <div class="nm">Євген Єврейський</div>
-          <div class="rl">COO</div>
-          <div class="fn">операційне керівництво всією командою</div>
+    <!-- Marketing -->
+    <div class="dept-col">
+      <div class="dept-header">
+        <span class="dept-tag tag-marketing">Marketing</span>
+        <div class="dept-name">Маркетинг</div>
+        <div class="dept-desc">Залучення · ліди · бренд</div>
+      </div>
+      <div class="dept-people">
+        <div class="person-row">
+          <div class="person-av av-marketing">В</div>
+          <div class="person-info">
+            <div class="person-name">Валерія</div>
+            <div class="person-role">CMO</div>
+          </div>
+          <span class="sub-label">head</span>
+        </div>
+      </div>
+      <div class="contractors">
+        <div class="contractors-label">Підрядники</div>
+        <div class="contractors-pills">
+          <span class="pill">SMM</span>
+          <span class="pill">SEO</span>
+          <span class="pill">Таргет</span>
+          <span class="pill">Дизайн</span>
+          <span class="pill">PR</span>
         </div>
       </div>
     </div>
 
-    <div class="v-line" style="height:28px"></div>
-
-    <!-- Departments row -->
-    <div style="position:relative;display:flex;gap:14px;justify-content:center;align-items:flex-start">
-      <div style="position:absolute;top:0;left:80px;right:80px;height:1px;background:var(--border2)"></div>
-
-      <!-- Finance -->
-      <div class="branch">
-        <div class="v-line" style="height:20px"></div>
-        <div class="card c-green" style="min-width:145px">
-          <div class="av" style="background:#C0DD97;color:#27500A">Г</div>
-          <div class="nm">Галина</div>
-          <div class="rl">Finance Manager</div>
-          <div class="fn">облік · звітність · бюджет</div>
-        </div>
+    <!-- Sales -->
+    <div class="dept-col">
+      <div class="dept-header">
+        <span class="dept-tag tag-sales">Sales</span>
+        <div class="dept-name">Продажі</div>
+        <div class="dept-desc">BizDev · партнерка · SDR</div>
       </div>
-
-      <!-- Marketing -->
-      <div class="branch">
-        <div class="v-line" style="height:20px"></div>
-        <div class="card c-blue" style="min-width:155px">
-          <div class="av" style="background:#B5D4F4;color:#0C447C">В</div>
-          <div class="nm">Валерія</div>
-          <div class="rl">CMO</div>
-          <div class="fn">маркетинг · залучення</div>
-        </div>
-        <div class="v-line" style="height:12px"></div>
-        <div class="card c-blue" style="min-width:155px;padding:9px 12px">
-          <div class="rl" style="font-size:10px">SMM · SEO · таргет</div>
-          <div class="fn">дизайн · PR · підрядники</div>
-        </div>
-      </div>
-
-      <!-- Sales -->
-      <div class="branch">
-        <div class="v-line" style="height:20px"></div>
-        <div class="card c-amber" style="min-width:165px">
-          <div class="av" style="background:#FAC775;color:#633806">О</div>
-          <div class="nm">Олександр</div>
-          <div class="rl">CBDO</div>
-          <div class="fn">продажі · партнерка · SDR</div>
-        </div>
-        <div class="v-line" style="height:12px"></div>
-        <div style="display:flex;gap:8px;position:relative">
-          <div style="position:absolute;top:0;left:10%;right:10%;height:1px;background:var(--border2)"></div>
-          <div class="branch">
-            <div class="v-line" style="height:12px"></div>
-            <div class="card c-amber" style="min-width:108px;padding:9px 10px">
-              <div class="nm" style="font-size:11px">Микита Юрганов</div>
-              <div class="rl" style="font-size:10px">Sales Manager</div>
-            </div>
+      <div class="dept-people">
+        <div class="person-row">
+          <div class="person-av av-sales">О</div>
+          <div class="person-info">
+            <div class="person-name">Олександр</div>
+            <div class="person-role">CBDO</div>
           </div>
-          <div class="branch">
-            <div class="v-line" style="height:12px"></div>
-            <div class="card c-amber" style="min-width:108px;padding:9px 10px">
-              <div class="nm" style="font-size:11px">Лізавета</div>
-              <div class="rl" style="font-size:10px">Partnership Manager</div>
-            </div>
-          </div>
-          <div class="branch">
-            <div class="v-line" style="height:12px"></div>
-            <div class="card c-amber" style="min-width:108px;padding:9px 10px">
-              <div class="nm" style="font-size:11px">Аліна Худицька</div>
-              <div class="rl" style="font-size:10px">SDR B2C</div>
-            </div>
-          </div>
-          <div class="branch">
-            <div class="v-line" style="height:12px"></div>
-            <div class="card c-amber" style="min-width:108px;padding:9px 10px">
-              <div class="nm" style="font-size:11px">Аліна Б.</div>
-              <div class="rl" style="font-size:10px">SDR B2C Partner</div>
-            </div>
+          <span class="sub-label">head</span>
+        </div>
+        <div class="person-row">
+          <div class="person-av av-sales">МЮ</div>
+          <div class="person-info">
+            <div class="person-name">Микита Юрганов</div>
+            <div class="person-role">Sales Manager</div>
           </div>
         </div>
-      </div>
-
-      <!-- Account -->
-      <div class="branch">
-        <div class="v-line" style="height:20px"></div>
-        <div class="card c-coral" style="min-width:155px">
-          <div class="av" style="background:#F5C4B3;color:#712B13">AM</div>
-          <div class="nm">Account</div>
-          <div class="rl">клієнтський сервіс</div>
-          <div class="fn">онбординг · утримання клієнтів</div>
-        </div>
-        <div class="v-line" style="height:12px"></div>
-        <div style="display:flex;gap:8px;position:relative">
-          <div style="position:absolute;top:0;left:10%;right:10%;height:1px;background:var(--border2)"></div>
-          <div class="branch">
-            <div class="v-line" style="height:12px"></div>
-            <div class="card c-coral" style="min-width:108px;padding:9px 10px">
-              <div class="nm" style="font-size:11px">Олександра</div>
-              <div class="rl" style="font-size:10px">Account Manager</div>
-            </div>
-          </div>
-          <div class="branch">
-            <div class="v-line" style="height:12px"></div>
-            <div class="card c-coral" style="min-width:108px;padding:9px 10px">
-              <div class="nm" style="font-size:11px">Катерина</div>
-              <div class="rl" style="font-size:10px">Account Manager</div>
-            </div>
+        <div class="person-row">
+          <div class="person-av av-sales">Л</div>
+          <div class="person-info">
+            <div class="person-name">Лізавета</div>
+            <div class="person-role">Partnership Manager</div>
           </div>
         </div>
-      </div>
-
-      <!-- Legal -->
-      <div class="branch">
-        <div class="v-line" style="height:20px"></div>
-        <div class="card c-gray" style="min-width:155px">
-          <div class="av" style="background:#D3D1C7;color:#444441">LG</div>
-          <div class="nm">Legal</div>
-          <div class="rl">юридичний відділ</div>
-          <div class="fn">частково під CEO</div>
-        </div>
-        <div class="v-line" style="height:12px"></div>
-        <div style="display:flex;gap:8px;position:relative">
-          <div style="position:absolute;top:0;left:10%;right:10%;height:1px;background:var(--border2)"></div>
-          <div class="branch">
-            <div class="v-line" style="height:12px"></div>
-            <div class="card c-gray" style="min-width:108px;padding:9px 10px">
-              <div class="nm" style="font-size:11px">Аліна Григор'єва</div>
-              <div class="rl" style="font-size:10px">Compliance</div>
-            </div>
-          </div>
-          <div class="branch">
-            <div class="v-line" style="height:12px"></div>
-            <div class="card c-gray" style="min-width:108px;padding:9px 10px">
-              <div class="nm" style="font-size:11px">Вікторія</div>
-              <div class="rl" style="font-size:10px">Contracts</div>
-            </div>
+        <div class="person-row">
+          <div class="person-av av-sales">АХ</div>
+          <div class="person-info">
+            <div class="person-name">Аліна Худицька</div>
+            <div class="person-role">SDR B2C</div>
           </div>
         </div>
-      </div>
-
-    </div>
-
-    <!-- Bottom section -->
-    <div class="section-divider" style="width:900px">
-      <span>Технології та розвиток</span>
-    </div>
-
-    <div class="bottom-row">
-      <div class="card c-blue" style="min-width:190px">
-        <div class="av" style="background:#B5D4F4;color:#0C447C">ДП</div>
-        <div class="nm">Дмитро Панамарьов</div>
-        <div class="rl">IT Engineer</div>
-        <div class="fn">технічні задачі · інфраструктура</div>
-      </div>
-      <div class="card c-ghost" style="min-width:190px">
-        <div class="av" style="background:var(--bg2);color:var(--text2)">МС</div>
-        <div class="nm">Михайло Студенець</div>
-        <div class="rl">Co-founder · R&D</div>
-        <div class="fn">25% часу · неформально</div>
+        <div class="person-row">
+          <div class="person-av av-sales">АБ</div>
+          <div class="person-info">
+            <div class="person-name">Аліна Б.</div>
+            <div class="person-role">SDR B2C Partner</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Legend -->
-    <div class="legend">
-      <div class="leg"><div class="leg-line"></div>пряме підпорядкування</div>
-      <div class="leg"><div class="leg-dash"></div>неформальна взаємодія</div>
-      <div class="leg"><div class="dot" style="background:#FAEEDA;border-color:#854F0B"></div>Sales</div>
-      <div class="leg"><div class="dot" style="background:#FAECE7;border-color:#993C1D"></div>Account</div>
-      <div class="leg"><div class="dot" style="background:#E6F1FB;border-color:#185FA5"></div>Marketing / IT</div>
-      <div class="leg"><div class="dot" style="background:#EAF3DE;border-color:#3B6D11"></div>Finance</div>
-      <div class="leg"><div class="dot" style="background:#F1EFE8;border-color:#5F5E5A"></div>Legal / Exec</div>
+    <!-- Account -->
+    <div class="dept-col">
+      <div class="dept-header">
+        <span class="dept-tag tag-account">Account</span>
+        <div class="dept-name">Акаунт</div>
+        <div class="dept-desc">Онбординг · утримання клієнтів</div>
+      </div>
+      <div class="dept-people">
+        <div class="person-row">
+          <div class="person-av av-account">О</div>
+          <div class="person-info">
+            <div class="person-name">Олександра</div>
+            <div class="person-role">Account Manager</div>
+          </div>
+        </div>
+        <div class="person-row">
+          <div class="person-av av-account">К</div>
+          <div class="person-info">
+            <div class="person-name">Катерина</div>
+            <div class="person-role">Account Manager</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legal -->
+    <div class="dept-col">
+      <div class="dept-header">
+        <span class="dept-tag tag-legal">Legal</span>
+        <div class="dept-name">Юридичний</div>
+        <div class="dept-desc">Compliance · договори · KYC</div>
+      </div>
+      <div class="dept-people">
+        <div class="person-row">
+          <div class="person-av av-legal">АГ</div>
+          <div class="person-info">
+            <div class="person-name">Аліна Григор'єва</div>
+            <div class="person-role">Legal Counsel · Compliance</div>
+          </div>
+        </div>
+        <div class="person-row">
+          <div class="person-av av-legal">В</div>
+          <div class="person-info">
+            <div class="person-name">Вікторія</div>
+            <div class="person-role">Legal Counsel · Contracts</div>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
-</div>
+</section>
+
+<!-- TECH -->
+<section class="tech-row">
+  <div class="tech-card">
+    <div class="tech-av" style="background:#daeaf8;color:#0a3060">ДП</div>
+    <div class="tech-info">
+      <div class="name">Дмитро Панамарьов</div>
+      <div class="role">IT Engineer</div>
+      <div class="desc">Технічні задачі · інфраструктура · інтеграції</div>
+    </div>
+  </div>
+  <div class="tech-card ghost-card">
+    <div class="tech-av ghost-av">МС</div>
+    <div class="tech-info">
+      <div class="name">Михайло Студенець</div>
+      <div class="role">Co-founder · R&D</div>
+      <div class="desc">25% часу · неформальна участь у розвитку продукту</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDERS -->
+<section class="founders">
+  <div class="founders-inner">
+    <span class="founders-label">Співзасновники</span>
+    <div class="founders-rule"></div>
+    <div class="founders-chips">
+      <span class="f-chip">Олексій Рудь</span>
+      <span class="f-chip">Михайло Студенець</span>
+      <span class="f-chip">Сергій Редько</span>
+      <span class="f-chip">Олена Заверуха</span>
+      <span class="f-chip">Алім</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-brand">Xpaid</span>
+  <span class="footer-note">Team structure · 2026</span>
+</footer>
+
 </body>
 </html>

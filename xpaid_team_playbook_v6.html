@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xpaid — Операційний Playbook v3</title>
+<style>
+  :root {
+    --blue: #185FA5; --blue-light: #E6F1FB; --blue-mid: #378ADD;
+    --teal: #0F6E56; --teal-light: #E1F5EE; --teal-mid: #1D9E75;
+    --coral: #993C1D; --coral-light: #FAECE7; --coral-mid: #D85A30;
+    --amber: #854F0B; --amber-light: #FAEEDA; --amber-mid: #BA7517;
+    --red: #A32D2D; --red-light: #FCEBEB; --red-mid: #E24B4A;
+    --green: #3B6D11; --green-light: #EAF3DE; --green-mid: #639922;
+    --purple: #534AB7; --purple-light: #EEEDFE; --purple-mid: #7F77DD;
+    --gray: #444441; --gray-light: #F1EFE8; --gray-mid: #888780;
+    --text: #1a1a1a; --text2: #555; --text3: #888;
+    --border: #e0ddd5; --bg: #fafaf8; --white: #fff;
+    --radius: 10px; --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; }
+
+  .header { background: var(--white); border-bottom: 1px solid var(--border); padding: 1.5rem 3rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .header-logo { font-size: 1.2rem; font-weight: 600; }
+  .header-logo span { color: var(--blue); }
+  .header-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+  .nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 3rem; display: flex; overflow-x: auto; gap: 0; }
+  .nav a { display: inline-block; padding: 10px 15px; font-size: 12px; color: var(--text3); text-decoration: none; border-bottom: 2px solid transparent; white-space: nowrap; }
+  .nav a:hover, .nav a.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 2.5rem 3rem; }
+  .section { margin-bottom: 3rem; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border); }
+  .section-icon { width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .section-title { font-size: 1.3rem; font-weight: 600; }
+  .section-sub { font-size: 13px; color: var(--text3); margin-top: 2px; }
+
+  .role-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 1rem; }
+  .role-alina { background: var(--blue-light); color: var(--blue); }
+  .role-olexandr { background: var(--teal-light); color: var(--teal); }
+  .role-mykyta { background: var(--teal-light); color: var(--teal); }
+  .role-kate { background: var(--purple-light); color: var(--purple); }
+  .role-sasha { background: var(--purple-light); color: var(--purple); }
+  .role-all { background: var(--gray-light); color: var(--gray); }
+
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 1.5rem; }
+  .card-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .card-header h3 { font-size: 1rem; font-weight: 600; }
+  .card-body { padding: 1.25rem; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  @media(max-width: 800px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  .dialogue { background: var(--gray-light); border-radius: var(--radius-sm); padding: 1rem; margin: 0.5rem 0; font-size: 13px; }
+  .msg { margin-bottom: 6px; line-height: 1.5; }
+  .msg-label { font-size: 10px; font-weight: 600; text-transform: uppercase; display: inline-block; margin-right: 4px; padding: 1px 5px; border-radius: 3px; }
+  .msg-label.mgr { background: var(--blue-light); color: var(--blue); }
+  .msg-label.client { background: var(--gray-light); color: var(--gray); border: 1px solid var(--border); }
+
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin: 0.8rem 0; }
+  .do { background: var(--green-light); border-left: 3px solid var(--green-mid); padding: 0.8rem 1rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  .dont { background: var(--red-light); border-left: 3px solid var(--red-mid); padding: 0.8rem 1rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  .do h5 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--green); margin-bottom: 0.4rem; }
+  .dont h5 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--red); margin-bottom: 0.4rem; }
+  .do p, .dont p, .do li, .dont li { font-size: 13px; line-height: 1.55; }
+  .do ul, .dont ul { padding-left: 1rem; }
+  @media(max-width: 800px) { .do-dont { grid-template-columns: 1fr; } }
+
+  .script { background: var(--blue-light); border: 1px solid #b5d4f4; border-radius: var(--radius-sm); padding: 1rem 1.1rem; margin: 0.6rem 0; }
+  .script-label { font-size: 11px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.4rem; }
+  .script p, .script li { font-size: 13px; color: var(--text); }
+  .script ul { padding-left: 1rem; }
+
+  .tip { background: var(--amber-light); border-left: 3px solid var(--amber-mid); padding: 0.7rem 1rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin: 0.6rem 0; font-size: 13px; }
+  .tip strong { color: var(--amber); }
+  .warn { background: var(--red-light); border-left: 3px solid var(--red-mid); padding: 0.7rem 1rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin: 0.6rem 0; font-size: 13px; }
+  .warn strong { color: var(--red); }
+  .info { background: var(--blue-light); border-left: 3px solid var(--blue-mid); padding: 0.7rem 1rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin: 0.6rem 0; font-size: 13px; }
+  .success { background: var(--green-light); border-left: 3px solid var(--green-mid); padding: 0.7rem 1rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin: 0.6rem 0; font-size: 13px; }
+
+  .step { display: flex; gap: 12px; margin-bottom: 1rem; align-items: flex-start; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--blue); color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .step-num.green { background: var(--green-mid); }
+  .step-num.amber { background: var(--amber-mid); }
+  .step-num.red { background: var(--red-mid); }
+  .step-text h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .step-text p { font-size: 13px; color: var(--text2); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--gray-light); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text2); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .table-wrap { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 0.8rem 0; }
+
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+  .tag-green { background: var(--green-light); color: var(--green); }
+  .tag-red { background: var(--red-light); color: var(--red); }
+  .tag-amber { background: var(--amber-light); color: var(--amber); }
+  .tag-blue { background: var(--blue-light); color: var(--blue); }
+
+  .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+  h4 { font-size: 14px; font-weight: 600; margin-bottom: 0.5rem; }
+  ul, ol { padding-left: 1.2rem; font-size: 14px; }
+  li { margin-bottom: 4px; line-height: 1.6; }
+  p { font-size: 14px; line-height: 1.65; }
+
+  .concept-box { background: var(--white); border: 2px solid var(--blue-mid); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
+  .concept-box h3 { font-size: 1.1rem; font-weight: 600; color: var(--blue); margin-bottom: 0.8rem; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-logo"><span>Xpaid</span> — Операційний Playbook</div>
+    <div class="header-sub">Команда: Аліна · Олександр · Микита · Катерина · Олександра · Квітень 2026</div>
+  </div>
+  <div style="font-size:12px;color:var(--text3);text-align:right;">
+    На основі аналізу 2 250+ чатів та 133 дзвінків<br>
+    Концепція: консультація болів, не sales call
+  </div>
+</div>
+
+<div class="nav">
+  <a href="#concept" class="active">Нова концепція</a>
+  <a href="#bonus">Умовний стимул</a>
+  <a href="#pricing-analysis">Аналіз тарифів</a>
+  <a href="#bonus">Умовний стимул</a>
+  <a href="#price">Ціна і конкуренти</a>
+  <a href="#tariff">Тарифний лист</a>
+  <a href="#qualification">Аліна — кваліфікація</a>
+  <a href="#sales">Фінансові консультанти Олександр і Микита</a>
+  <a href="#account">Катерина і Олександра</a>
+  <a href="#handover">Handover між етапами</a>
+  <a href="#tov">Tone of voice</a>
+  <a href="#refusals">Робота з відмовами</a>
+  <a href="#retention">Retention sequence</a>
+  <a href="#product">Нові продукти</a>
+</div>
+
+<div class="container">
+
+<!-- НОВА КОНЦЕПЦІЯ -->
+<div id="concept" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--blue-light)">⚖️</div>
+    <div>
+      <div class="section-title">Нова концепція: консультація болів замість sales call</div>
+      <div class="section-sub">Читати всій команді — це змінює підхід на кожному етапі</div>
+    </div>
+  </div>
+
+  <div style="background:#042C53;color:#fff;border-radius:var(--radius);padding:1.1rem 1.4rem;margin-bottom:1.5rem;display:flex;align-items:flex-start;gap:12px;">
+    <div style="font-size:20px;flex-shrink:0;margin-top:2px">📌</div>
+    <div>
+      <div style="font-size:15px;font-weight:600;margin-bottom:5px">Нове правило — Відділ фінансових консультацій</div>
+      <div style="font-size:13px;line-height:1.6;color:#B5D4F4">Слова «менеджер», «сейлз», «продажник» — більше не використовуємо. Олександр і Микита — <strong style="color:#fff">Фінансові консультанти</strong>. Це не просто назва: клієнт відкривається більше і менше захищається коли говорить з консультантом, а не з тим хто продає. Дані підтверджують — 16% клієнтів, що прийшли через контент і сприймали нас як консультантів, конвертуються краще і рідше торгуються. Саме тому ми одночасно змінюємо і назву, і підхід.</div>
+    </div>
+  </div>
+
+  <div class="concept-box">
+    <h3>Чому змінюємо підхід</h3>
+    <p>Клієнти приходять не купувати послугу — вони приходять вирішити проблему: «як легально вивести кошти», «чи безпечно», «що буде якщо банк запитає», «які документи підходять». Коли ми пропонуємо «консультацію з менеджером» — вони чують «мені будуть продавати» і захищаються або відмовляються.</p>
+    <p style="margin-top:0.8rem">Нова рамка: ми пропонуємо <strong>безкоштовну консультацію з фінансовим консультантом, який закриє питання по ситуації клієнта</strong>. Продаж відбувається органічно — коли клієнт вже отримав цінність і довіряє.</p>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div>
+      <div class="dont" style="border-radius:var(--radius-sm)">
+        <h5>❌ Стара рамка (sales call)</h5>
+        <p>«Підкажіть, будь ласка, чи зручно вам було б вийти на онлайн дзвінок з нашим менеджером, щоб він детально розповів про процес, відсотки та терміни?»</p>
+        <p style="margin-top:8px;font-size:12px;color:var(--red-mid)">Клієнт думає: «мені будуть продавати». Відповідає «подумаю» або зникає.</p>
+      </div>
+    </div>
+    <div>
+      <div class="do" style="border-radius:var(--radius-sm)">
+        <h5>✅ Нова рамка (консультація болів)</h5>
+        <p>«Пропоную безкоштовну 20-хвилинну консультацію — наш фінансовий консультант подивиться вашу ситуацію і скаже: які документи підходять, які є ризики і як їх уникнути. Без зобов'язань.»</p>
+        <p style="margin-top:8px;font-size:12px;color:var(--green)">Клієнт думає: «отримаю відповіді на свої питання безкоштовно». Погоджується охочіше.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Структура консультації — Фінансові консультанти Олександр і Микита</h3></div>
+    <div class="card-body">
+      <div class="step">
+        <div class="step-num green">0</div>
+        <div class="step-text">
+          <h4>30 сек — представлення компанії (тільки якщо клієнт не знайомий)</h4>
+          <p>Якщо клієнт прийшов через рекламу або не знає Xpaid — коротко і вагомо, без презентацій:</p>
+          <div class="script" style="margin-top:0.4rem">
+            <p>«Xpaid — сервіс повного циклу: переказ коштів плюс юридичний і комплаєнс-супровід на всіх етапах. Більше тисячі клієнтів, €500 млн транзакцій. У 2024 отримали нагороду FinAwards як найкращий крипто-сервіс України. Серед партнерів — iClub, iPlan, агентства нерухомості в ЄС, юридичні компанії з релокації. Але це все потім — розкажіть спершу про свою ситуацію.»</p>
+          </div>
+          <div class="tip" style="margin-top:0.5rem">
+            <strong>Якщо клієнт вже знає Xpaid</strong> — блок пропускаємо повністю. Одразу до ситуації клієнта.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num green">1</div>
+        <div class="step-text">
+          <h4>Перші 5 хв — слухаємо і закриваємо страхи</h4>
+          <p>«Розкажіть про вашу ситуацію — звідки кошти, куди потрібно. Я спочатку відповім на ваші питання, а потім розкажу як ми можемо допомогти.»</p>
+          <p style="margin-top:4px">Типові страхи, які треба закрити на початку, не в кінці: «Це легально?» → «Так, діємо за VASP ліцензією, всі операції за договором.» «Банк запитає?» → «Розкажу як це працює — у нас 1 000+ клієнтів, жодного випадку заморожування коштів.»</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num green">2</div>
+        <div class="step-text">
+          <h4>10 хв — конкретна відповідь під кейс клієнта</h4>
+          <p>Три хуки, які підвищують довіру ДО озвучення ціни:</p>
+          <div class="script" style="margin-top:0.4rem">
+            <p><strong>Хук 1 — документи підходять:</strong> «У вашому випадку з ФОП-деклараціями і 100к EUR — ваші документи підходять. Ось як виглядає процес для вас: [конкретно по кейсу]. Ризиків при такому пакеті немає.»</p>
+            <p style="margin-top:8px"><strong>Хук 2 — схожі кейси:</strong> «У нас є кілька клієнтів з такою ж ситуацією — продаж нерухомості в Україні, купівля в Іспанії. Всі пройшли без проблем. Можу показати як це виглядало у них.»</p>
+            <p style="margin-top:8px"><strong>Хук 3 — що буде далі після переказу:</strong> «Коли кошти будуть на рахунку в ЄС — через наших партнерів можемо допомогти з купівлею нерухомості, відкриттям компанії, інвестиціями. Вам не треба шукати різних підрядників — все через одне вікно.»</p>
+          </div>
+          <div class="info" style="margin-top:0.5rem">
+            Клієнт отримує цінність ДО озвучення ціни. Він бачить що ми розуміємо його ситуацію, що є досвід і що є підтримка після переказу. Тільки після цього — ціна.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num green">3</div>
+        <div class="step-text">
+          <h4>5 хв — ціна і перехід до рішення</h4>
+          <p>«З вашої суми ви отримаєте приблизно [Y] EUR. Рахунок при вашій сумі — безкоштовно. Наступний крок: надіслати документи до [дата]. Домовились?»</p>
+        </div>
+      </div>
+      <div class="tip" style="margin-top:0">
+        <strong>Ключовий принцип:</strong> Ніяких «трьох фішок про Xpaid» на початку. Компанія — 30 секунд якщо треба. Решта — під кейс клієнта.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Як Аліна запрошує на консультацію — нова версія</h3></div>
+    <div class="card-body">
+      <div class="do-dont">
+        <div class="dont">
+          <h5>❌ Стара версія</h5>
+          <p>«Підкажіть, будь ласка, чи зручно вам було б вийти на онлайн консультацію з нашим фінансовим консультантом, щоб він вам детально розповів про процес, відсотки та терміни?»</p>
+        </div>
+        <div class="do">
+          <h5>✅ Нова версія</h5>
+          <p>«Василю, ваш кейс — [коротко]. Пропоную 20-хвилинну безкоштовну консультацію з нашим фінансовим консультантом — він подивиться ваші документи і скаже одразу: підходить чи ні, які є нюанси і скільки коштуватиме саме для вас. Зручно завтра о 14:00 чи 16:00?»</p>
+        </div>
+      </div>
+      <div class="info" style="margin-top:0.8rem">
+        <strong>Що змінюється:</strong> Замість «розповість про процес» — «подивиться вашу ситуацію». Замість «відсотки та терміни» — «скаже чи підходить і скільки саме для вас». Фокус на клієнті, а не на нас.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- УМОВНИЙ СТИМУЛ — СТРАТЕГІЯ БОНУСІВ -->
+<div id="bonus" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--amber-light)">🎁</div>
+    <div>
+      <div class="section-title">Умовний стимул — стратегія бонусів і знижок</div>
+      <div class="section-sub">Бонус тільки тим хто сумнівається · система замість хаосу · €190к збереженої маржі/рік</div>
+    </div>
+  </div>
+
+  <!-- СЕГМЕНТНІ КАРТКИ З ОПИСАМИ -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem;">
+    <div style="background:var(--green-light);border:1px solid #97C459;border-radius:10px;padding:1.1rem;">
+      <div style="font-size:2rem;font-weight:700;color:#3B6D11;line-height:1;margin-bottom:4px">34%</div>
+      <div style="font-size:13px;font-weight:500;color:#3B6D11;margin-bottom:8px">Готові одразу</div>
+      <div style="font-size:12px;color:#3B6D11;line-height:1.55;margin-bottom:10px">Питають «що потрібно», «що далі» — без заперечень по ціні. Медіана суми ~86к EUR. Готові підписувати і надсилати документи одразу.</div>
+      <div style="background:#3B6D11;color:#fff;font-size:11px;font-weight:600;padding:3px 10px;border-radius:10px;display:inline-block">Бонус не давати</div>
+    </div>
+    <div style="background:#E6F1FB;border:1px solid #85B7EB;border-radius:10px;padding:1.1rem;">
+      <div style="font-size:2rem;font-weight:700;color:#185FA5;line-height:1;margin-bottom:4px">16%</div>
+      <div style="font-size:13px;font-weight:500;color:#185FA5;margin-bottom:8px">Прийшли після контенту</div>
+      <div style="font-size:12px;color:#185FA5;line-height:1.55;margin-bottom:10px">Дивились вебінар, відео з Олексієм, читали матеріали. Прогріті, менше цінового опору. Вже розуміють продукт до першого контакту.</div>
+      <div style="background:#185FA5;color:#fff;font-size:11px;font-weight:600;padding:3px 10px;border-radius:10px;display:inline-block">Бонус — рідко</div>
+    </div>
+    <div style="background:#FAEEDA;border:1px solid #EF9F27;border-radius:10px;padding:1.1rem;">
+      <div style="font-size:2rem;font-weight:700;color:#854F0B;line-height:1;margin-bottom:4px">38%</div>
+      <div style="font-size:13px;font-weight:500;color:#854F0B;margin-bottom:8px">Сумніваються</div>
+      <div style="font-size:12px;color:#854F0B;line-height:1.55;margin-bottom:10px">Порівнюють, питають про знижку, кажуть «подумаю». Зараз бонусу не отримують і йдуть. Це цільовий сегмент — найбільший потенціал системи.</div>
+      <div style="background:#854F0B;color:#fff;font-size:11px;font-weight:600;padding:3px 10px;border-radius:10px;display:inline-block">Умовний стимул</div>
+    </div>
+    <div style="background:#FCEBEB;border:1px solid #F09595;border-radius:10px;padding:1.1rem;">
+      <div style="font-size:2rem;font-weight:700;color:#A32D2D;line-height:1;margin-bottom:4px">13%</div>
+      <div style="font-size:13px;font-weight:500;color:#A32D2D;margin-bottom:8px">Отримали знижку</div>
+      <div style="font-size:12px;color:#A32D2D;line-height:1.55;margin-bottom:10px">Сумнівались → отримали знижку хаотично, без умов і системи. Це підриває ціну і створює прецедент «можна поторгуватись».</div>
+      <div style="background:#A32D2D;color:#fff;font-size:11px;font-weight:600;padding:3px 10px;border-radius:10px;display:inline-block">Потрібна система</div>
+    </div>
+  </div>
+
+  <!-- ДВА ІНСАЙТ-БЛОКИ -->
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div style="background:#EAF3DE;border-left:3px solid #639922;border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:1rem 1.1rem;">
+      <div style="font-size:12px;font-weight:600;color:#3B6D11;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px">Що це дає</div>
+      <p style="font-size:13px;color:#3B6D11;line-height:1.6">34% готових клієнтів не отримують знижку — це <strong>+34% збереженої маржі</strong>. При 200 угодах/рік і середній сумі 89к — економія <strong>~€190к комісії щорічно</strong> тільки від того що не роздаємо бонуси тим, хто і так підписав би.</p>
+    </div>
+    <div style="background:#E6F1FB;border-left:3px solid #378ADD;border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:1rem 1.1rem;">
+      <div style="font-size:12px;font-weight:600;color:#185FA5;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px">Ключовий інсайт з даних</div>
+      <p style="font-size:13px;color:#185FA5;line-height:1.6">Клієнти після контенту (16%) приходять прогрітими і рідше торгуються. Якщо направляти всіх «що думаю» до контенту перед консультацією — це може конвертувати <strong>30–40% з них без знижки</strong> взагалі.</p>
+    </div>
+  </div>
+
+  <!-- СТРАТЕГІЯ РАХУНКУ -->
+  <div class="info" style="margin-bottom:1.5rem">
+    <strong>Стратегія рахунку по сегментах:</strong>
+    <span style="display:inline-block;margin:4px 8px 0 0;background:var(--green-light);color:var(--green);font-size:12px;padding:2px 10px;border-radius:10px;font-weight:500">Від 100к — вшитий у комісію, завжди безкоштовно</span>
+    <span style="display:inline-block;margin:4px 8px 0 0;background:var(--amber-light);color:var(--amber);font-size:12px;padding:2px 10px;border-radius:10px;font-weight:500">25–100к — умовний бонус для вагаючихся</span>
+    <span style="display:inline-block;margin:4px 0 0 0;background:var(--gray-light);color:var(--gray);font-size:12px;padding:2px 10px;border-radius:10px;font-weight:500">До 25к — окремо і прозоро</span>
+  </div>
+
+  <div class="warn" style="margin-bottom:1.5rem">
+    <strong>Зупинити зараз:</strong> Знижка «щоб не пішов» без умови — заборонена. 13% клієнтів отримували її хаотично. Це підриває ціну і створює очікування торгів у всіх наступних. Кожен бонус має мати конкретну причину, конкретний термін і конкретного адресата.
+  </div>
+
+  <div class="tip" style="margin-bottom:1.5rem">
+    <strong>Повторні клієнти 500к+:</strong> Знижка до 2–2.5% — виправдана повністю. Втрата €3к на знижці при 500к угоді vs €25к+ виручки від 2 угод/рік. Ініціювати першими — не чекати поки попросять.
+  </div>
+
+  <div class="card">
+    <div class="card-header" style="background:var(--green-light)"><h3 style="color:var(--green)">Сегмент 1 — Готові (34%) · Бонус не давати</h3></div>
+    <div class="card-body">
+      <div class="do-dont">
+        <div class="do"><h5>✅ Аліна передає без знижки</h5><p>«Андрію, документи підходять. Передаю вас нашому фінансовому консультанту Олександру або Микиті — він вже знатиме вашу ситуацію. Зручно о 15:00?»</p></div>
+        <div class="do"><h5>✅ Консультант закриває впевнено</h5><p>«З 120 000€ ви отримаєте ~116 280€. Рахунок при вашій сумі — безкоштовно. Декларації до четверга. Домовились?»</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" style="background:var(--blue-light)"><h3 style="color:var(--blue)">Сегмент 2 — Після контенту (16%) · М'який бонус як останній поштовх</h3></div>
+    <div class="card-body">
+      <div class="step"><div class="step-num">1</div><div class="step-text"><h4>Аліна — контент під ситуацію, не знижка</h4><div class="script" style="margin-top:0.3rem"><p>«Василю, є відео де наш клієнт Роман розповідає як переказав кошти від продажу квартири до Польщі — схожа на вашу ситуація: [відео]. І сторінка відгуків: [посилання]. Напишіть коли переглянете.»</p></div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><h4>Аліна — через 2-3 дні, питання по контенту</h4><div class="script" style="margin-top:0.3rem"><p>«Василю, переглянули? Там є кейс з ФОП — схожий на ваш. Передаю нашому фінансовому консультанту — він вже знатиме вашу ситуацію. Зручно цього тижня?»</p></div></div></div>
+      <div class="step"><div class="step-num amber">3</div><div class="step-text"><h4>Консультант — м'який бонус якщо ще вагається</h4><div class="script" style="margin-top:0.3rem"><p>«Сергію, якщо підписуємо до п'ятниці — рахунок для вас безкоштовно. Для клієнтів що діють оперативно.»</p></div><div style="display:inline-block;margin-top:6px;background:var(--blue-light);color:var(--blue);font-size:11px;font-weight:600;padding:2px 9px;border-radius:10px">М'який бонус: рахунок безкоштовно · умова: підписання до п'ятниці</div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" style="background:var(--amber-light)"><h3 style="color:var(--amber)">Сегмент 3 — Сумніваються (38%) · Умовний стимул · Найбільший потенціал</h3></div>
+    <div class="card-body">
+      <div class="step"><div class="step-num">1</div><div class="step-text"><h4>Аліна — сигнал сумніву → контент + консультація, не торг</h4><div class="script" style="margin-top:0.3rem"><p>«Дмитре, перш ніж порівнювати — є відео де клієнт з вашою ситуацією пояснює чому обрав нас: [відео]. Після перегляду наш фінансовий консультант покаже точну цифру. Зручно завтра?»</p></div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><h4>Аліна — 2 дні без відповіді → нова причина</h4><div class="script" style="margin-top:0.3rem"><p>«Дмитре, цього місяця є можливість зафіксувати тариф до перегляду. Фінансовий консультант покаже розрахунок на короткій консультації. Зручно цього тижня?»</p></div></div></div>
+      <div class="step"><div class="step-num amber">3</div><div class="step-text"><h4>Консультант — умовний стимул при трьох умовах</h4><div class="sd" style="font-size:13px;color:var(--text2);margin-bottom:6px">Сума від 50к EUR + конкретний конкурент + документи готові. Без усіх трьох — не давати.</div><div class="script" style="margin-top:0.3rem"><p>«Дмитре, документи готові — можна стартувати вже цього тижня. Якщо підписуємо до п'ятниці — фіксую 2.9% і рахунок безкоштовно. Тільки при старті цього тижня.»</p></div><div style="display:inline-block;margin-top:6px;background:var(--amber-light);color:var(--amber);font-size:11px;font-weight:600;padding:2px 9px;border-radius:10px">Умовний стимул: 2.9% + рахунок · умова: старт цього тижня</div></div></div>
+      <div class="step"><div class="step-num red">4</div><div class="step-text"><h4>Після стимулу не вирішив → суміжний продукт</h4><div class="script" style="margin-top:0.3rem"><p>«Якщо поки не час — ок. Якщо щось піде не так у конкурентів — пишіть. До речі: можемо просто відкрити рахунок в ЄС зараз без обміну. Актуально?»</p></div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" style="background:var(--red-light)"><h3 style="color:var(--red)">Сегмент 4 — Хаотична знижка (13%) · Зупинити</h3></div>
+    <div class="card-body">
+      <div class="warn" style="margin-bottom:0.8rem"><strong>Заборона:</strong> Знижка «щоб не пішов» без умови — більше не діє.</div>
+      <div class="do-dont">
+        <div class="dont"><h5>❌ Як зараз</h5><p>«Добре, можу зробити 2.9%» — без жодної умови.</p></div>
+        <div class="do"><h5>✅ Як треба</h5><p>«Стандартний тариф змінити просто так не можу. Але якщо стартуємо цього тижня — 2.9% і рахунок безкоштовно. Тільки при готовності діяти.»</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" style="background:var(--purple-light)"><h3 style="color:var(--purple)">Сегмент 5 — Повторні клієнти 500к+ · Активна знижка для утримання</h3></div>
+    <div class="card-body">
+      <div class="success" style="margin-bottom:1rem"><strong>Математика:</strong> Клієнт 500к+ при 2 угодах/рік і тарифі 2.5% дає €25к виручки. «Втрата» на знижці 0.6% = €3к на угоді. ROI утримання: 8x+. Ініціювати першими — не чекати поки попросять.</div>
+      <div class="script">
+        <div class="script-label">Скрипт для повторного клієнта 500к+</div>
+        <p>«[Ім'я], раді що знову разом. Для клієнтів з вашим обсягом — персональні умови: від 300к — 2.5%, від 500к — до 2%. Повторне KYC не потрібне. Коли будете готові — просто напишіть, запустимо швидко.»</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- АНАЛІЗ ТАРИФІВ -->
+<div id="pricing-analysis" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--amber-light)">📊</div>
+    <div>
+      <div class="section-title">Аналіз: чи варто знижувати тарифи?</div>
+      <div class="section-sub">183 цінових відмов · медіана суми ~89к EUR · модель 5 сценаріїв</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Що кажуть дані про цінові відмови</h3></div>
+    <div class="card-body">
+      <div class="grid-2" style="margin-bottom:1.2rem">
+        <div>
+          <h4 style="margin-bottom:0.7rem">Профіль клієнта що йде через ціну:</h4>
+          <ul>
+            <li style="margin-bottom:5px">Медіана суми — <strong>89 000 EUR</strong></li>
+            <li style="margin-bottom:5px">55% відмов — суми 50–200к EUR</li>
+            <li style="margin-bottom:5px">Називають: «обмінники дешевше», «2.5%», «більше 3% — це багато»</li>
+            <li style="margin-bottom:5px">Реальна цитата: <em>«більше 3% це більше ніж я хотів би витратити на переказ»</em></li>
+            <li>Один клієнт порахував повний цикл: грн→USDT (4.4%) + USDC (0.2%) + комісія + рахунок = <strong>7%+</strong> і пішов</li>
+          </ul>
+        </div>
+        <div>
+          <div class="warn">
+            <strong>Ключова проблема:</strong> Клієнти рахують <strong>повний цикл</strong> — купівля крипти (~1.5%) + наша комісія (3.1%) + рахунок. Навіть якщо ми знизимо до 2.6% — загальна сума для клієнта залишиться ~5%+. Ціновий тиск не зникне від зниження нашої ставки.
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrap" style="margin-bottom:1.2rem">
+        <table>
+          <thead>
+            <tr><th>Сценарій</th><th>Ставка</th><th>Угод/рік</th><th>Виручка/рік</th><th>Дельта</th><th>Оцінка</th></tr>
+          </thead>
+          <tbody>
+            <tr style="background:var(--blue-light)">
+              <td><strong>Поточний стан</strong></td>
+              <td>3.1%</td><td>~201</td><td>~€555к</td><td>базовий</td><td>—</td>
+            </tr>
+            <tr>
+              <td>Знизити до 2.6% (+20% конверсія)</td>
+              <td>2.6%</td><td>~241</td><td>~€558к</td>
+              <td style="color:var(--green)">+€3к</td>
+              <td><span class="tag tag-amber">Мінімально</span></td>
+            </tr>
+            <tr>
+              <td>Знизити до 2.6% (+30% конверсія)</td>
+              <td>2.6%</td><td>~261</td><td>~€604к</td>
+              <td style="color:var(--green)">+€49к</td>
+              <td><span class="tag tag-amber">Оптимістично</span></td>
+            </tr>
+            <tr>
+              <td>Знизити до 2.8% (+20% конверсія)</td>
+              <td>2.8%</td><td>~241</td><td>~€601к</td>
+              <td style="color:var(--green)">+€46к</td>
+              <td><span class="tag tag-amber">Можливо</span></td>
+            </tr>
+            <tr style="background:var(--green-light)">
+              <td><strong>Краща комунікація, та сама ціна (+15% конверсія)</strong></td>
+              <td><strong>3.1%</strong></td><td><strong>~231</strong></td><td><strong>~€637к</strong></td>
+              <td style="color:var(--green)"><strong>+€82к</strong></td>
+              <td><span class="tag tag-green">Найкращий ROI</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="success" style="margin-bottom:1rem">
+        <strong>Висновок:</strong> Покращення комунікації і введення концепції «консультація болів» при тій самій ставці дає +€82к/рік. Зниження ціни на 0.5% без зміни комунікації — лише +€3–49к. <strong>Змінювати спосіб презентації ціни вигідніше ніж знижувати саму ціну.</strong>
+      </div>
+
+      <div class="grid-2">
+        <div class="card" style="margin-bottom:0">
+          <div class="card-header"><h3>Коли все ж знижувати — правила</h3></div>
+          <div class="card-body">
+            <ul>
+              <li style="margin-bottom:6px"><strong>Сума 200к+ EUR</strong> і клієнт має конкретний конкурентний оффер — до 2.5%</li>
+              <li style="margin-bottom:6px"><strong>Повторний клієнт</strong> — бонус лояльності, до 2.8%</li>
+              <li style="margin-bottom:6px"><strong>Стратегічний партнер / агент</strong> — реферальна знижка</li>
+            </ul>
+            <div class="warn" style="margin-top:0.8rem">
+              <strong>Правило:</strong> Знижка завжди обумовлена конкретною причиною. «Щоб не пішов» — не причина. Це знецінює послугу.
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-header"><h3>Що зробити замість зниження ціни</h3></div>
+          <div class="card-body">
+            <ul>
+              <li style="margin-bottom:6px"><strong>«Рахунок безкоштовно від 100к»</strong> — вшити вартість у комісію, подати як бонус. Клієнт сприймає як знижку, ми нічого не втрачаємо</li>
+              <li style="margin-bottom:6px"><strong>Комунікувати «суму на руки»</strong> замість відсотка: «отримаєте ~96 900€» замість «3.1% комісія»</li>
+              <li style="margin-bottom:6px"><strong>Безкоштовна консультація</strong> — збільшує сприйняту цінність без зміни ціни</li>
+              <li><strong>Прибрати «ефект повного циклу»</strong> — чітко показати що саме входить в нашу комісію, а що ні</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ЦІНА І КОНКУРЕНТИ -->
+<div id="price" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--red-light)">💸</div>
+    <div>
+      <div class="section-title">Ціна — як говорити про неї правильно</div>
+      <div class="section-sub">183 цінових відмови · читати всій команді</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Чому ціна сприймається як «дорого» — і як це виправити</h3></div>
+    <div class="card-body">
+      <p style="margin-bottom:1rem">Клієнт рахує не нашу ставку — він рахує <strong>повний цикл</strong>: купівля крипти (1.5%) + Xpaid (3.1%) + рахунок = ~5%. Він порівнює це з «обмінниками до 2.5%» — і вирішує що у нас дорого.</p>
+      <div class="grid-2">
+        <div class="dont">
+          <h5>❌ Як ми озвучуємо зараз</h5>
+          <p>«Буде 3.5% від суми — наші послуги + супутні витрати на банківські послуги залежно від обраного необанку — на зустрічі це обговорюється.»</p>
+          <p style="margin-top:6px;font-size:12px;color:var(--red-mid)">Клієнт чує: 3.5% + щось невідоме + ще банк. Іде рахувати у конкурентів.</p>
+        </div>
+        <div class="do">
+          <h5>✅ Як треба</h5>
+          <p>«З 100 000€ ви отримаєте ~96 900€ на рахунку в ЄС. Це включає весь процес: перевірку документів, відкриття рахунку, договір і саму операцію. При сумі від 100к — відкриття рахунку для вас безкоштовно.»</p>
+          <p style="margin-top:6px;font-size:12px;color:var(--green)">Клієнт чує конкретну суму і розуміє що входить.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Робота з «у конкурентів дешевше»</h3></div>
+    <div class="card-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <h4>Спочатку уточнити — що конкретно і скільки у конкурента</h4>
+          <p>Не відповідати одразу і не стверджувати що «у них не входить рахунок» — деякі конкуренти (Invan, Banksy та ін.) вже дають рахунок безкоштовно. Тому спочатку з'ясувати, потім відповідати на те що почули.</p>
+          <div class="script" style="margin-top:0.4rem">
+            <p>«З чим порівнюєте? Яка ціна і що конкретно входить — тільки конвертація чи також відкриття рахунку, договір, підтримка?»</p>
+          </div>
+          <div class="info" style="margin-top:0.5rem">
+            <strong>Примітка:</strong> Ми самі впровадили безкоштовний рахунок від 100к — тому ця перевага тепер є і у нас. Акцент робимо на договорі, VASP ліцензії і супроводі при питаннях банку.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <h4>Пояснити різницю без «у нас краще»</h4>
+          <p>«Я не скажу що там погано — просто різні рівні сервісу. Ми даємо договір, VASP ліцензію і відкритий IBAN рахунок. І якщо банк задасть питання — ми поруч. Частина клієнтів, які спробували дешевше, повернулись до нас коли виникли труднощі. Це ваш вибір.»</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num amber">3</div>
+        <div class="step-text">
+          <h4>При великих сумах — запропонувати індивідуальний тариф з умовою</h4>
+          <p>«Якщо готові підписати договір до кінця тижня — можу зафіксувати 2.9%. Але тільки якщо документи вже готові і старт цього тижня.»</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num red">4</div>
+        <div class="step-text">
+          <h4>Якщо клієнт все одно іде — відпустити з гідністю і точкою повернення</h4>
+          <p>«Розумію вас. Якщо виникнуть питання або щось піде не так — пишіть, ми будемо поруч. Бувають кейси коли повертаються — і ми завжди раді допомогти.»</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ТАРИФНИЙ ЛИСТ -->
+<div id="tariff" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--green-light)">📋</div>
+    <div>
+      <div class="section-title">Тарифний лист — готові відповіді для всіх</div>
+      <div class="section-sub">Називати суму «на руки» — ніколи «залежить від суми»</div>
+    </div>
+  </div>
+
+  <div class="role-badge role-all">👥 Всі менеджери</div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Сума переказу</th><th>Комісія Xpaid</th><th>Рахунок</th><th>Разом відрахування</th><th>Ви отримаєте</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>10 000 EUR</td><td>3.5% = 350 EUR</td><td>~100 EUR</td><td>450 EUR (4.5%)</td><td><strong>~9 550 EUR</strong></td></tr>
+            <tr><td>25 000 EUR</td><td>3.5% = 875 EUR</td><td>~100 EUR</td><td>975 EUR (3.9%)</td><td><strong>~24 025 EUR</strong></td></tr>
+            <tr><td>50 000 EUR</td><td>3.1% = 1 550 EUR</td><td>~100 EUR</td><td>1 650 EUR (3.3%)</td><td><strong>~48 350 EUR</strong></td></tr>
+            <tr style="background:var(--green-light)">
+              <td><strong>100 000 EUR</strong></td>
+              <td><strong>3.1% = 3 100 EUR</strong></td>
+              <td><strong style="color:var(--green)">Безкоштовно</strong></td>
+              <td><strong>3 100 EUR (3.1%)</strong></td>
+              <td><strong>~96 900 EUR</strong></td>
+            </tr>
+            <tr style="background:var(--green-light)">
+              <td><strong>200 000 EUR</strong></td>
+              <td><strong>3.1% = 6 200 EUR</strong></td>
+              <td><strong style="color:var(--green)">Безкоштовно</strong></td>
+              <td><strong>6 200 EUR (3.1%)</strong></td>
+              <td><strong>~193 800 EUR</strong></td>
+            </tr>
+            <tr style="background:var(--green-light)">
+              <td><strong>500 000 EUR</strong></td>
+              <td><strong>від 2.5% = від 12 500 EUR</strong></td>
+              <td><strong style="color:var(--green)">Безкоштовно</strong></td>
+              <td><strong>від 12 500 EUR</strong></td>
+              <td><strong>~487 500 EUR</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="success" style="margin-top:0.8rem">
+        <strong>Стратегія рахунку:</strong> Від 100к EUR — рахунок вшитий у комісію і комунікується як безкоштовний. Клієнт сприймає це як бонус, реально це 0.1% від угоди. 25–100к — рахунок є умовним бонусом для вагаючихся клієнтів. До 25к — показується окремо і прозоро.<br><br>
+        <strong>Від 100к — рахунок безкоштовно.</strong> Вшиваємо вартість рахунку у нашу комісію і подаємо як бонус. Клієнт сприймає це як перевагу, ми нічого не втрачаємо.
+      </div>
+      <div class="info" style="margin-top:0.6rem">
+        <strong>Якщо кошти у готівці (USD/EUR) або на рахунку:</strong> якщо кошти ще не в крипті — потрібна конвертація через партнерів (~1.5%). Найчастіший варіант: готівка USD/EUR в Україні або кошти на рахунку в банку. «Якщо кошти вже в USDC — отримаєте ~96 900€. Якщо готівка або банківський рахунок — конвертація ще ~1.5%, тобто ~95 400€. На консультації порахуємо точно.»
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- КВАЛІФІКАЦІЯ — АЛІНА -->
+<div id="qualification" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--blue-light)">🎯</div>
+    <div>
+      <div class="section-title">Кваліфікація — інструкції для Аліни</div>
+      <div class="section-sub">Ціль: зібрати 4 параметри → дати CTA на консультацію → передати з контекстом</div>
+    </div>
+  </div>
+
+  <div class="role-badge role-alina">👤 Аліна (SDR)</div>
+
+  <div class="card">
+    <div class="card-header"><h3>Проблема — кваліфікація лише у 9% чатів</h3></div>
+    <div class="card-body">
+      <p style="margin-bottom:1rem">54% чатів закриваються без жодного зібраного параметра. Спеціаліст отримує ліда і не знає нічого — і починає консультацію «з нуля», а не там де болить. <strong>Мінімальний стандарт: 4 питання в кожному чаті.</strong></p>
+      <div class="do-dont">
+        <div class="dont">
+          <h5>❌ Як зараз (реальний приклад)</h5>
+          <div class="dialogue">
+            <div class="msg"><span class="msg-label mgr">Аліна</span> Доброго дня! Цікавилися консультацією щодо легального переказу коштів. Все вірно?</div>
+            <div class="msg"><span class="msg-label client">Клієнт</span> Так</div>
+            <div class="msg"><span class="msg-label mgr">Аліна</span> Підкажіть, як я можу до вас звертатись?</div>
+            <div class="msg"><span class="msg-label client">Клієнт</span> Андрій</div>
+            <div class="msg"><span class="msg-label mgr">Аліна</span> Приємно познайомитись! Можете надати більше інформації щодо вашого запиту?</div>
+            <div class="msg" style="color:var(--red-mid);font-style:italic">→ Клієнт не відповів. Нічого не зібрано.</div>
+          </div>
+        </div>
+        <div class="do">
+          <h5>✅ 4 питання одним блоком</h5>
+          <div class="dialogue">
+            <div class="msg"><span class="msg-label mgr">Аліна</span> Андрію, вітаю! Щоб зрозуміти як найкраще допомогти — підкажіть:</div>
+            <div class="msg"><span class="msg-label mgr">Аліна</span> 1. Яка приблизна сума переказу?<br>2. Де зараз кошти — готівка, крипта, банк?<br>3. Є підтвердження походження — декларації, договори?<br>4. В яку країну потрібно перевести?</div>
+            <div class="msg"><span class="msg-label client">Клієнт</span> ~150к, готівка в Україні, є ФОП-декларації за 3 роки, Іспанія</div>
+            <div class="msg"><span class="msg-label mgr">Аліна</span> Андрію, ФОП-декларації підходять, і сума хороша. Пропоную 20-хвилинну безкоштовну консультацію з нашим фінансовим консультантом Микитою або Олександром — він подивиться ваші документи і скаже одразу що і як для вашого кейсу. Зручно завтра о 14:00 чи 16:00?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Клієнт питає ціну — як відповідати</h3></div>
+    <div class="card-body">
+      <p style="margin-bottom:0.8rem">Правило: <strong>сума «на руки» + короткий опис що входить + CTA.</strong> Орієнтуємось на найнижчий тариф в прикладі — клієнт чує приємну цифру і рухається далі. Відсоток — тільки якщо наполягають.</p>
+      <div class="do-dont">
+        <div class="dont">
+          <h5>❌ Реальний приклад (клієнт Ілля)</h5>
+          <div class="dialogue">
+            <div class="msg"><span class="msg-label client">Клієнт</span> Яка загальна комісія?</div>
+            <div class="msg"><span class="msg-label mgr">Аліна</span> Буде 3.5% від суми — наші послуги + супутні витрати на банківські послуги залежно від обраного необанку — на зустрічі це обговорюється.</div>
+            <div class="msg" style="color:var(--red-mid);font-style:italic">→ Клієнт чує «3.5% + щось ще невідоме». Іде рахувати у конкурентів.</div>
+          </div>
+        </div>
+        <div class="do">
+          <h5>✅ Сума, що входить, CTA</h5>
+          <div class="dialogue">
+            <div class="msg"><span class="msg-label client">Клієнт</span> Яка комісія?</div>
+            <div class="msg"><span class="msg-label mgr">Аліна</span> Для розуміння: з 200 000€ ви отримаєте ~193 800€ — відкриття рахунку при такій сумі безкоштовно. Це сервіс повного циклу: переказ, договір, юридичний і комплаєнс-супровід.</div>
+            <div class="msg"><span class="msg-label mgr">Аліна</span> Щоб порахувати точно під вашу суму — пропоную 20-хвилинну консультацію з нашим фінансовим консультантом Олександром або Микитою. Зручно завтра о 14:00 чи 16:00?</div>
+          </div>
+        </div>
+      </div>
+      <div class="tip" style="margin-top:0.8rem">
+        <strong>Три варіанти відповіді коли клієнт хоче «почути щось приємне»:</strong>
+        <ul style="margin-top:6px">
+          <li style="margin-bottom:5px"><strong>Орієнтир на вигоду:</strong> «З 200к отримаєте ~193 800€ — і рахунок безкоштовно». Клієнт чує велику суму і бонус, а не відсоток.</li>
+          <li style="margin-bottom:5px"><strong>Цінність повного циклу:</strong> «Це 3.1% за переказ, договір, рахунок і супровід — якщо робити все окремо, виходить дорожче і з ризиками».</li>
+          <li><strong>Соціальний доказ:</strong> «FinAwards 2024, більше 1 000 клієнтів, €500 млн транзакцій — і жодного випадку заморожування коштів».</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>CTA на консультацію — з конкретним часом</h3></div>
+    <div class="card-body">
+      <div class="do-dont">
+        <div class="dont">
+          <h5>❌ Відкрите запитання</h5>
+          <p>«Підкажіть, будь ласка, чи зручно вам було б вийти на онлайн дзвінок?»</p>
+          <p style="margin-top:6px;font-size:12px;color:var(--red-mid)">Клієнт відкладає → забуває. Конверсія низька.</p>
+        </div>
+        <div class="do">
+          <h5>✅ Два варіанти часу</h5>
+          <p>«Андрію, пропоную безкоштовну 20-хвилинну консультацію з нашим фінансовим консультантом — він подивиться вашу ситуацію і дасть конкретну відповідь. Зручно завтра о 14:00 чи 16:00 за Києвом?»</p>
+          <p style="margin-top:6px;font-size:12px;color:var(--green)">Клієнт вибирає між варіантами, а не думає «чи йти взагалі».</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Handover — що передавати спеціалісту</h3></div>
+    <div class="card-body">
+      <p style="margin-bottom:0.8rem">Після підтвердження консультації — передати дані фінансовому консультанту. Він відкриває дзвінок знаючи ситуацію і починає одразу з болю клієнта.</p>
+      <div class="script">
+        <div class="script-label">Шаблон передачі (у CRM або чат)</div>
+        <p>Клієнт: [Ім'я]<br>
+        Сума: ~[X] EUR<br>
+        Кошти: [готівка / крипта / банк]<br>
+        Документи: [є ФОП / є договір / немає — шукає варіанти]<br>
+        Країна: [куди]<br>
+        Консультація: [дата і час]<br>
+        Нотатка: [що важливе — поспіх, питав про ціну, порівнює з конкурентами...]</p>
+      </div>
+      <div class="warn" style="margin-top:0.6rem">
+        <strong>Правило:</strong> Спеціаліст відкриває консультацію словами «Аліна передала ваш кейс — [коротко]. Все вірно?» — не питає заново.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>«Немає підтвердження» — покроково</h3></div>
+    <div class="card-body">
+      <div class="step"><div class="step-num green">1</div><div class="step-text"><h4>Спочатку шукати альтернативи разом</h4><p>«За останні 3 роки — продавали майно, авто, були зарплатні надходження, дивіденди? Навіть часткове підтвердження допомагає.»</p></div></div>
+      <div class="step"><div class="step-num amber">2</div><div class="step-text"><h4>Якщо нічого немає — пояснити і направити</h4><p>«Без підтвердження ми не можемо провести операцію — це вимога ліцензії. Є юридична компанія, яка допомагає підготувати документи. Якщо підготують пакет — повертайтесь, ми все зробимо.»</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text"><h4>Не «партнери» — конкретне пояснення</h4><p>Слово «партнери» лякає. Казати: «юридична компанія, яка допомагає з оформленням документів про походження» — набагато зрозуміліше.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ФІНАНСОВІ КОНСУЛЬТАНТИ — ОЛЕКСАНДР, МИКИТА -->
+<div id="sales" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--teal-light)">💼</div>
+    <div>
+      <div class="section-title">Консультації — Фінансові консультанти</div>
+      <div class="section-sub">Формат: консультація болів → природній перехід до рішення → чіткий close</div>
+    </div>
+  </div>
+
+  <div class="role-badge role-olexandr">👤 Олександр (Фінансовий консультант)</div>
+  <div class="role-badge role-mykyta" style="margin-left:8px">👤 Микита (Фінансовий консультант)</div>
+
+  <div class="card">
+    <div class="card-header"><h3>Структура консультації — правильна послідовність</h3></div>
+    <div class="card-body">
+      <div class="grid-2">
+        <div>
+          <div class="step"><div class="step-num green">1</div><div class="step-text"><h4>Відкриття з контекстом від Аліни (30 сек)</h4><p>«[Ім'я], вітаю! Аліна передала що у вас [сума], [документи], потрібно в [країна]. Все вірно? Тоді розпочнемо.»</p></div></div>
+          <div class="step"><div class="step-num green">2</div><div class="step-text"><h4>Запитати про головне питання клієнта (1 хв)</h4><p>«Що для вас зараз найважливіше зрозуміти — легальність, документи, терміни чи вартість?» Слухати і починати з цього.</p></div></div>
+          <div class="step"><div class="step-num green">3</div><div class="step-text"><h4>Закрити болі конкретно (10 хв)</h4><p>Відповіді під ситуацію — не загальна презентація. «У вашому випадку з ФОП-деклараціями — ось що підходить і чому.»</p></div></div>
+          <div class="step"><div class="step-num green">4</div><div class="step-text"><h4>Пропозиція і ціна (3 хв)</h4><p>«З вашої суми ви отримаєте ~[Y] EUR. Рахунок при вашій сумі — безкоштовно. Що скажете?»</p></div></div>
+          <div class="step"><div class="step-num green">5</div><div class="step-text"><h4>Чіткий close (2 хв)</h4><p>«Наступний крок з вашого боку — [конкретно] до [дата]. З нашого — [що і коли]. Домовились?»</p></div></div>
+        </div>
+        <div>
+          <div class="warn" style="margin-bottom:0.8rem">
+            <strong>Помилка Микити:</strong> Починає з «трьох фішок про Xpaid» до того як дізнався ситуацію. Клієнт слухає загальне, хоча вже хоче конкретики по своєму кейсу.
+          </div>
+          <div class="tip">
+            <strong>Правило Олександра</strong> (і це правильно): «Розкажіть про вашу ситуацію» — завжди перше. Потім все адаптується під те, що почули.
+          </div>
+          <div class="info" style="margin-top:0.8rem">
+            <strong>Про презентацію:</strong> Якщо клієнт взагалі не знайомий з Xpaid — 2-3 речення на початку: «Xpaid — фінансова компанія з VASP ліцензією, допомагаємо легально переказати кошти з України в ЄС. Вже [N] клієнтів.» Все. Решта — під ситуацію.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Стандартний close — обов'язковий</h3></div>
+    <div class="card-body">
+      <p style="margin-bottom:1rem">39% цінових відмов відбуваються на консультації. Більшість — через нечіткий фінал без конкретного наступного кроку.</p>
+      <div class="do-dont">
+        <div class="dont">
+          <h5>❌ Реальний кінець без close</h5>
+          <div class="dialogue" style="font-size:12px">
+            <div class="msg"><span class="msg-label mgr">Олександр</span> Дякую за відповідь. Чекаю від вас. Зараз додамось до вас в чат.</div>
+            <div class="msg"><span class="msg-label client">Сергій</span> Дякую.</div>
+            <div class="msg"><span class="msg-label mgr">Олександр</span> Гарного дня.</div>
+            <div class="msg" style="color:var(--red-mid);font-style:italic">→ Що далі? Що клієнт має зробити? Невідомо.</div>
+          </div>
+        </div>
+        <div class="do">
+          <h5>✅ Close з конкретним кроком</h5>
+          <div class="dialogue" style="font-size:12px">
+            <div class="msg"><span class="msg-label mgr">Олександр</span> Сергію, підсумовуємо: ваші документи підходять, сума і країна — все є. Наступний крок: надіслати декларації за 2022–2024 на mlro@xpaid.org до четверга. Зможете?</div>
+            <div class="msg"><span class="msg-label client">Клієнт</span> Так, зроблю.</div>
+            <div class="msg"><span class="msg-label mgr">Олександр</span> Відмінно. Напишу вам в телеграм одразу після дзвінка — з адресою і переліком. Як отримаємо — запустимо процес цього тижня.</div>
+          </div>
+        </div>
+      </div>
+      <div class="script" style="margin-top:0.8rem">
+        <div class="script-label">Шаблон close (наприкінці кожної консультації)</div>
+        <p>«[Ім'я], підсумовуємо: [ситуація клієнта]. Ми можемо допомогти: [що саме]. З вашої суми отримаєте ~[Y] EUR, рахунок — [безкоштовно / [сума]]. Наступний крок з вашого боку: [конкретна дія] до [дата]. З нашого — я напишу вам [що саме]. Домовились?»</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Після консультації — повідомлення в чат (до 15 хвилин)</h3></div>
+    <div class="card-body">
+      <div class="script">
+        <div class="script-label">Шаблон</div>
+        <p>«[Ім'я], дякую за час! 🤝</p>
+        <p style="margin-top:6px">Фіксую домовленості:<br>
+        Сума: [X EUR]<br>
+        Документи: [що є]<br>
+        Ціль: [країна]</p>
+        <p style="margin-top:6px">Ваш наступний крок: надіслати [документи] на mlro@xpaid.org до [дата].<br>
+        Мій наступний крок: після отримання — повернусь протягом [X] робочих днів.</p>
+        <p style="margin-top:6px">Якщо є питання — пишіть сюди. Йдемо! 🚀»</p>
+      </div>
+    </div>
+  </div>
+
+  
+</div>
+
+<!-- АКАУНТ — КАТЕРИНА + ОЛЕКСАНДРА -->
+<div id="account" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--purple-light)">🤝</div>
+    <div>
+      <div class="section-title">Акаунт — Катерина і Олександра</div>
+      <div class="section-sub">Онбординг · KYC · SLA · Upsell · Retention</div>
+    </div>
+  </div>
+
+  <div class="role-badge role-kate">👤 Катерина</div>
+  <div class="role-badge role-sasha" style="margin-left:8px">👤 Олександра</div>
+
+  <div class="card">
+    <div class="card-header"><h3>Відповіді на топ запити клієнтів</h3></div>
+    <div class="card-body">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Запит</th><th>❌ Як зараз</th><th>✅ Як треба</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>«Порахуйте комісію»</td>
+              <td>«Уточню і повернусь»</td>
+              <td>Відповісти протягом 2 годин: «З вашої суми [X] EUR ви отримаєте [Y] EUR. При вашій сумі рахунок — безкоштовно.»</td>
+            </tr>
+            <tr>
+              <td>«Що робити з KYC?»</td>
+              <td>«Перейдіть за посиланням»</td>
+              <td>«Ось посилання — активне 24 години. Підготуйте: закордонний паспорт, гарне освітлення. Займе 5 хвилин. Якщо щось не проходить — пишіть одразу.»</td>
+            </tr>
+            <tr>
+              <td>«Посилання KYC не працює»</td>
+              <td>Чекає поки хтось пришле нове (затримка)</td>
+              <td>Нове посилання — протягом 30 хвилин. SLA не обговорюється.</td>
+            </tr>
+            <tr>
+              <td>«Коли буде готово?»</td>
+              <td>«Очікуємо, як буде — напишемо»</td>
+              <td>«Стандартний термін — [X] робочих днів. Ваш статус: [крок]. Наступний крок: [що і коли].»</td>
+            </tr>
+            <tr>
+              <td>«Яка мінімальна сума?»</td>
+              <td>«10 000 USDC»</td>
+              <td>«Мінімум — 10 000 EUR. При цій сумі вартість рахунку (~100 EUR) складає ~1% окремо — тому виходить трохи дорожче. Від 100к — рахунок вже входить у комісію.»</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>SLA — терміни які треба повідомляти клієнту</h3></div>
+    <div class="card-body">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Крок</th><th>Термін</th><th>Що сказати</th></tr></thead>
+          <tbody>
+            <tr><td>Перевірка документів</td><td>1–2 робочих дні</td><td>«Перевіримо протягом 1-2 робочих днів — повернусь до [конкретна дата].»</td></tr>
+            <tr><td>KYC верифікація</td><td>5 хв / до 24 год</td><td>«Зазвичай 5 хвилин. Якщо не пройшло — напишу протягом дня.»</td></tr>
+            <tr><td>Відкриття рахунку Satchel</td><td>2–5 робочих днів</td><td>«Відкриття рахунку — 2-5 робочих днів після підтвердження документів.»</td></tr>
+            <tr><td>Транзакція</td><td>1–3 робочих дні</td><td>«Після підписання договору — кошти на рахунку протягом 1-3 робочих днів.»</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tip">
+        <strong>Правило:</strong> При кожному кроці — повідомляти що сталось і що далі. Клієнт не повинен питати «коли?» сам.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Де і як втрачається клієнт — і що робити</h3></div>
+    <div class="card-body">
+      <div class="step">
+        <div class="step-num red">!</div>
+        <div class="step-text">
+          <h4>Клієнт пройшов KYC — написати того ж дня</h4>
+          <p>Одразу як прийшло підтвердження KYC — не чекати.<br>
+          «[Ім'я], верифікація пройшла успішно! Наступний крок: [що саме]. Зручно обговорити сьогодні?»</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num amber">!</div>
+        <div class="step-text">
+          <h4>Клієнт «відкладає на пізніше»</h4>
+          <p>Не відпускати без конкретної дати: «Зрозуміла. Тоді напишу вам [конкретна дата] — нагадаю і уточню чи все в силі. Добре?»</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num amber">!</div>
+        <div class="step-text">
+          <h4>«Вирішив через банк / SEPA»</h4>
+          <p>«Знайшли інший варіант? Якщо виникнуть складнощі — пишіть, ми тут.» Залишитись як надійний план Б.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Upsell після завершеного обміну — обов'язково</h3></div>
+    <div class="card-body">
+      <div class="do-dont">
+        <div class="dont">
+          <h5>❌ Як зараз — просимо відгук</h5>
+          <div class="dialogue" style="font-size:12px">
+            <div class="msg"><span class="msg-label mgr">Олександра</span> Раді що наш сервіс допоміг. Можливо поділитесь коротким відгуком?</div>
+            <div class="msg" style="color:var(--red-mid);font-style:italic">→ Перше що просимо після угоди — зробити щось для нас.</div>
+          </div>
+        </div>
+        <div class="do">
+          <h5>✅ Спочатку переконатись що все ок, потім upsell</h5>
+          <div class="dialogue" style="font-size:12px">
+            <div class="msg"><span class="msg-label mgr">Катерина</span> [Ім'я], кошти на рахунку! Все пройшло як треба? Якщо є питання по рахунку — допоможу.</div>
+            <div class="msg"><span class="msg-label mgr">Катерина</span> До речі — тепер коли рахунок відкритий, наступна операція буде вдвічі швидше. Також можемо допомогти з відкриттям компанії в Естонії або поповненням брокерського рахунку. А якщо є знайомі з подібним запитом — у нас є партнерська програма: ви отримуєте % за кожного. Що з цього актуально?</div>
+          </div>
+        </div>
+      </div>
+      <div class="script" style="margin-top:0.8rem">
+        <div class="script-label">Upsell-меню (вибрати 1-2 пункти по ситуації)</div>
+        <ul>
+          <li><strong>Повторний обмін:</strong> «Рахунок вже є — наступна операція без повторного KYC, набагато швидше.»</li>
+          <li><strong>Компанія в Естонії:</strong> «Якщо думаєте про бізнес в ЄС — ми запускаємо цей сервіс. Розповісти?»</li>
+          <li><strong>Interactive Brokers:</strong> «Тепер коли є EUR-рахунок — допомогти поповнити брокерський рахунок?»</li>
+          <li><strong>Реферальна програма:</strong> «Якщо є знайомі з подібним запитом — ми платимо % від кожного клієнта.»</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HANDOVER МІЖ ЕТАПАМИ -->
+<div id="handover" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--coral-light)">🔗</div>
+    <div>
+      <div class="section-title">Handover між етапами</div>
+      <div class="section-sub">Клієнт не повинен повторювати одне і те саме двічі</div>
+    </div>
+  </div>
+
+  <div class="warn" style="margin-bottom:1.5rem">
+    <strong>Головний системний збій:</strong> Зараз кожен менеджер починає з нуля. Клієнт відповідає на одні питання у Аліни, потім знову на консультації, потім при онбордингу. Це вбиває довіру і збільшує відмови.
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Аліна → Фінансовий консультант</h3></div>
+    <div class="card-body">
+      <div class="script">
+        <div class="script-label">Handover-блок (у CRM або чат перед консультацією)</div>
+        <p>Клієнт: [Ім'я, контакт TG]<br>
+        Сума: ~[X] EUR<br>
+        Кошти: [готівка / крипта / банк]<br>
+        Документи: [що є / чого немає]<br>
+        Країна: [куди]<br>
+        Консультація: [дата і час]<br>
+        Нотатка: [важливе — порівнює з конкурентами, поспіх, питав про ціну...]</p>
+      </div>
+      <div class="script" style="margin-top:0.6rem">
+        <div class="script-label">Відкриття консультації (з handover-контекстом)</div>
+        <p>«[Ім'я], вітаю! Аліна передала що у вас [~сума], [документи], потрібно в [країна]. Все вірно, чи щось змінилось? Тоді одразу до вашого кейсу — що для вас зараз найважливіше зрозуміти?»</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Фінансовий консультант → Катерина/Олександра</h3></div>
+    <div class="card-body">
+      <div class="script">
+        <div class="script-label">Передача після закритої угоди</div>
+        <p>Клієнт: [Ім'я, TG]<br>
+        Сума: [X EUR/USDC]<br>
+        Документи: [що підтверджено, що ще потрібно]<br>
+        Домовленості: [тариф, умови, особливі моменти]<br>
+        Важливо: [чутливі теми, поспіх, очікування клієнта]<br>
+        Перший крок акаунту: [що зробити першим]</p>
+      </div>
+      <div class="warn" style="margin-top:0.6rem">
+        <strong>Катерині/Олександрі НЕ ТРЕБА питати:</strong> «А яка у вас сума?», «Документи є?», «На яку країну?» — якщо спеціаліст зробив handover.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TONE OF VOICE -->
+<div id="tov" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--teal-light)">🗣</div>
+    <div>
+      <div class="section-title">Tone of voice — один голос компанії</div>
+      <div class="section-sub">6 ситуацій з прикладами · тверді заборони</div>
+    </div>
+  </div>
+
+  <div class="role-badge role-all">👥 Всі менеджери</div>
+
+  <div class="card">
+    <div class="card-header" style="background:var(--red-light)"><h3 style="color:var(--red)">Тверда заборона — ці фрази прибрати з роботи назавжди</h3></div>
+    <div class="card-body">
+      <div class="grid-2">
+        <ul>
+          <li style="margin-bottom:8px">«<strong>Чи актуальний ваш запит?</strong>» — особливо повторно</li>
+          <li style="margin-bottom:8px">«<strong>Як ваші справи?</strong>» — як відкриття після місяця мовчання від незнайомої людини</li>
+          <li style="margin-bottom:8px">«<strong>Будемо на зв'язку</strong>» без конкретного наступного кроку</li>
+          <li style="margin-bottom:8px">«<strong>Очікуємо</strong>» без дати</li>
+        </ul>
+        <ul>
+          <li style="margin-bottom:8px">«<strong>Нагадую вам що...</strong>» — звучить як колектор</li>
+          <li style="margin-bottom:8px">«<strong>Просто хотів уточнити...</strong>» — невпевнено і дратує</li>
+          <li style="margin-bottom:8px">«<strong>Можливо втратилось попереднє повідомлення</strong>» — клієнт не дурний</li>
+          <li style="margin-bottom:8px">«<strong>3.5% + супутні витрати</strong>» без конкретної суми «на руки»</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">Ситуація 1 — Перший контакт</div>
+  <div class="do-dont" style="margin-bottom:1.5rem">
+    <div class="dont">
+      <h5>❌ Шаблонний бот</h5>
+      <p>«Доброго дня! Мене звати Аліна, я менеджер компанії Xpaid. Цікавилися консультацією щодо легального переказу коштів. Все вірно?»</p>
+    </div>
+    <div class="do">
+      <h5>✅ Живий і одразу до суті</h5>
+      <p>«Василю, вітаю! Бачу ваш запит — переказ коштів до ЄС. Підкажіть одразу: яка приблизна сума і де зараз кошти — готівка, крипта чи банк? Це допоможе зрозуміти найкращий варіант для вас.»</p>
+    </div>
+  </div>
+
+  <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">Ситуація 2 — Пінгування після паузи</div>
+  <div class="do-dont" style="margin-bottom:1.5rem">
+    <div class="dont">
+      <h5>❌ Мертвий пінг</h5>
+      <p>«Доброго дня! Підкажіть, чи актуальний ваш запит?» — через 3 дні — «Вітаю! Можливо втратилось повідомлення. Чи актуальний запит?»</p>
+    </div>
+    <div class="do">
+      <h5>✅ Пінг з цінністю</h5>
+      <p>«Василю, до речі — банки в Польщі посилили вимоги до документів при вхідних переказах. Якщо плануєте туди — краще підготуватись заздалегідь. Хочете коротко поясню?»</p>
+    </div>
+  </div>
+
+  <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">Ситуація 3 — «Як справи» після місяця</div>
+  <div class="do-dont" style="margin-bottom:1.5rem">
+    <div class="dont">
+      <h5>❌ Штучне запитання</h5>
+      <p>«Доброго дня, Олено! Як ваші справи? Сподіваюся все добре. Хотіла уточнити щодо вашого запиту...»</p>
+    </div>
+    <div class="do">
+      <h5>✅ Чесно і конкретно</h5>
+      <p>«Олено, вітаю! Домовлялись що напишу в жовтні. Плани щодо переказу ще в силі? Якщо так — я готова організувати консультацію цього тижня.»</p>
+    </div>
+  </div>
+
+  <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">Ситуація 4 — «Коли буде готово?»</div>
+  <div class="do-dont" style="margin-bottom:1.5rem">
+    <div class="dont">
+      <h5>❌ Розмито</h5>
+      <p>«Очікуємо підтвердження. Як тільки буде — одразу напишемо.»</p>
+    </div>
+    <div class="do">
+      <h5>✅ Дата і статус</h5>
+      <p>«Максиме, документи на перевірці — відповідь буде до четверга включно. Якщо щось зміниться — напишу раніше.»</p>
+    </div>
+  </div>
+
+  <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">Ситуація 5 — «Поки не треба»</div>
+  <div class="do-dont" style="margin-bottom:1.5rem">
+    <div class="dont">
+      <h5>❌ Здатись без точки повернення</h5>
+      <p>«Зрозуміло, дякую. Звертайтесь якщо що.»</p>
+    </div>
+    <div class="do">
+      <h5>✅ Зафіксувати повернення або дізнатись причину</h5>
+      <p>«Зрозуміла, Дмитре. Якщо не секрет — що змінилось? Напишу вам у вересні — або раніше, якщо скажете коли краще.»</p>
+    </div>
+  </div>
+
+  <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.4px">Ситуація 6 — Після завершення обміну</div>
+  <div class="do-dont" style="margin-bottom:1.5rem">
+    <div class="dont">
+      <h5>❌ Одразу просити відгук</h5>
+      <p>«Раді що допомогли! Можливо поділитесь відгуком?»</p>
+    </div>
+    <div class="do">
+      <h5>✅ Спочатку переконатись що все ок</h5>
+      <p>«Сергію, кошти на рахунку! Все пройшло як треба? Якщо є питання по рахунку — допоможу. І якщо є знайомі з подібним запитом — у нас є партнерська програма.»</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Правило</th><th>❌</th><th>✅</th></tr></thead>
+          <tbody>
+            <tr><td>Числа і кроки</td><td>«1️⃣ По-перше...»</td><td>«1. ...» або «По-перше...»</td></tr>
+            <tr><td>Звернення</td><td>«Шановний клієнте»</td><td>Завжди на ім'я: «Василю»</td></tr>
+            <tr><td>Довжина</td><td>Стіна тексту з усіма деталями</td><td>Одна думка — одне повідомлення. До 4-5 рядків.</td></tr>
+            <tr><td>Мова</td><td>Суміш без системи</td><td>Першим — українською. Далі — як пише клієнт</td></tr>
+            <tr><td>Емодзі</td><td>«💸🔥✅1️⃣2️⃣» — надмірно</td><td>Тільки емоційні де доречно: 🤝 🎉 — 1-2 на повідомлення</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- РОБОТА З ВІДМОВАМИ -->
+<div id="refusals" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--amber-light)">🔄</div>
+    <div>
+      <div class="section-title">Робота з відмовами</div>
+      <div class="section-sub">359 «не актуально» · 183 цінових · 93 «зник»</div>
+    </div>
+  </div>
+
+  <div class="role-badge role-all">👥 Всі менеджери</div>
+
+  <div class="card">
+    <div class="card-header"><h3>«Не актуально» — Nurture-послідовність</h3></div>
+    <div class="card-body">
+      <div class="step"><div class="step-num">1</div><div class="step-text"><h4>Одразу уточнити причину і призначити дату повернення</h4><p>«Зрозуміла, [Ім'я]. Якщо не секрет — що змінилось? Це допоможе краще підготуватись коли повернемось. І коли краще нагадати — через місяць, квартал?»</p><div class="tip" style="margin-top:6px"><strong>Одне питання, не кілька</strong> — тільки «що змінилось?». Не: «що зупиняє, чому не актуально, що можемо зробити краще». Одне ключове.</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><h4>Через 2 тижні — корисний контент, не «чи актуально»</h4><p>«[Ім'я], ділюсь корисним — [новина або зміна умов банків / вебінар]. Може стати в нагоді.»</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text"><h4>На призначену дату — повернутись персонально</h4><p>«[Ім'я], домовлялись що напишу у [місяць]. Плани ще в силі? Якщо так — пропоную організувати консультацію цього тижня.»</p></div></div>
+      <div class="step"><div class="step-num amber">4</div><div class="step-text"><h4>Якщо знову «не зараз» — спробувати суміжне</h4><p>«Може поки актуальніше відкрити рахунок без обміну? Або є питання щодо компанії в ЄС чи брокерського рахунку? Ми можемо допомогти і з цим.» Якщо і це ні — «Закрию тему щоб не турбувати. Мій контакт у вас є.»</p></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>«Зник» — Меседж останнього шансу</h3></div>
+    <div class="card-body">
+      <div class="script">
+        <div class="script-label">Надіслати 1 раз після 3-5 днів мовчання</div>
+        <p>«[Ім'я], розумію що зайняті. Це моє останнє нагадування по цій темі.</p>
+        <p style="margin-top:6px">Якщо ваш запит ще актуальний — відпишіть одним словом, продовжимо. Якщо плани змінились — теж добре, просто дайте знати.</p>
+        <p style="margin-top:6px">Буду радий допомогти коли будете готові. 🤝»</p>
+      </div>
+      <div class="tip">
+        <strong>Чому працює:</strong> «Це моє останнє повідомлення» знімає тиск. Клієнти відповідають саме на це, бо відчувають що їх не переслідують.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Цінова відмова — покроково</h3></div>
+    <div class="card-body">
+      <div class="step"><div class="step-num">1</div><div class="step-text"><h4>Уточнити з чим порівнює</h4><p>«З чим порівнюєте? Що саме входить у ту ціну?»</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><h4>Пояснити різницю конкретно</h4><p>«Я не скажу що там погано — просто різні рівні. Ми: договір, VASP ліцензія, IBAN рахунок, супровід якщо банк питає. Частина клієнтів, які спробували дешевше, поверталась. Це ваш вибір.»</p></div></div>
+      <div class="step"><div class="step-num amber">3</div><div class="step-text"><h4>При великих сумах — умовна знижка</h4><p>«Якщо готові підписати договір до кінця тижня — можу зафіксувати 2.9%. Тільки якщо документи готові і старт цього тижня.»</p></div></div>
+      <div class="step"><div class="step-num red">4</div><div class="step-text"><h4>Якщо все одно іде — з гідністю</h4><p>«Якщо виникнуть питання або щось піде не так — пишіть, будемо поруч. Бувають кейси коли повертаються.»</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- RETENTION SEQUENCE -->
+<div id="retention" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--purple-light)">📬</div>
+    <div>
+      <div class="section-title">Retention sequence — після першого обміну</div>
+      <div class="section-sub">5 точок контакту · Катерина і Олександра</div>
+    </div>
+  </div>
+
+  <div class="role-badge role-kate">👤 Катерина</div>
+  <div class="role-badge role-sasha" style="margin-left:8px">👤 Олександра</div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="step">
+        <div class="step-num green">1</div>
+        <div class="step-text">
+          <h4>День завершення — турбота + upsell</h4>
+          <div class="script" style="margin-top:0.4rem">
+            <p>«[Ім'я], кошти на рахунку! 🎉 Все пройшло гладко. Тепер коли рахунок є — наступна операція буде швидше. Також можемо допомогти з відкриттям компанії в Естонії, поповненням брокерського рахунку або реферальною програмою. Що актуально?»</p>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num green">2</div>
+        <div class="step-text">
+          <h4>Наступного дня — «все ок?» і запит відгуку</h4>
+          <div class="script" style="margin-top:0.4rem">
+            <p>«[Ім'я], кошти дійшли — все налаштувалось нормально? Якщо є питання по рахунку або першому платежу — пишіть, допоможу. І якщо є хвилинка — відгук допомагає новим клієнтам обрати нас: [посилання]»</p>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num green">3</div>
+        <div class="step-text">
+          <h4>Через 30 днів — нова можливість</h4>
+          <div class="script" style="margin-top:0.4rem">
+            <p>«[Ім'я], вітаю! Запустили сервіс реєстрації компаній в Естонії онлайн. Якщо плануєте бізнес в ЄС — можемо поговорити. Актуально?»</p>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num amber">4</div>
+        <div class="step-text">
+          <h4>Через 90 днів — перевірка потреб</h4>
+          <div class="script" style="margin-top:0.4rem">
+            <p>«[Ім'я], 3 місяці як ви з нами. Є нові задачі по переказах або рахункам? Будемо раді допомогти знову.»</p>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num amber">5</div>
+        <div class="step-text">
+          <h4>Кінець року — VIP</h4>
+          <div class="script" style="margin-top:0.4rem">
+            <p>«[Ім'я], дякуємо що були з нами цього року! Для постійних клієнтів — [знижка або бонус] на наступний обмін. Пишіть першим коли будете готові.»</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- НОВІ ПРОДУКТИ -->
+<div id="product" class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--teal-light)">🚀</div>
+    <div>
+      <div class="section-title">Нові продукти та незакриті потреби</div>
+      <div class="section-sub">Конкретні рекомендації по впровадженню</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Interactive Brokers — серійний запит без серійного рішення</h3></div>
+    <div class="card-body">
+      <div class="info" style="margin-bottom:1rem">
+        <strong>Дані:</strong> Микита на дзвінку: «за цей рік ви будете 18-й хто просить поповнити IB». У переписках — понад 30 чатів. Алгоритм відпрацьований, але ніде не зафіксований.
+      </div>
+      <div class="grid-2">
+        <div>
+          <div class="step"><div class="step-num green">1</div><div class="step-text"><h4>Записати «IB Flow» формально</h4><p>Гроші з України → EUR-рахунок → поповнення IB. Один документ, один скрипт.</p></div></div>
+          <div class="step"><div class="step-num green">2</div><div class="step-text"><h4>FAQ або окрема сторінка</h4><p>«Як поповнити Interactive Brokers з України» — клієнти шукають це в Google.</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text"><h4>Пропонувати після кожного обміну</h4><p>«Тепер є EUR-рахунок — допомогти поповнити брокерський рахунок?»</p></div></div>
+        </div>
+        <div>
+          <div class="success">
+            <strong>Потенціал:</strong> 18 клієнтів × ~$50к × 3.1% = ~€27к/рік тільки на наявному потоці. При активному залученні — 2–3 рази більше.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+  
+
+  <div class="card">
+    <div class="card-header"><h3>Реферальна програма — хто, коли і як</h3></div>
+    <div class="card-body">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Хто</th><th>Коли пропонувати</th><th>Як формулювати</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="tag tag-blue">Аліна</span></td>
+              <td>При «не актуально» або «мала сума»</td>
+              <td>«Якщо серед знайомих є хтось із подібним запитом — направте до нас. Ми платимо % від комісії за кожного клієнта.»</td>
+            </tr>
+            <tr>
+              <td><span class="tag" style="background:var(--purple-light);color:var(--purple)">Катерина / Олександра</span></td>
+              <td>Одразу після завершеного обміну</td>
+              <td>«Якщо є знайомі з подібним запитом — направте до нас. Ви отримаєте [%] від комісії.»</td>
+            </tr>
+            <tr>
+              <td><span class="tag tag-green">Олександр / Микита</span></td>
+              <td>На B2B і партнерських зустрічах</td>
+              <td>«Якщо ваші клієнти мають задачу з переказами — ми ділимось комісією. Відкриті до партнерства.»</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+document.querySelectorAll('.nav a').forEach(link => {
+  link.addEventListener('click', function() {
+    document.querySelectorAll('.nav a').forEach(l => l.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+window.addEventListener('scroll', () => {
+  const sections = document.querySelectorAll('.section[id]');
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  document.querySelectorAll('.nav a').forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('href') === '#' + current) l.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

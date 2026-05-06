@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xpaid · Квітень 2026 · Місяць зростання</title>
+<style>
+:root {
+  --bg: #f5f5f7;
+  --bg2: #ffffff;
+  --bg3: #fbfbfd;
+  --text: #1d1d1f;
+  --text2: #6e6e73;
+  --text3: #a1a1a6;
+  --accent: #0071e3;
+  --accent2: #00a3ff;
+  --border: rgba(0,0,0,0.08);
+  --shadow: 0 2px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-hover: 0 8px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+  --radius: 20px;
+  --r-sm: 12px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; background: var(--bg); }
+
+body {
+  font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(160deg, #000000 0%, #1a1a2e 40%, #0d0d1a 100%);
+  padding: 120px 40px 100px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(ellipse, rgba(0,113,227,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 24px;
+}
+
+.hero-title {
+  font-size: clamp(40px, 7vw, 76px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+
+.hero-title em {
+  font-style: normal;
+  background: linear-gradient(135deg, #0071e3, #00c2ff, #a8d8ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 19px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.5);
+  max-width: 480px;
+  margin: 0 auto 48px;
+  line-height: 1.6;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-num {
+  font-size: 40px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 6px;
+  letter-spacing: .04em;
+}
+
+/* ── INTRO ── */
+.intro {
+  max-width: 720px;
+  margin: 80px auto;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.intro h2 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+.intro p {
+  font-size: 17px;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.intro .note {
+  font-size: 14px;
+  color: var(--text3);
+  margin-top: 24px;
+  padding: 16px 20px;
+  background: var(--bg2);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  text-align: left;
+  line-height: 1.6;
+}
+
+/* ── NAV ── */
+.nav-section {
+  padding: 0 24px 60px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.nav-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+  color: var(--text);
+}
+
+.nav-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.nav-chip {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 100px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text2);
+  text-decoration: none;
+  transition: all .15s;
+  font-weight: 500;
+}
+
+.nav-chip:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* ── DEPT LABEL ── */
+.dept-header {
+  max-width: 1100px;
+  margin: 64px auto 24px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dept-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.dept-name {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.dept-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--bg2);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  max-width: 1100px;
+  margin: 0 auto 24px;
+  padding: 0;
+  overflow: hidden;
+  transition: box-shadow .2s, transform .2s;
+  scroll-margin-top: 80px;
+}
+
+.card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+
+.card-header {
+  padding: 36px 40px 28px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 600;
+  flex-shrink: 0;
+  letter-spacing: -0.01em;
+}
+
+.card-meta { flex: 1; min-width: 200px; }
+
+.card-name {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.card-role {
+  font-size: 15px;
+  color: var(--text2);
+  font-weight: 400;
+}
+
+.card-skill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.card-scores {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.score-pill {
+  text-align: center;
+  padding: 8px 14px;
+  background: var(--bg);
+  border-radius: var(--r-sm);
+  min-width: 56px;
+}
+
+.score-num {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.score-label {
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 3px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+/* ── CARD BODY ── */
+.card-body {
+  padding: 32px 40px;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 20px;
+}
+
+.strengths-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.strength-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 20px;
+}
+
+.strength-badge {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.strength-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.strength-body {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+
+.kpi-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.kpi-chip {
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text2);
+}
+
+.quote-block {
+  border-left: 3px solid var(--border);
+  padding: 14px 20px;
+  margin: 24px 0;
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  background: var(--bg3);
+}
+
+.quote-text {
+  font-size: 15px;
+  color: var(--text2);
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.quote-source {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 8px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.growth-box {
+  border-radius: var(--r-sm);
+  padding: 20px 24px;
+  margin-top: 24px;
+}
+
+.growth-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.growth-text {
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 28px 0;
+}
+
+/* ── FOOTER ── */
+.footer {
+  background: #000;
+  padding: 60px 40px;
+  text-align: center;
+  margin-top: 80px;
+}
+
+.footer-brand { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.footer-sub { font-size: 14px; color: rgba(255,255,255,0.3); }
+
+/* ── COLORS ── */
+/* Finance — teal */
+.c-teal .card-avatar { background: #e1f5ee; color: #085041; }
+.c-teal .card-skill { background: #e1f5ee; color: #085041; }
+.c-teal .strength-badge { color: #085041; }
+.c-teal .quote-block { border-color: #5dcaa5; }
+.c-teal .growth-box { background: #e1f5ee; }
+.c-teal .growth-label { color: #085041; }
+.c-teal .growth-text { color: #085041; }
+.c-teal .dept-icon { background: #e1f5ee; }
+.c-teal .score-num { color: #085041; }
+
+/* Marketing — blue */
+.c-blue .card-avatar { background: #e6f1fb; color: #0c447c; }
+.c-blue .card-skill { background: #e6f1fb; color: #0c447c; }
+.c-blue .strength-badge { color: #0c447c; }
+.c-blue .quote-block { border-color: #85b7eb; }
+.c-blue .growth-box { background: #e6f1fb; }
+.c-blue .growth-label { color: #0c447c; }
+.c-blue .growth-text { color: #0c447c; }
+.c-blue .dept-icon { background: #e6f1fb; }
+.c-blue .score-num { color: #0c447c; }
+
+/* Sales — amber */
+.c-amber .card-avatar { background: #faeeda; color: #633806; }
+.c-amber .card-skill { background: #faeeda; color: #633806; }
+.c-amber .strength-badge { color: #854f0b; }
+.c-amber .quote-block { border-color: #fac775; }
+.c-amber .growth-box { background: #faeeda; }
+.c-amber .growth-label { color: #633806; }
+.c-amber .growth-text { color: #633806; }
+.c-amber .dept-icon { background: #faeeda; }
+.c-amber .score-num { color: #633806; }
+
+/* Account — coral */
+.c-coral .card-avatar { background: #faece7; color: #712b13; }
+.c-coral .card-skill { background: #faece7; color: #712b13; }
+.c-coral .strength-badge { color: #993c1d; }
+.c-coral .quote-block { border-color: #f0997b; }
+.c-coral .growth-box { background: #faece7; }
+.c-coral .growth-label { color: #712b13; }
+.c-coral .growth-text { color: #712b13; }
+.c-coral .dept-icon { background: #faece7; }
+.c-coral .score-num { color: #712b13; }
+
+/* Legal — slate */
+.c-slate .card-avatar { background: #f1efe8; color: #444441; }
+.c-slate .card-skill { background: #f1efe8; color: #444441; }
+.c-slate .strength-badge { color: #5f5e5a; }
+.c-slate .quote-block { border-color: #b4b2a9; }
+.c-slate .growth-box { background: #f1efe8; }
+.c-slate .growth-label { color: #444441; }
+.c-slate .growth-text { color: #444441; }
+.c-slate .dept-icon { background: #f1efe8; }
+.c-slate .score-num { color: #444441; }
+
+/* IT — purple */
+.c-purple .card-avatar { background: #eeedfe; color: #3c3489; }
+.c-purple .card-skill { background: #eeedfe; color: #3c3489; }
+.c-purple .strength-badge { color: #3c3489; }
+.c-purple .quote-block { border-color: #afa9ec; }
+.c-purple .growth-box { background: #eeedfe; }
+.c-purple .growth-label { color: #3c3489; }
+.c-purple .growth-text { color: #3c3489; }
+.c-purple .dept-icon { background: #eeedfe; }
+.c-purple .score-num { color: #3c3489; }
+
+/* Leadership — graphite */
+.c-graphite .card-avatar { background: #1d1d1f; color: #fff; }
+.c-graphite .card-skill { background: #1d1d1f; color: #fff; }
+.c-graphite .strength-badge { color: #1d1d1f; }
+.c-graphite .quote-block { border-color: #6e6e73; }
+.c-graphite .growth-box { background: #f5f5f7; }
+.c-graphite .growth-label { color: #1d1d1f; }
+.c-graphite .growth-text { color: #1d1d1f; }
+.c-graphite .dept-icon { background: #1d1d1f; }
+.c-graphite .score-num { color: #1d1d1f; }
+
+.mx-auto { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+@media (max-width: 600px) {
+  .hero { padding: 80px 24px 64px; }
+  .card-header { padding: 24px; }
+  .card-body { padding: 24px; }
+  .strengths-grid { grid-template-columns: 1fr; }
+  .card-scores { gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Xpaid Team · Квітень 2026</p>
+  <h1 class="hero-title">Місяць, у якому<br>виріс <em>кожен</em> із нас</h1>
+  <p class="hero-sub">Аналіз роботи, 360-зворотній зв'язок і спостереження керівництва.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">11</div><div class="stat-label">людей у команді</div></div>
+    <div class="stat"><div class="stat-num">5</div><div class="stat-label">відділів</div></div>
+    <div class="stat"><div class="stat-num">04.26</div><div class="stat-label">Квітень 2026</div></div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<div class="intro">
+  <h2>Що тут написано про тебе</h2>
+  <p>Знайди свій розділ. Тут — результат аналізу місяця роботи, зворотного зв'язку від колег і спостережень керівництва за тим, як ти проявляєшся в роботі.</p>
+  <p>Тут написано про твої сильні сторони і перемоги — з конкретними результатами. А також про напрямки, на які є сенс звернути увагу.</p>
+  <div class="note">
+    <strong>Важливо:</strong> зворотний зв'язок від колег у 360-опитуванні — повністю анонімний. Ми взяли звідти патерни, які повторювались у кількох відповідях: це не одиничні думки. Якщо щось здається несправедливим або незрозумілим — проговоримо на 1-to-1.
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-section">
+  <p class="nav-title">Перейти до людини</p>
+  <div class="nav-grid">
+    <a class="nav-chip" href="#halyna">Галина — Finance</a>
+    <a class="nav-chip" href="#valeriia">Валерія — CMO</a>
+    <a class="nav-chip" href="#oleksandr">Олександр — CBDO</a>
+    <a class="nav-chip" href="#mykyta">Микита — Sales Manager</a>
+    <a class="nav-chip" href="#olha">Ольга — Partnership</a>
+    <a class="nav-chip" href="#alina-h">Аліна Худицька — SDR</a>
+    <a class="nav-chip" href="#alina-b">Аліна Б. — SDR Partner</a>
+    <a class="nav-chip" href="#oleksandra">Олександра — Account</a>
+    <a class="nav-chip" href="#katia">Катерина — Account</a>
+    <a class="nav-chip" href="#alina-c">Аліна Григор'єва — Legal</a>
+    <a class="nav-chip" href="#viktoria">Вікторія — Legal</a>
+    <a class="nav-chip" href="#dmytro">Дмитро — IT</a>
+  </div>
+</div>
+
+<!-- ══════════════════════ FINANCE ══════════════════════ -->
+<div class="dept-header c-teal">
+  <div class="dept-icon">💰</div>
+  <div class="dept-name">Фінанси</div>
+  <div class="dept-line"></div>
+</div>
+
+<div class="card c-teal mx-auto" id="halyna" style="max-width:1100px;margin:0 24px 24px;margin-left:auto;margin-right:auto;">
+  <div class="card-header">
+    <div class="card-avatar">Г</div>
+    <div class="card-meta">
+      <div class="card-name">Галина</div>
+      <div class="card-role">Finance Manager · Finance</div>
+      <div class="card-skill">✦ Скіл місяця: відданість і залученість</div>
+    </div>
+    <div class="card-scores">
+      <div class="score-pill"><div class="score-num">8</div><div class="score-label">надійність</div></div>
+      <div class="score-pill"><div class="score-num">7</div><div class="score-label">команда</div></div>
+      <div class="score-pill"><div class="score-num">8</div><div class="score-label">орг-ція</div></div>
+      <div class="score-pill"><div class="score-num">5</div><div class="score-label">ініціатива</div></div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">Сильні сторони</div>
+    <div class="strengths-grid">
+      <div class="strength-card">
+        <div class="strength-badge">Залученість</div>
+        <div class="strength-title">Переживає за бізнес — і це видно</div>
+        <div class="strength-body">Галина залучена, віддана, реагує і бере на себе більше відповідальності. Помічає де колеги притормажують і підстраховує. Це дуже відчутно у спільній роботі й дуже цінується.</div>
+      </div>
+      <div class="strength-card">
+        <div class="strength-badge">Результат місяця</div>
+        <div class="strength-title">Серйозний обсяг операційки</div>
+        <div class="strength-body">Подано податкову звітність по Xpaid UAB, підведено підсумки Q1 2026 з план-факт аналізом, затверджено бюджет Q2, організовано роботу з платежами у злотих. 30 операційних задач — обробка платіжних доручень, звірка рахунків, нарахування ЗП.</div>
+      </div>
+    </div>
+    <div class="kpi-row">
+      <span class="kpi-chip">Оборот $3.54M (+8.6%)</span>
+      <span class="kpi-chip">Дохід $113K (+12.5%)</span>
+      <span class="kpi-chip">% комісії B2C 3.05% ✓ goal</span>
+      <span class="kpi-chip">Бюджет Q2 затверджено</span>
+      <span class="kpi-chip">30 операційних задач</span>
+    </div>
+    <div class="quote-block">
+      <div class="quote-text">«Hard skills, виконавчість, структурованість.»</div>
+      <div class="quote-source">— з 360-фідбеку колег</div>
+    </div>
+    <div class="growth-box">
+      <div class="growth-label">Точка росту</div>
+      <div class="growth-text"><strong>Стратегічне мислення і менеджерські навички.</strong> Поточний рівень експертизи задовольняє проект, але вже відчувається, що скоро потрібно буде більше. Важливо не тільки виконувати операційку, але і проактивно рекомендувати, генерувати ідеї, дивитися ширше — як власник фінансового напряму, а не лише виконавець. Менеджерські навички, делегування, стратегічне мислення — це точка зростання на наступні місяці.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ MARKETING ══════════════════════ -->
+<div class="dept-header c-blue">
+  <div class="dept-icon">📣</div>
+  <div class="dept-name">Маркетинг</div>
+  <div class="dept-line"></div>
+</div>
+
+<div class="card c-blue mx-auto" id="valeriia">
+  <div class="card-header">
+    <div class="card-avatar">В</div>
+    <div class="card-meta">
+      <div class="card-name">Валерія</div>
+      <div class="card-role">CMO · Marketing</div>
+      <div class="card-skill">✦ Скіл місяця: системність і стратегія</div>
+    </div>
+    <div class="card-scores">
+      <div class="score-pill"><div class="score-num">9</div><div class="score-label">надійність</div></div>
+      <div class="score-pill"><div class="score-num">10</div><div class="score-label">команда</div></div>
+      <div class="score-pill"><div class="score-num">9</div><div class="score-label">орг-ція</div></div>
+      <div class="score-pill"><div class="score-num">9</div><div class="score-label">ініціатива</div></div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">Сильні сторони</div>
+    <div class="strengths-grid">
+      <div class="strength-card">
+        <div class="strength-badge">Залученість №1</div>
+        <div class="strength-title">Ключова людина компанії</div>
+        <div class="strength-body">Валерія стабільно залучена, це відзначають всі. Вона ключова людина, яка тримає бізнес, фокусує увагу на довгострокових важливих питаннях. Активна, зацікавлена в результаті, глибокі знання в домені.</div>
+      </div>
+      <div class="strength-card">
+        <div class="strength-badge">Стратегія</div>
+        <div class="strength-title">Q2 план-стратегія і системний підхід</div>
+        <div class="strength-body">Сформовано нову план-стратегію на Q2 з урахуванням розрахунків фінвідділу. Вебінар з «Приходько і Партнери» — 98 реєстрацій, 7 MQL. ROMI зріс до 292%, ціна за клієнта знизилась до 985$.</div>
+      </div>
+      <div class="strength-card">
+        <div class="strength-badge">Командна робота</div>
+        <div class="strength-title">Ефективна у взаємодії</div>
+        <div class="strength-body">Колеги відзначають: ініціативна, дисциплінована, чітко формулює потреби та очікування. Оперативно відповідає на повідомлення, завжди готова пояснити чи допомогти.</div>
+      </div>
+    </div>
+    <div class="kpi-row">
+      <span class="kpi-chip">87 MQL (-34% МоМ)</span>
+      <span class="kpi-chip">CPL 8$ vs goal 50$</span>
+      <span class="kpi-chip">ROMI 292%</span>
+      <span class="kpi-chip">Вебінар: 98 реєстрацій</span>
+      <span class="kpi-chip">7 задач у звіті</span>
+    </div>
+    <div class="quote-block">
+      <div class="quote-text">«Активна, залучена, сильно зацікавлена в результаті. Дуже глибокі та експертні знання в нашому домені, стратегічне мислення, швидкість у виконанні задач.»</div>
+      <div class="quote-source">— з 360-фідбеку колег (кілька відповідей)</div>
+    </div>
+    <div class="growth-box">
+      <div class="growth-label">Точка росту</div>
+      <div class="growth-text"><strong>Фокус на своїх KPI і менше за зону інших.</strong> Лєра інколи заглиблюється туди, де зона відповідальності інших — і це забирає енергію від головного. Дуже круто було б внутрішньо сказати: «Я зроблю 300 MQL, бо я можу». Більше егоїстичності до своїх показників — і менше переживань за те, що поза маркетингом. Також: задачі через Asana, а не Telegram — це дрібна дисципліна, якої не вистачає на тлі великого результату.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ SALES ══════════════════════ -->
+<div class="dept-header c-amber">
+  <div class="dept-icon">💼</div>
+  <div class="dept-name">Sales / Partnership / SDR</div>
+  <div class="dept-line"></div>
+</div>
+
+<div class="card c-amber mx-auto" id="oleksandr">
+  <div class="card-header">
+    <div class="card-avatar">О</div>
+    <div class="card-meta">
+      <div class="card-name">Олександр</div>
+      <div class="card-role">CBDO · Sales</div>
+      <div class="card-skill">✦ Скіл місяця: проактивність і реакція</div>
+    </div>
+    <div class="card-scores">
+      <div class="score-pill"><div class="score-num">9</div><div class="score-label">надійність</div></div>
+      <div class="score-pill"><div class="score-num">9</div><div class="score-label">команда</div></div>
+      <div class="score-pill"><div class="score-num">9</div><div class="score-label">орг-ція</div></div>
+      <div class="score-pill"><div class="score-num">9</div><div class="score-label">ініціатива</div></div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">Сильні сторони</div>
+    <div class="strengths-grid">
+      <div class="strength-card">
+        <div class="strength-badge">Проактивність</div>
+        <div class="strength-title">Помітна позитивна зміна</div>
+        <div class="strength-body">Олександр за останній час почав реагувати на критичні моменти швидше. Більше не замовчує редфлаги — одразу піднімає. Це дуже круто і суттєво покращує якість управління відділом.</div>
+      </div>
+      <div class="strength-card">
+        <div class="strength-badge">Результат</div>
+        <div class="strength-title">Конверсія SQL-Closed 76% — рекорд</div>
+        <div class="strength-body">Конверсія SQL→Closed 76% (+55% МоМ) при цілі 45%. Середній чек 183k$ вище розрахункового 170k$. Дохід від партнерів +27% — найбільший за останні місяці. Онбордив нового менеджера.</div>
+      </div>
+    </div>
+    <div class="kpi-row">
+      <span class="kpi-chip">SQL→Closed 76% (+55%)</span>
+      <span class="kpi-chip">Чек $183K vs goal $170K ✓</span>
+      <span class="kpi-chip">Partners дохід +27%</span>
+      <span class="kpi-chip">Новий Sales Manager онбордований</span>
+    </div>
+    <div class="quote-block">
+      <div class="quote-text">«Виконавчість, hard skills sales сильні, вміє швидко реагувати та змінювати тактику.»</div>
+      <div class="quote-source">— з 360-фідбеку колег</div>
+    </div>
+    <div class="growth-box">
+      <div class="growth-label">Точка росту</div>
+      <div class="growth-text"><strong>Лаконічність і темп.</strong> Є сильна переважаюча якість — повчальність. Дейлики з 15-30 хвилин розтягуються до години. Важливо тримати темп, бути конкретнішим, не забирати на себе всю відповідальність за команду. Справжній лідер — той, хто вирощує самостійних людей, а не дає їм готові рішення.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card c-amber mx-auto" id="mykyta">
+  <div class="card-header">
+    <div class="card-avatar">МЮ</div>
+    <div class="card-meta">
+      <div class="card-name">Микита Юрганов</div>
+      <div class="card-role">Sales Manager · Sales</div>
+      <div class="card-skill">✦ Скіл місяця: швидкий старт</div>
+    </div>
+    <div class="card-scores">
+      <div class="score-pill"><div class="score-num">—</div><div class="score-label">перший міс.</div></div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">Сильні сторони</div>
+    <div class="strengths-grid">
+      <div class="strength-card">
+        <div class="strength-badge">Старт</div>
+        <div class="strength-title">Перший повноцінний місяць — і вже результат</div>
+        <div class="strength-body">Конверсія SQL→Win 53.8% при цілі 45%. Три ключові задачі виконані: нові скрипт і Tone of Voice впроваджені в розмову, 100% робота з CRM, відповідність стандартам. Приємний і хороший старт.</div>
+      </div>
+    </div>
+    <div class="kpi-row">
+      <span class="kpi-chip">SQL→Win 53.8% vs goal 45% ✓</span>
+      <span class="kpi-chip">Новий скрипт впроваджено</span>
+      <span class="kpi-chip">CRM 100%</span>
+      <span class="kpi-chip">Revenue $2.06M</span>
+    </div>
+    <div class="growth-box">
+      <div class="growth-label">Точка росту</div>
+      <div class="growth-text"><strong>Проактивність і залученість у командні процеси.</strong> Хочеться більше ініціативи: підсвічувати інсайти від клієнтів у спільних чатах, генерувати ідеї, вигружати ключові моменти з розмов у Slack. Важливо бути присутнім на спільних дзвінках і ставати «очима та вухами» команди з клієнтського боку.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card c-amber mx-auto" id="olha">
+  <div class="card-header">
+    <div class="card-avatar">ОК</div>
+    <div class="card-meta">
+      <div class="card-name">Ольга Кравцова</div>
+      <div class="card-role">Partnership Manager · Sales</div>
+      <div class="card-skill">✦ Скіл місяця: ласкаво просимо</div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="strengths-grid">
+      <div class="strength-card">
+        <div class="strength-badge">Старт</div>
+        <div class="strength-title">Новий розділ — нові можливості</div>
+        <div class="strength-body">Ольга приєднується до команди як Partnership Manager. Партнерський напрямок — ключовий для росту компанії. Результати квітня показали, що навіть 1 якісний агент може суттєво змінити картину прибутку. Чекаємо на твій внесок.</div>
+      </div>
+    </div>
+    <div class="growth-box">
+      <div class="growth-label">Фокус на старті</div>
+      <div class="growth-text">Партнерський канал дав +27% доходу у квітні. Пріоритети: активні партнери (ціль 35), SQL від партнерів (ціль 20), RAAA ціль 4500$. Чекаємо на першу власну звітність за травень.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card c-amber mx-auto" id="alina-h">
+  <div class="card-header">
+    <div class="card-avatar">АХ</div>
+    <div class="card-meta">
+      <div class="card-name">Аліна Худицька</div>
+      <div class="card-role">SDR B2C · Sales / SDR</div>
+      <div class="card-skill">✦ Скіл місяця: якість дзвінків</div>
+    </div>
+    <div class="card-scores">
+      <div class="score-pill"><div class="score-num">9</div><div class="score-label">надійність</div></div>
+      <div class="score-pill"><div class="score-num">10</div><div class="score-label">команда</div></div>
+      <div class="score-pill"><div class="score-num">10</div><div class="score-label">орг-ція</div></div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">Сильні сторони</div>
+    <div class="strengths-grid">
+      <div class="strength-card">
+        <div class="strength-badge">Результат</div>
+        <div class="strength-title">51 дзвінок і 0 прострочених задач</div>
+        <div class="strength-body">51 реалізований дзвінок при цілі 45. Конверсія MQL→зустріч 55% при цілі 40%. Щоденний моніторинг CRM — жодної простроченої задачі у квітні. 150 лідів опрацьовано через дзвінок, 3 ліди передані AM, 5 партнерів передано Partnership.</div>
+      </div>
+      <div class="strength-card">
+        <div class="strength-badge">Ініціатива</div>
+        <div class="strength-title">Масова розсилка акції самостійно</div>
+        <div class="strength-body">Проведено масову розсилку акційної пропозиції «100 на відкриття рахунку». Охоплено всіх релевантних лідів, окремо опрацьовано сегмент «Догрів». Без вказівок — сама побачила і зробила.</div>
+      </div>
+    </div>
+    <div class="kpi-row">
+      <span class="kpi-chip">51 дзвінок ✓ ціль 45</span>
+      <span class="kpi-chip">Конв. MQL→зустріч 55%</span>
+      <span class="kpi-chip">0 прострочених задач</span>
+      <span class="kpi-chip">150 лідів через дзвінок</span>
+    </div>
+    <div class="growth-box">
+      <div class="growth-label">Точка росту</div>
+      <div class="growth-text"><strong>Глибша саморефлексія.</strong> Поступово вчитись бачити і аналізувати результати самостійно — без підтвердження ззовні. Розуміти причини складнощів і пропонувати рішення. Затримки завжди є — і важливо йти глибше і відверто про них говорити.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card c-amber mx-auto" id="alina-b">
+  <div class="card-header">
+    <div class="card-avatar">АБ</div>
+    <div class="card-meta">
+      <div class="card-name">Аліна Б.</div>
+      <div class="card-role">SDR B2C Partner · Sales / SDR</div>
+      <div class="card-skill">✦ Скіл місяця: гнучкість і підтримка</div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">Сильні сторони</div>
+    <div class="strengths-grid">
+      <div class="strength-card">
+        <div class="strength-badge">Підтримка</div>
+        <div class="strength-title">Підстрахувала Account у критичний момент</div>
+        <div class="strength-body">У квітні Аліна підключилась до акаунт-відділу — забезпечила повний цикл супроводу клієнтів: договори, інвойси, комунікація, операції з обміну. Це гнучкість і командна відданість.</div>
+      </div>
+      <div class="strength-card">
+        <div class="strength-badge">Аналітика</div>
+        <div class="strength-title">Виявила проблему алгоритмів</div>
+        <div class="strength-body">Провела аналіз ринку в Instagram та Threads. Виявила «зацикленість» алгоритмів — і це стало основою для зміни стратегії лідогену: фокус на медійних особистостях і трейдерах.</div>
+      </div>
+    </div>
+    <div class="growth-box">
+      <div class="growth-label">Точка росту</div>
+      <div class="growth-text"><strong>Швидша реакція і власні рішення.</strong> Через переключення між відділами просіли KPI по партнерці. Важливо не чекати рішень від керівника — швидше формувати нові методи самостійно і проактивно реагувати. Показники — на результат, а не на процес.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ ACCOUNT ══════════════════════ -->
+<div class="dept-header c-coral">
+  <div class="dept-icon">🤝</div>
+  <div class="dept-name">Account</div>
+  <div class="dept-line"></div>
+</div>
+
+<div class="card c-coral mx-auto" id="oleksandra">
+  <div class="card-header">
+    <div class="card-avatar">О</div>
+    <div class="card-meta">
+      <div class="card-name">Олександра</div>
+      <div class="card-role">Account Manager · Account</div>
+      <div class="card-skill">✦ Скіл місяця: клієнтська довіра</div>
+    </div>
+    <div class="card-scores">
+      <div class="score-pill"><div class="score-num">8</div><div class="score-label">надійність</div></div>
+      <div class="score-pill"><div class="score-num">9</div><div class="score-label">команда</div></div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">Сильні сторони</div>
+    <div class="strengths-grid">
+      <div class="strength-card">
+        <div class="strength-badge">Клієнти</div>
+        <div class="strength-title">Клієнти завжди відгукуються позитивно</div>
+        <div class="strength-body">15 онбордингів, 13 дзвінків, 15 верифікацій, 49 обмінів з крипти на євро, 7 готівкових операцій. CSAT 7. Саша — людина, яка будує довгострокові відносини з клієнтами.</div>
+      </div>
+      <div class="strength-card">
+        <div class="strength-badge">Операційка</div>
+        <div class="strength-title">Великий обсяг виконаний</div>
+        <div class="strength-body">Передала оплати зарплат, офісу, податків на Галину з повним введенням у курс справи. Оновила Pipedrive за Q1 2026. Підписала договір з юриком Patricio. Затвердила новий рахунок Clarity в Zodia Markets.</div>
+      </div>
+    </div>
+    <div class="kpi-row">
+      <span class="kpi-chip">CSAT 7</span>
+      <span class="kpi-chip">Дохід $105K</span>
+      <span class="kpi-chip">15 онбордингів</span>
+      <span class="kpi-chip">49 обмінів крипта→євро</span>
+    </div>
+    <div class="growth-box">
+      <div class="growth-label">Важливий момент</div>
+      <div class="growth-text"><strong>Це критична точка — і ми говоримо про це чесно.</strong> Є відчуття, що задачі відкладаються, проактивність і ініціатива відсутні. Поки зовнішній тиск не з'являється — нічого не рухається. Важливо зупинитись і запитати себе: куди я хочу рости? Що я роблю для цього? Ми готові підтримати і рухатись разом — але тільки з тими, хто сам хоче рухатись. Поговоримо на 1-to-1.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card c-coral mx-auto" id="katia">
+  <div class="card-header">
+    <div class="card-avatar">КЮ</div>
+    <div class="card-meta">
+      <div class="card-name">Катерина Юхимчук</div>
+      <div class="card-role">Account Manager · Account</div>
+      <div class="card-skill">✦ Скіл місяця: проактивність і ріст</div>
+    </div>
+    <div class="card-scores">
+      <div class="score-pill"><div class="score-num">9</div><div class="score-label">надійність</div></div>
+      <div class="score-pill"><div class="score-num">10</div><div class="score-label">команда</div></div>
+      <div class="score-pill"><div class="score-num">9</div><div class="score-label">орг-ція</div></div>
+      <div class="score-pill"><div class="score-num">8</div><div class="score-label">ініціатива</div></div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">Сильні сторони</div>
+    <div class="strengths-grid">
+      <div class="strength-card">
+        <div class="strength-badge">Результат місяця</div>
+        <div class="strength-title">Великий обсяг — і все чисто</div>
+        <div class="strength-body">3 нові клієнти, 1 угода закрита, 26 інвойсів, 15 договорів, 8 дзвінків, 7 готівкових операцій. Таблиці для квартальної звітності Q3/Q4 2025 і Q1 2026. Pipedrive оновлено. CSAT 10.</div>
+      </div>
+      <div class="strength-card">
+        <div class="strength-badge">Ріст</div>
+        <div class="strength-title">Катя 2.0 — вже в процесі</div>
+        <div class="strength-body">Катерина звернулась з бажанням рости. За два тижні персональної роботи вже є зміни, інсайти і нова модель поведінки. Стає більш проактивною, пушить з організаційних питань. Це саме те, що ми хочемо бачити від кожного.</div>
+      </div>
+      <div class="strength-card">
+        <div class="strength-badge">Командний гравець</div>
+        <div class="strength-title">AI-інсайти впроваджені в роботу</div>
+        <div class="strength-body">Разом з Sales керівником опрацьовані AI-інсайти щодо комунікації відділу AM з клієнтами — впроваджені конкретні рішення. Передала 2 клієнтів на кастдев, 1 — для привітання з купівлею нерухомості.</div>
+      </div>
+    </div>
+    <div class="kpi-row">
+      <span class="kpi-chip">CSAT 10 ✓</span>
+      <span class="kpi-chip">Дохід $105K</span>
+      <span class="kpi-chip">Конв. 71% vs goal 65% ✓</span>
+      <span class="kpi-chip">26 інвойсів</span>
+      <span class="kpi-chip">15 договорів</span>
+    </div>
+    <div class="quote-block">
+      <div class="quote-text">«Командний гравець, не боїться роботи, уважність, відповідальність, стабільність.»</div>
+      <div class="quote-source">— з 360-фідбеку колег</div>
+    </div>
+    <div class="growth-box">
+      <div class="growth-label">Точка росту</div>
+      <div class="growth-text"><strong>Катя вже знає свою точку росту — і вже над нею працює.</strong> Напрямок обраний правильний. Продовжуй у тому ж темпі — зміни вже відчутні для всієї команди. Це класний приклад для кожного: звернулась, сказала що хоче, і ми почали рухатись разом.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ LEGAL ══════════════════════ -->
+<div class="dept-header c-slate">
+  <div class="dept-icon">⚖️</div>
+  <div class="dept-name">Legal</div>
+  <div class="dept-line"></div>
+</div>
+
+<div class="card c-slate mx-auto" id="alina-c">
+  <div class="card-header">
+    <div class="card-avatar">АГ</div>
+    <div class="card-meta">
+      <div class="card-name">Аліна Григор'єва</div>
+      <div class="card-role">Legal Counsel · Compliance</div>
+      <div class="card-skill">✦ Скіл місяця: глибока експертиза</div>
+    </div>
+    <div class="card-scores">
+      <div class="score-pill"><div class="score-num">9</div><div class="score-label">надійність</div></div>
+      <div class="score-pill"><div class="score-num">10</div><div class="score-label">команда</div></div>
+      <div class="score-pill"><div class="score-num">9</div><div class="score-label">орг-ція</div></div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">Сильні сторони</div>
+    <div class="strengths-grid">
+      <div class="strength-card">
+        <div class="strength-badge">Експертиза</div>
+        <div class="strength-title">Коли включається — робить якісно</div>
+        <div class="strength-body">Колеги відзначають: швидко виконує термінові задачі, включається в процес. Чітко пояснює, завжди готова прийти на допомогу.</div>
+      </div>
+    </div>
+    <div class="quote-block">
+      <div class="quote-text">«Швидко виконує термінові задачі і включається в процес.»</div>
+      <div class="quote-source">— з 360-фідбеку колег</div>
+    </div>
+    <div class="growth-box">
+      <div class="growth-label">Критичний момент</div>
+      <div class="growth-text"><strong>Це серйозна розмова — і вона потрібна.</strong> Систематичне запізнення, пропущені дзвінки, незаповнений місячний звіт — це вже не поодинокі випадки, це патерн. Ми вже повідомили Аліну про те, що незадоволені. Наразі розміщена вакансія юриста. Це сигнал для Аліни і для всієї команди: робота — це комплексний підхід. Відповідальність, дисципліна, дедлайни — так само важливі, як і фахові навички.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card c-slate mx-auto" id="viktoria">
+  <div class="card-header">
+    <div class="card-avatar">В</div>
+    <div class="card-meta">
+      <div class="card-name">Вікторія</div>
+      <div class="card-role">Legal Counsel · Contracts</div>
+      <div class="card-skill">✦ Скіл місяця: надійність і точність</div>
+    </div>
+    <div class="card-scores">
+      <div class="score-pill"><div class="score-num">10</div><div class="score-label">надійність</div></div>
+      <div class="score-pill"><div class="score-num">10</div><div class="score-label">дедлайни</div></div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">Сильні сторони</div>
+    <div class="strengths-grid">
+      <div class="strength-card">
+        <div class="strength-badge">Надійність</div>
+        <div class="strength-title">28 документів — і жодного критичного блокера</div>
+        <div class="strength-body">28 документів підготовлено і оновлено. Privacy Policy та Terms of Use для Gasless Wallet — готові до App Store. AML/CFT Меморандум. Договори з контрагентами: Consulting, DaaS, Loan, NDA, Partnership. Онбординг нових співробітників. Нотаріальне завірення канадських документів.</div>
+      </div>
+      <div class="strength-card">
+        <div class="strength-badge">Дисципліна</div>
+        <div class="strength-title">100% дедлайнів, 0 відкритих запитів</div>
+        <div class="strength-body">Всі задачі квітня виконані в строк. 0 відкритих запитів від колег на кінець місяця. Онбординг у Satchel по канадській компанії активно ведеться. Середній час підготовки документу ~1.5-2 год.</div>
+      </div>
+    </div>
+    <div class="kpi-row">
+      <span class="kpi-chip">28 документів</span>
+      <span class="kpi-chip">Дедлайни 100% ✓</span>
+      <span class="kpi-chip">0 відкритих запитів ✓</span>
+      <span class="kpi-chip">App Store документи ✓</span>
+      <span class="kpi-chip">Satchel онбординг 80%</span>
+    </div>
+    <div class="growth-box">
+      <div class="growth-label">Точка росту</div>
+      <div class="growth-text"><strong>Від реактивного — до ініціативного.</strong> Вікторія відмінно справляється з тим, що приходить ззовні. Наступний рівень — більше ініціативи і власного погляду: де можна оптимізувати, прискорити, запропонувати краще рішення. Більше «злості до прогресу» — коли сам шукаєш, де покращити, а не чекаєш задачі.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ IT ══════════════════════ -->
+<div class="dept-header c-purple">
+  <div class="dept-icon">⚙️</div>
+  <div class="dept-name">IT / Automation</div>
+  <div class="dept-line"></div>
+</div>
+
+<div class="card c-purple mx-auto" id="dmytro">
+  <div class="card-header">
+    <div class="card-avatar">ДП</div>
+    <div class="card-meta">
+      <div class="card-name">Дмитро Пономарьов</div>
+      <div class="card-role">Automation Specialist · IT</div>
+      <div class="card-skill">✦ Скіл місяця: перший місяць — і вже результат</div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">Сильні сторони</div>
+    <div class="strengths-grid">
+      <div class="strength-card">
+        <div class="strength-badge">Результат</div>
+        <div class="strength-title">Phase 1 AI-інфраструктури — запущено</div>
+        <div class="strength-body">Парсери WhatsApp/Telegram реалізовані, 154 транскрипти TLDV вивантажено, 9 JSON-файлів CRM підготовлено для AI-аналізу. Phase 1 протестовано на реальних кейсах. 13 задач в Asana — 10 закрито.</div>
+      </div>
+      <div class="strength-card">
+        <div class="strength-badge">Підсилення</div>
+        <div class="strength-title">Реальне підсилення для всієї команди</div>
+        <div class="strength-body">Дима підсилює маркетинг, сейлз і в цілому є технічною підтримкою для AI-інструментів. Це набагато краще, ніж було раніше. Перший повноцінний місяць — і вже видно цінність.</div>
+      </div>
+    </div>
+    <div class="kpi-row">
+      <span class="kpi-chip">154 транскрипти TLDV</span>
+      <span class="kpi-chip">9 JSON-файлів CRM</span>
+      <span class="kpi-chip">Phase 1 протестовано</span>
+      <span class="kpi-chip">10/13 задач закрито</span>
+    </div>
+    <div class="growth-box">
+      <div class="growth-label">Точка росту</div>
+      <div class="growth-text"><strong>Зануритись глибше в бізнес-процеси.</strong> Дуже важливо ходити на командні дзвінки в четвер — бути в курсі всіх процесів. Генерувати ідеї не тільки по технічних задачах, але і по тому, що ще можна автоматизувати або покращити. Бізнес-розуміння + технічний скіл = справжня цінність.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-brand">Xpaid</div>
+  <div class="footer-sub">Team Recognition · Квітень 2026</div>
+</footer>
+
+</body>
+</html>
